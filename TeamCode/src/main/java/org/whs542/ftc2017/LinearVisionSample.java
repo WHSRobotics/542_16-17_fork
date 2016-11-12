@@ -1,5 +1,7 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.lasarobotics.vision.android.Cameras;
 import org.lasarobotics.vision.ftc.resq.Beacon;
 import org.lasarobotics.vision.opmode.LinearVisionOpMode;
@@ -19,6 +21,7 @@ import org.opencv.core.Size;
  * version of the FTC Robot Controller app. Changes to the app may break the LinearVisionOpMode.
  * Should this happen, open up an issue on GitHub. :)
  */
+@Autonomous(name = "LinearVision", group = "Vision")
 public class LinearVisionSample extends LinearVisionOpMode {
 
     //Frame counter
