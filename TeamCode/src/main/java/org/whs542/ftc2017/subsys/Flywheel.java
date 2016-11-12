@@ -96,12 +96,11 @@ public class Flywheel {
         }
     }
 
-    /*public void operateGate(float trigger)
+    public void operateGate(float trigger)
     {
         boolean triggerPressed;
         if(trigger != 0) {triggerPressed = true;}
         else {triggerPressed = false;}
-    }
 
         gateToggler.changeState(triggerPressed);
         if(gateToggler.currentState() == 1)
@@ -114,7 +113,7 @@ public class Flywheel {
             gateStatus = false;
             flywheelGate.setPosition(0.0);
         }
-    }*/
+    }
 
 
     public String getFlywheelStatus()

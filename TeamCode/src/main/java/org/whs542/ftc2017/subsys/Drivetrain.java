@@ -101,8 +101,8 @@ public class Drivetrain {
         switch(orientationSwitch.currentState())
         {
             case 0:
-                setRightPower(rightScaledPower);
-                setLeftPower(leftScaledPower);
+                setLeftPower(rightScaledPower);
+                setRightPower(leftScaledPower);
                 break;
             case 1:
                 setRightPower(-rightScaledPower);
