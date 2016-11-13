@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
-import org.whs542.lib.IMU;
 
 /**
  * Created by Amar2 on 10/22/2016.

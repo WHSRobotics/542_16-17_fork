@@ -14,22 +14,21 @@ public class Functions
         return distance;
     }
 
-    public static double calculateTurningAngle(Coordinate current, Coordinate target)
-    {
-        double difference = target.returnCoordSingleValue("orientation") - current.returnCoordSingleValue("orientation");
-        if(Math.abs( difference ) > 180)
-        {
-            if(difference < 0)
-            {
-                difference += 360;
-            }
-            else
-            {
-                difference -= 360;
-            }
-        }
-        return difference;
-    }
+    public static double normalizeAngle(double angle){
 
+        if(angle>180){
+            angle=angle-360;
+        }
+        else if(angle<-180){
+            angle=angle+360;
+        }
+        /*
+        else {
+            angle=angle;
+        }
+        */
+        return angle;
+
+    }
 
 }

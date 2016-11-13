@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
 import org.whs542.lib.Toggler;
-import org.whs542.lib.Vuforia;
-import org.whs542.lib.IMU;
 
 /**
  * Created by Amar2 on 10/22/2016.
@@ -26,8 +24,9 @@ public class Drivetrain {
     //All measurements in millimeters because that is the unit Vuforia uses
     private final double RADIUS_OF_WHEEL = 50;
     private final double CIRC_OF_WHEEL = RADIUS_OF_WHEEL * 2 * Math.PI;
-    private final double ENCODER_TICKS_PER_MM = 1120 / CIRC_OF_WHEEL;
-    private static final double JOY_THRESHOLD = 0.2;
+    private final double ENCODER_TICKS_PER_REV = 1120;
+    private final double ENCODER_MM_PER_TICK = CIRC_OF_WHEEL / ENCODER_TICKS_PER_REV;
+    private static final double JOY_THRESHOLD = 0.05;
 
     private final double MIN_POWER_VALUE = 0.15;
 
@@ -161,13 +160,14 @@ public class Drivetrain {
         }
 
         //Turn robot to the desired orientation
-        this.turn(movingOrientation, current.returnCoordSingleValue("heading"), imu);
+        //this.turn(movingOrientation, current.returnCoordSingleValue("heading"), imu);
+        //TODO: Add rotateToTarget() here
+
 
         //Move robot forward the calculated distance, using IMU as check
         this.moveDistanceMilli(distance, imu);
 
-        //Orient robot to destination orientation
-        this.turn(target.returnCoordSingleValue("heading"), movingOrientation, imu);
+
 
     }
 
@@ -241,7 +241,7 @@ public class Drivetrain {
 
     //Tells the robot how much left (positive value) or right (negative) to turn based on the initial heading, from 0
     //to 359.9, and the final heading, also from 0 to 360. Accounts for the jump from 359.9 to 0.
-    public void turn( double destinationDegrees, double currentDegrees, IMU imu){
+    /*public void turn( double destinationDegrees, double currentDegrees, IMU imu){
         this.setRunMode( RunMode.RUN_WITHOUT_ENCODER );
         double difference = turnValue(destinationDegrees, currentDegrees);
         double differenceAbs = Math.abs( difference );
@@ -268,7 +268,8 @@ public class Drivetrain {
                 turning = false;
             }
         }
-    }
+    }*/
+/*
 
     public double turnValue(double destinationDegrees, double currentDegrees){
         double difference = destinationDegrees - currentDegrees;
@@ -282,11 +283,11 @@ public class Drivetrain {
         }
         return difference;
     }
+*/
 
     public double getEncoderPosition()
     {
-        double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() +
-                            backRight.getCurrentPosition() + backLeft.getCurrentPosition();
+        double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() + backRight.getCurrentPosition() + backLeft.getCurrentPosition();
         return position * 0.25;
     }
 }

@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
-import org.whs542.lib.IMU;
-import org.whs542.lib.Vuforia;
+import org.whs542.ftc2017.subsys.IMU;
+import org.whs542.ftc2017.subsys.Vuforia;
 
 /**
  * Created by Jiangda on 11/4/2016.

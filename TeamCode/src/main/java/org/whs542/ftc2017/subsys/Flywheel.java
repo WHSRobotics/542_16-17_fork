@@ -99,7 +99,7 @@ public class Flywheel {
     public void operateGate(float trigger)
     {
         boolean triggerPressed;
-        if(trigger != 0) {triggerPressed = true;}
+        if(trigger > 0.05) {triggerPressed = true;}
         else {triggerPressed = false;}
 
         gateToggler.changeState(triggerPressed);

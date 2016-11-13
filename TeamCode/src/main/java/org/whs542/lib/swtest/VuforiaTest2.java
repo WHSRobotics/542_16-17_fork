@@ -4,7 +4,7 @@ package org.whs542.lib.swtest;
  * Created by Jiangda on 10/28/2016.
  */
 import org.whs542.lib.Coordinate;
-import org.whs542.lib.Vuforia;
+import org.whs542.ftc2017.subsys.Vuforia;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 @Autonomous(name = "VuforiaTest2",group = "Test")
