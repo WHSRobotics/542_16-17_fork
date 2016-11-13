@@ -2,6 +2,7 @@ package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -16,13 +17,15 @@ public class Flywheel {
     private DcMotor rightFly;
     private DcMotor leftFly;
     private Servo flywheelGate;
-    //private Servo particleRelease;
 
     private static double CIRCUMFERENCE = Math.PI * 11.43; //11.43 is diameter of wheel
     private double TICKS_PER_SEC;
     private static double TICKS_PER_REV = 1120;
     private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
     private static double MAX_VELOCITY = 23.08397;
+
+    private double flySpeed = 0;
+    Toggler toggler = new Toggler(20);
 
     private boolean status;
     private boolean gateStatus;
@@ -41,10 +44,11 @@ public class Flywheel {
         leftFly = map.dcMotor.get("leftFly");
         flywheelGate = map.servo.get("flywheelGate");
         status = false;
+        leftFly.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //rightFly.setMaxSpeed(4000);
-        //leftFly.setMaxSpeed(4000);
+        rightFly.setMaxSpeed(4000);
+        leftFly.setMaxSpeed(4000);
         //particleRelease = aMap.servo.get("particleRelease");
     }
 
@@ -79,6 +83,16 @@ public class Flywheel {
             rightFly.setPower(0);
             leftFly.setPower(0);
         }
+    }
+    public void testRun(boolean bool1, boolean bool2){
+
+        toggler.changeState(bool1, bool2);
+
+        rightFly.setPower((double) (toggler.currentState()) / 20);
+        leftFly.setPower((double)(toggler.currentState()) / 20);
+    }
+    public double getSpeed(){
+        return (double) (toggler.currentState()) / 20;
     }
 
     public void operateGate(boolean a)
