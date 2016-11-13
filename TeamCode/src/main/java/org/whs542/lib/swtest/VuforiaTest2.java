@@ -24,9 +24,9 @@ public class VuforiaTest2 extends OpMode{
     public void loop(){
         coordinate = vuforia.getHeadingAndLocation();
 
-        double xPos = coordinate.returnCoordSingleValue("x");
-        double yPos = coordinate.returnCoordSingleValue("y");
-        double hdg = coordinate.returnCoordSingleValue("heading");
+        double xPos = coordinate.getX();
+        double yPos = coordinate.getY();
+        double hdg = coordinate.getHeading();
         String location = "XPos: " + xPos + " Ypos: " + yPos + " Heading: " + hdg;
 
         telemetry.addData("Data:", location);

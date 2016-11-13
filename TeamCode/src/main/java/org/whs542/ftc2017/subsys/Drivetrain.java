@@ -148,8 +148,8 @@ public class Drivetrain {
         double distance = Functions.calculateDistance(current, target);
 
         //Distance to go in x and y units (mm) which can be positive or negative, from current to destination position
-        double xPosToGo = target.returnCoordSingleValue("x") - current.returnCoordSingleValue("x");
-        double yPosToGo = target.returnCoordSingleValue("y") - current.returnCoordSingleValue("y");
+        double xPosToGo = target.getX() - current.getX();
+        double yPosToGo = target.getY() - current.getY();
 
         //InitialOrientation is the initial heading that the robot aligns to before moving forward
         double movingOrientation = 180 * Math.atan2( yPosToGo, xPosToGo ) / Math.PI;
@@ -165,14 +165,14 @@ public class Drivetrain {
 
 
         //Move robot forward the calculated distance, using IMU as check
-        this.moveDistanceMilli(distance, imu);
+        //this.moveDistanceMilli(distance, imu);
 
 
 
     }
 
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli(double distanceMM, IMU imu){
+    /*public void moveDistanceMilli(double distanceMM, IMU imu){
 
         int encoderPosition = (int) (24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
 
@@ -238,6 +238,7 @@ public class Drivetrain {
             }
         }
     }
+    */
 
     //Tells the robot how much left (positive value) or right (negative) to turn based on the initial heading, from 0
     //to 359.9, and the final heading, also from 0 to 360. Accounts for the jump from 359.9 to 0.

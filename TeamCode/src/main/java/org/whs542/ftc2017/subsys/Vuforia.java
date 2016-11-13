@@ -151,7 +151,7 @@ public class Vuforia {
     public boolean vuforiaIsValid()
     {
         Coordinate currentCoord = getHeadingAndLocation();
-        if(currentCoord.returnCoordSingleValue("x") == INVALID_VUFORIA_VALUE)
+        if(currentCoord.getX() == INVALID_VUFORIA_VALUE)
         {
             return false;
         }

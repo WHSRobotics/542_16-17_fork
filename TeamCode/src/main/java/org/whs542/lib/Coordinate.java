@@ -16,11 +16,19 @@ public class Coordinate {
         orientation = orientationInput;
     }
 
+    public Coordinate(Position pos, double heading)
+    {
+        xPos = pos.getX();
+        yPos = pos.getY();
+        zPos = pos.getZ();
+        orientation = heading;
+    }
+
     public Coordinate returnCoord(){
         return this;
     }
 
-    public double returnCoordSingleValue(String typeOfValue){
+    /*public double returnCoordSingleValue(String typeOfValue){
         if(typeOfValue.equalsIgnoreCase("x")){
             return xPos;
         }
@@ -34,5 +42,26 @@ public class Coordinate {
         else {
             return orientation;
         }
+    }
+    */
+
+    public double getX()
+    {
+        return xPos;
+    }
+
+    public double getY()
+    {
+        return yPos;
+    }
+
+    public double getZ()
+    {
+        return zPos;
+    }
+
+    public double getHeading()
+    {
+        return orientation;
     }
 }

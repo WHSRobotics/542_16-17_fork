@@ -32,16 +32,50 @@ public class Intake {
         intakeMotor.setPower(defaultPower);
     }
 
-    public void runIntake(boolean bumper, float trigger, double power){
-        if(bumper){
+    public void runIntake(float trigger, boolean bumper, double power){
+        if(trigger > 0.05){
             intakeMotor.setPower(power);
         }
-        else if(trigger>0.05){
+        else if(bumper){
             intakeMotor.setPower(-power);
         }
         else {
             intakeMotor.setPower(0.0);
         }
+    }
+
+    public void runIntake(float rightTrigger, float leftTrigger, double power)
+    {
+        if(rightTrigger > 0.05)
+        {
+            intakeMotor.setPower(power);
+        }
+        else if(leftTrigger > 0.05)
+        {
+            intakeMotor.setPower(-power);
+        }
+        else
+        {
+            intakeMotor.setPower(0.0);
+        }
+    }
+
+    public String getIntakeDirection(boolean bumper, float trigger)
+    {
+        String state;
+        if(trigger > 0.05)
+        {
+            state = "Intake";
+        }
+        else if(bumper)
+        {
+            state = "Outtake";
+        }
+        else
+        {
+            state = "At rest";
+        }
+        return state;
     }
 
     public void runIntake(double power){

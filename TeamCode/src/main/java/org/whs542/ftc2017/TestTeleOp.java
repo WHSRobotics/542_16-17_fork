@@ -23,10 +23,16 @@ public class TestTeleOp extends OpMode{
 
     @Override
     public void loop() {
+        //Gamepad 1
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
-        robot.intake.runIntake(gamepad1.left_bumper, gamepad1.left_trigger, 1.0);
-        robot.flywheel.testRun(gamepad1.dpad_up, gamepad1.dpad_down);
+        robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger, 1.0);
+        robot.capball.dropFork(gamepad1.dpad_down);
+        robot.capball.liftCapball(gamepad1.dpad_up);
+
+        //Gamepad 2
+        //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
+        //robot.flywheel.testRun(gamepad2.dpad_up, gamepad1.dpad_down);
         robot.flywheel.operateGate(gamepad1.right_trigger);
 
         //Telemetry
@@ -34,12 +40,15 @@ public class TestTeleOp extends OpMode{
         telemetry.addData("RightStick Y:", gamepad1.right_stick_y);
         telemetry.addData("Orientation:", robot.drivetrain.getOrientation());
 
-        telemetry.addData("Trigger:", gamepad1.left_trigger);
+        telemetry.addData("Intake:", robot.intake.getIntakeDirection(gamepad1.left_bumper, gamepad1.left_trigger));
 
         telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
         telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
 
         telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
+
+        telemetry.addData("Capball Fork:", robot.capball.getForkState());
+        telemetry.addData("Capball Lift:", robot.capball.getLiftState());
 
         //test for flywheel velocity vs distance
         /*robot.flywheel.test(gamepad1.a, 1);
