@@ -21,10 +21,7 @@ Thumbs.db
 # Android Studio
 *.iml
 .idea
+.gradle
 build/
-*.bin
-*.lock
 
 *ASUS_PC_01*
-
-.gradle/2.14.1/taskArtifacts/cache.properties
