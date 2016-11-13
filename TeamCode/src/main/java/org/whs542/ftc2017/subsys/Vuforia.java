@@ -35,6 +35,8 @@ public class Vuforia {
     List<VuforiaTrackable> allTrackables;
     VuforiaTrackables ftcTargets;
 
+    static final float INVALID_VUFORIA_VALUE = 10000;
+
     float mmPerInch        = 25.4f;
     float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
     //float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
@@ -122,9 +124,9 @@ public class Vuforia {
     public Coordinate getHeadingAndLocation(){
         ftcTargets.activate();
 
-        float[] xyzCoords = {10000, 10000, 10000};
+        float[] xyzCoords = {INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE};
 
-        double heading = 10000;
+        double heading = INVALID_VUFORIA_VALUE;
         Orientation robotOrientation;
 
         for(VuforiaTrackable trackable : allTrackables){
@@ -138,13 +140,27 @@ public class Vuforia {
 
                 robotOrientation = Orientation.getOrientation(robotLocationTransform, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, Orientation.AngleSet.THEONE);
                 heading = robotOrientation.thirdAngle;
-                DbgLog.msg("%f, %f, %f, %f", xyzCoords[0], xyzCoords[1], xyzCoords[2], heading);
+                //DbgLog.msg("%f, %f, %f, %f", xyzCoords[0], xyzCoords[1], xyzCoords[2], heading);
             }
             else {}
         }
         ftcTargets.deactivate();
         return new Coordinate(xyzCoords[0], xyzCoords[1], xyzCoords[2], vuforiaAngleConverter(heading));
     }
+
+    public boolean vuforiaIsValid()
+    {
+        Coordinate currentCoord = getHeadingAndLocation();
+        if(currentCoord.returnCoordSingleValue("x") == INVALID_VUFORIA_VALUE)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 
     //Converts vuforia angle to absolute angle value. Vuforia gives values from -180 t0 180; this method
     //Converts it to 0 to 360. 0 = +x
