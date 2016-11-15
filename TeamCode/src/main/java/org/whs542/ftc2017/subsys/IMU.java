@@ -21,6 +21,8 @@ import org.firstinspires.ftc.robotcore.internal.AppUtil;
 import java.io.File;
 public class IMU {
 
+    double imuBias;
+
     BNO055IMU imu;
 
     public IMU(HardwareMap theMap){
@@ -58,5 +60,10 @@ public class IMU {
         );
         return accelMag;
     }
+
+    public void setImuBias(double headingFromVuforia){
+        imuBias=getHeading();
+    }
+
 }
 

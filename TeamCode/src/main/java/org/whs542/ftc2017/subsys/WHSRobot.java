@@ -29,6 +29,8 @@ public class WHSRobot
 
     public double heading;
 
+    Coordinate oldCoord;
+
     public WHSRobot(HardwareMap robotMap){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
@@ -38,18 +40,21 @@ public class WHSRobot
         imu = new IMU(robotMap);
     }
 
-    public void driveToTarget(Coordinate targetPos, Coordinate currentPos){
+    public boolean driveToTarget(Coordinate targetPos, Coordinate currentPos){
 
         double distanceToTarget = Functions.calculateDistance(targetPos, currentPos);
+        boolean status;
 
-        if(distanceToTarget>0){
+        if(distanceToTarget>0){ //TODO:fix a stop value because it will never hit 0
             drivetrain.setRightPower(POWER_DRIVE_TO_TARGET);
             drivetrain.setLeftPower(POWER_DRIVE_TO_TARGET);
+            status = false;
         }
-        else{
+        else {
             drivetrain.setLRPower(0.0, 0.0);
+            status = true;
         }
-
+        return status;
     }
 
     public void rotateToTarget(double targetHeading, double currentHeading){
@@ -72,6 +77,12 @@ public class WHSRobot
 
     }
 
+    public void setOldCoord(Coordinate oldCoordIn){
+        oldCoord = oldCoordIn;
+    }
+
+
+    //Method setOldCoord MUST be run before this
     public Coordinate estimatePosition(Coordinate vuforiaCoordinate, double encoderDistL, double encoderDistR)
     {
         Coordinate currentCoord;
@@ -83,17 +94,29 @@ public class WHSRobot
         }
         else
         {
-            //estimate using encoders
+            //using encoders to estimate position
+
         }
 
         return currentCoord;
 
     }
 
-    public double estimateHeading(Coordinate vuforiaCoordinate, IMU imu)
+    //Method imu.setImuBias() MUST be run before this
+    //Method setOldCoord MUST be run before this
+    public double estimateHeading(Coordinate vuforiaCoordinate)
     {
-        
+        double currentHeading;
+
+        if(vuforia.vuforiaIsValid()){
+            currentHeading=Functions.normalizeAngle(vuforia.getHeadingAndLocation().getHeading());
+        }
+        else {
+            currentHeading=Functions.normalizeAngle(imu.getHeading());
+        }
+
     }
+
 
     public Coordinate vuforia2body(Coordinate vuforiaCoord)
     {
