@@ -102,8 +102,16 @@ public class WHSRobot
 
     }
 
-    //Method imu.setImuBias() MUST be run before this
-    //Method setOldCoord MUST be run before this
+    /**
+     * Method to find to check if the value from Vuforia is valid
+     * If it is not, it returns the value from the IMU instead
+     *
+     * Method imu.setImuBias() MUST be run before this
+     *
+     * @param vuforiaCoordinate The coordinate from Vuforia. This should be the RAW coordinate,
+     *                          with no normalization done to the angles
+     * @return The heading, either from Vuforia or the IMU. This is a normalized angle
+     */
     public double estimateHeading(Coordinate vuforiaCoordinate)
     {
         double currentHeading;
@@ -112,8 +120,10 @@ public class WHSRobot
             currentHeading=Functions.normalizeAngle(vuforia.getHeadingAndLocation().getHeading());
         }
         else {
-            currentHeading=Functions.normalizeAngle(imu.getHeading());
+            currentHeading=Functions.normalizeAngle(Math.abs(imu.getHeading()+imu.getImuBias()));
         }
+
+        return currentHeading;
 
     }
 

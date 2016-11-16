@@ -14,6 +14,7 @@ public class Functions
         return distance;
     }
 
+    /** Converts angles from 0-360 to -180-180 */
     public static double normalizeAngle(double angle){
 
         if(angle>180){
@@ -67,6 +68,7 @@ public class Functions
         return sum;
     }
 
+    /**Converts Coordinates to Positions */
     public static Position getPosFromCoord(Coordinate coord)
     {
         Position pos;
