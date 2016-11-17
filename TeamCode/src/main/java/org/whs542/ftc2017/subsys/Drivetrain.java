@@ -25,7 +25,7 @@ public class Drivetrain {
     private final double RADIUS_OF_WHEEL = 50;
     private final double CIRC_OF_WHEEL = RADIUS_OF_WHEEL * 2 * Math.PI;
     private final double ENCODER_TICKS_PER_REV = 1120;
-    private final double ENCODER_MM_PER_TICK = CIRC_OF_WHEEL / ENCODER_TICKS_PER_REV;
+    private final double ENCODER_TICKS_PER_MM = CIRC_OF_WHEEL / ENCODER_TICKS_PER_REV;
     private static final double JOY_THRESHOLD = 0.05;
 
     private final double MIN_POWER_VALUE = 0.15;
@@ -165,14 +165,14 @@ public class Drivetrain {
 
 
         //Move robot forward the calculated distance, using IMU as check
-        //this.moveDistanceMilli(distance, imu);
+        this.moveDistanceMilli(distance, imu);
 
 
 
     }
 
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    /*public void moveDistanceMilli(double distanceMM, IMU imu){
+    public void moveDistanceMilli(double distanceMM, IMU imu){
 
         int encoderPosition = (int) (24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
 
@@ -181,7 +181,7 @@ public class Drivetrain {
         this.setMaxSpeed(4000);
         this.setTargetPosition(encoderPosition);
 
-        while( Math.abs( 0.5 * ( frontRight.getCurrentPosition() + backLeft.getCurrentPosition() ) )
+        while( Math.abs(getEncoderPosition() )
             < Math.abs( encoderPosition )) {
 
             this.setLRPower(0.3, 0.3);
@@ -206,28 +206,28 @@ public class Drivetrain {
         int stage = 0;
         while( Math.abs(getEncoderPosition()) < Math.abs(targetPosition))
         {
-            switch(stage)
-            {
-                case 0:
-                    while(Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.5)
-                    {
-                        this.setLRPower(0.5, 0.5);
-                    }
-                    stage = 1;
-                    break;
-                case 1:
-                    while(Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.75)
-                    {
-                        this.setLRPower(0.3, 0.3);
-                    }
-                    stage = 2;
-                    break;
-                case 2:
-                    while(Math.abs(getEncoderPosition()) < Math.abs(targetPosition))
-                    {
-                        this.setLRPower(0.1, 0.1);
-                    }
-                    break;
+            if (Math.abs(targetPosition) - Math.abs(getEncoderPosition()) < 5600) {
+                this.setLRPower(0.1, 0.1);
+            } else {
+                switch (stage) {
+                    case 0:
+                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.5) {
+                            this.setLRPower(0.5, 0.5);
+                        }
+                        stage = 1;
+                        break;
+                    case 1:
+                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.75) {
+                            this.setLRPower(0.3, 0.3);
+                        }
+                        stage = 2;
+                        break;
+                    case 2:
+                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition)) {
+                            this.setLRPower(0.1, 0.1);
+                        }
+                        break;
+                }
             }
 
             //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
@@ -238,11 +238,11 @@ public class Drivetrain {
             }
         }
     }
-    */
+
 
     //Tells the robot how much left (positive value) or right (negative) to turn based on the initial heading, from 0
     //to 359.9, and the final heading, also from 0 to 360. Accounts for the jump from 359.9 to 0.
-    /*public void turn( double destinationDegrees, double currentDegrees, IMU imu){
+    public void turn( double destinationDegrees, double currentDegrees, IMU imu){
         this.setRunMode( RunMode.RUN_WITHOUT_ENCODER );
         double difference = turnValue(destinationDegrees, currentDegrees);
         double differenceAbs = Math.abs( difference );
@@ -269,8 +269,8 @@ public class Drivetrain {
                 turning = false;
             }
         }
-    }*/
-/*
+    }
+
 
     public double turnValue(double destinationDegrees, double currentDegrees){
         double difference = destinationDegrees - currentDegrees;
@@ -284,7 +284,7 @@ public class Drivetrain {
         }
         return difference;
     }
-*/
+
 
     public double getEncoderPosition()
     {

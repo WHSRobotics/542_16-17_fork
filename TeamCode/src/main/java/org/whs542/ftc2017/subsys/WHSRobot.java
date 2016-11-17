@@ -35,7 +35,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
-        capball = new CapballLift(robotMap);
+        //capball = new CapballLift(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
     }
@@ -85,7 +85,7 @@ public class WHSRobot
     //Method setOldCoord MUST be run before this
     public Coordinate estimatePosition(Coordinate vuforiaCoordinate, double encoderDistL, double encoderDistR)
     {
-        Coordinate currentCoord;
+        Coordinate currentCoord = new Coordinate(0,0,0,0);
 
         if(vuforia.vuforiaIsValid())
         {
