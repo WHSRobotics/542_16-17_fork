@@ -25,7 +25,7 @@ public class Drivetrain {
     private final double RADIUS_OF_WHEEL = 50;
     private final double CIRC_OF_WHEEL = RADIUS_OF_WHEEL * 2 * Math.PI;
     private final double ENCODER_TICKS_PER_REV = 1120;
-    private final double ENCODER_TICKS_PER_MM = CIRC_OF_WHEEL / ENCODER_TICKS_PER_REV;
+    private final double ENCODER_TICKS_PER_MM = ENCODER_TICKS_PER_REV / CIRC_OF_WHEEL;
     private static final double JOY_THRESHOLD = 0.05;
 
     private final double MIN_POWER_VALUE = 0.15;
@@ -204,37 +204,35 @@ public class Drivetrain {
         this.setMaxSpeed(4000);
         this.setTargetPosition(targetPosition);
         int stage = 0;
-        while( Math.abs(getEncoderPosition()) < Math.abs(targetPosition))
+        while(Math.abs(targetPosition) - Math.abs(getEncoderPosition()) > 50)
         {
-            if (Math.abs(targetPosition) - Math.abs(getEncoderPosition()) < 5600) {
-                this.setLRPower(0.1, 0.1);
-            } else {
-                switch (stage) {
-                    case 0:
-                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.5) {
-                            this.setLRPower(0.5, 0.5);
-                        }
-                        stage = 1;
-                        break;
-                    case 1:
-                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition) * 0.75) {
-                            this.setLRPower(0.3, 0.3);
-                        }
-                        stage = 2;
-                        break;
-                    case 2:
-                        while (Math.abs(getEncoderPosition()) < Math.abs(targetPosition)) {
-                            this.setLRPower(0.1, 0.1);
-                        }
-                        break;
-                }
+            double distanceToGo = Math.abs(getDistanceToGo(targetPosition)) - Math.abs(getDistanceToGo(getEncoderPosition()));
+
+            switch (stage) {
+                case 0:
+                    while (distanceToGo > 1220) {
+                        this.setLRPower(1, 1);
+                    }
+                    stage = 1;
+                    break;
+                case 1:
+                    while (distanceToGo > 610) {
+                        this.setLRPower(0.3, 0.3);
+                    }
+                    stage = 2;
+                    break;
+                case 2:
+                    while (distanceToGo <= 610) {
+                        this.setLRPower(0.1, 0.1);
+                    }
+                    break;
+
             }
 
             //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
             //that the robot slammed into something, stop the robot.
             if( imu.getAccelerationMag() > 10.0 ){
                 this.setLRPower(0, 0);
-                System.exit(0);
             }
         }
     }
@@ -290,6 +288,11 @@ public class Drivetrain {
     {
         double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() + backRight.getCurrentPosition() + backLeft.getCurrentPosition();
         return position * 0.25;
+    }
+    //Converts an encoder value to a distance in millimeters.
+    public double getDistanceToGo(double encoderValue){
+        double distanceToGo = encoderValue * (1 / ENCODER_TICKS_PER_MM);
+        return distanceToGo;
     }
 }
 
