@@ -6,7 +6,7 @@ package org.whs542.lib;
 
 public class Functions
 {
-    public static double calculateDistance(Coordinate current, Coordinate target)
+    public static double calculateDistance(Position current, Position target)
     {
         double distance;
         distance = Math.sqrt(Math.pow(target.getX() - current.getX(), 2) +
@@ -35,9 +35,9 @@ public class Functions
     {
         Position transformedVector;
 
-        double x = dcm[1][1]*vector.getX() + dcm[1][2]*vector.getY() + dcm[1][3]*vector.getZ();
-        double y = dcm[2][1]*vector.getX() + dcm[2][2]*vector.getY() + dcm[2][3]*vector.getZ();
-        double z = dcm[3][1]*vector.getX() + dcm[3][2]*vector.getY() + dcm[3][3]*vector.getZ();
+        double x = dcm[0][0]*vector.getX() + dcm[0][1]*vector.getY() + dcm[0][2]*vector.getZ();
+        double y = dcm[1][0]*vector.getX() + dcm[1][1]*vector.getY() + dcm[1][2]*vector.getZ();
+        double z = dcm[2][0]*vector.getX() + dcm[2][1]*vector.getY() + dcm[2][2]*vector.getZ();
 
         transformedVector = new Position(x,y,z);
         return transformedVector;
@@ -65,6 +65,25 @@ public class Functions
 
         sum = new Position(x,y,z);
         return sum;
+    }
+
+    public static Position subtractPositions(Position pos1, Position pos2)
+    {
+        Position difference;
+
+        double x = pos1.getX() - pos2.getX();
+        double y = pos1.getY() - pos2.getY();
+        double z = pos1.getZ() - pos2.getZ();
+
+        difference = new Position(x,y,z);
+        return difference;
+    }
+
+    public static double calculateMagnitude(Position pos)
+    {
+        double magnitude = Math.pow(pos.getX(),2) + Math.pow(pos.getY(),2) + Math.pow(pos.getZ(),2);
+        magnitude = Math.sqrt(magnitude);
+        return magnitude;
     }
 
     public static Position getPosFromCoord(Coordinate coord)

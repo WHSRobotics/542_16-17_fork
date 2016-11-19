@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.internal.AppUtil;
+import org.whs542.lib.Functions;
 
 import java.io.File;
 public class IMU {
@@ -42,10 +43,10 @@ public class IMU {
         // and named "imu".
         imu.initialize(parameters);
     }
-    //Returns the heading, a value from 0 to 360 degrees.
+
     public double getHeading(){
         double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle;
-        return heading;
+        return Functions.normalizeAngle(heading); //-180 to 180 deg
     }
 
     //Returns the magnitude of the acceleration, not the direction.
@@ -61,9 +62,11 @@ public class IMU {
         return accelMag;
     }
 
-    public void setImuBias(double headingFromVuforia){
-        imuBias=getHeading();
+    public void setImuBias(double vuforiaHeading){
+        imuBias = Functions.normalizeAngle(vuforiaHeading - getHeading()); //-180 to 180 deg
     }
+
+    public double getImuBias() {return imuBias;}
 
 }
 

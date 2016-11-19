@@ -19,6 +19,9 @@ public class Drivetrain {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    public double[] encoderValues;
+    public final double DEADBAND_ENCODERS = 5; //TODO: test this value
+
     private Toggler orientationSwitch = new Toggler(2);
 
     //All measurements in millimeters because that is the unit Vuforia uses
@@ -145,7 +148,7 @@ public class Drivetrain {
     public void move(Coordinate target, Vuforia vuforia, IMU imu){
         Coordinate current = vuforia.getHeadingAndLocation();
 
-        double distance = Functions.calculateDistance(current, target);
+        //double distance = Functions.calculateDistance(current, target);
 
         //Distance to go in x and y units (mm) which can be positive or negative, from current to destination position
         double xPosToGo = target.getX() - current.getX();
@@ -286,10 +289,66 @@ public class Drivetrain {
     }
 */
 
+    public double[] getEncoderDistance()
+    {
+        double currentLeft = getLeftEncoderPosition();
+        double currentRight = getRightEncoderPosition();
+
+        double[] encoderDistances = {currentLeft - encoderValues[0], currentRight - encoderValues[1]};
+
+        encoderValues[0] = currentLeft;
+        encoderValues[1] = currentRight;
+
+        return encoderDistances;
+    }
+
     public double getEncoderPosition()
     {
         double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() + backRight.getCurrentPosition() + backLeft.getCurrentPosition();
         return position * 0.25;
+    }
+
+    public double getRightEncoderPosition()
+    {
+        double rightTotal = backRight.getCurrentPosition() + frontRight.getCurrentPosition();
+        return rightTotal * 0.5;
+    }
+
+    public double getLeftEncoderPosition()
+    {
+        double leftTotal = backLeft.getCurrentPosition() +frontLeft.getCurrentPosition();
+        return leftTotal * 0.5;
+    }
+
+    public boolean isLeftRightEqual(double leftVal, double rightVal)
+    {
+        boolean equal;
+
+        if(leftVal == 0 && rightVal == 0)
+        {
+            equal = true;
+        }
+        else
+        {
+            double percentDifference;
+            if(Math.abs(rightVal) > Math.abs(leftVal)) {
+                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(rightVal);
+            }
+            else
+            {
+                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(leftVal);
+            }
+
+            if(percentDifference < DEADBAND_ENCODERS)
+            {
+                equal = true;
+            }
+            else
+            {
+                equal = false;
+            }
+        }
+        return equal;
     }
 }
 
