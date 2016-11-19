@@ -22,7 +22,7 @@ import org.whs542.lib.Functions;
 import java.io.File;
 public class IMU {
 
-    double imuBias;
+    private double imuBias;
 
     BNO055IMU imu;
 

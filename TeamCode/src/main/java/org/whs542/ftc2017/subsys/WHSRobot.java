@@ -40,7 +40,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
-        capball = new CapballLift(robotMap);
+        //capball = new CapballLift(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
     }
