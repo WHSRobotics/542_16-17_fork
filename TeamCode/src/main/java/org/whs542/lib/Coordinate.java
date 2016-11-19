@@ -28,23 +28,6 @@ public class Coordinate {
         return this;
     }
 
-    /*public double returnCoordSingleValue(String typeOfValue){
-        if(typeOfValue.equalsIgnoreCase("x")){
-            return xPos;
-        }
-        else if (typeOfValue.equalsIgnoreCase("y")) {
-
-            return yPos;
-        }
-        else if (typeOfValue.equalsIgnoreCase("z")){
-            return zPos;
-        }
-        else {
-            return orientation;
-        }
-    }
-    */
-
     public double getX()
     {
         return xPos;
@@ -63,5 +46,38 @@ public class Coordinate {
     public double getHeading()
     {
         return orientation;
+    }
+
+    public Position getPos()
+    {
+        Position pos = new Position(xPos,yPos,zPos);
+        return pos;
+    }
+
+    public void setPos(Position pos)
+    {
+        xPos = pos.getX();
+        yPos = pos.getY();
+        zPos = pos.getZ();
+    }
+
+    public void setX(double x)
+    {
+        xPos = x;
+    }
+
+    public void setY(double y)
+    {
+        yPos = y;
+    }
+
+    public void setZ(double z)
+    {
+        zPos = z;
+    }
+
+    public void setHeading(double heading)
+    {
+        orientation = heading;
     }
 }

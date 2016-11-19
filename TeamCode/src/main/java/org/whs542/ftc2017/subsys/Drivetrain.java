@@ -19,6 +19,9 @@ public class Drivetrain {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    public double[] encoderValues;
+    public final double DEADBAND_ENCODERS = 5; //TODO: test this value
+
     private Toggler orientationSwitch = new Toggler(2);
 
     //All measurements in millimeters because that is the unit Vuforia uses
@@ -145,7 +148,7 @@ public class Drivetrain {
     public void move(Coordinate target, Vuforia vuforia, IMU imu){
         Coordinate current = vuforia.getHeadingAndLocation();
 
-        double distance = Functions.calculateDistance(current, target);
+        //double distance = Functions.calculateDistance(current, target);
 
         //Distance to go in x and y units (mm) which can be positive or negative, from current to destination position
         double xPosToGo = target.getX() - current.getX();
@@ -162,12 +165,6 @@ public class Drivetrain {
         //Turn robot to the desired orientation
         //this.turn(movingOrientation, current.returnCoordSingleValue("heading"), imu);
         //TODO: Add rotateToTarget() here
-
-
-        //Move robot forward the calculated distance, using IMU as check
-        this.moveDistanceMilli(distance, imu);
-
-
 
     }
 
@@ -241,7 +238,7 @@ public class Drivetrain {
     //Tells the robot how much left (positive value) or right (negative) to turn based on the initial heading, from 0
     //to 359.9, and the final heading, also from 0 to 360. Accounts for the jump from 359.9 to 0.
     public void turn( double destinationDegrees, double currentDegrees, IMU imu){
-        this.setRunMode( RunMode.RUN_WITHOUT_ENCODER );
+        this.setRunMode(RunMode.RUN_WITHOUT_ENCODER);
         double difference = turnValue(destinationDegrees, currentDegrees);
         double differenceAbs = Math.abs( difference );
         double dir = difference / differenceAbs;
@@ -284,15 +281,71 @@ public class Drivetrain {
     }
 
 
-    public double getEncoderPosition()
+    public double[] getEncoderDistance()
     {
+        double currentLeft = getLeftEncoderPosition();
+        double currentRight = getRightEncoderPosition();
+
+        double[] encoderDistances = {currentLeft - encoderValues[0], currentRight - encoderValues[1]};
+
+        encoderValues[0] = currentLeft;
+        encoderValues[1] = currentRight;
+
+        return encoderDistances;
+    }
+
+    public double getEncoderPosition() {
         double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() + backRight.getCurrentPosition() + backLeft.getCurrentPosition();
         return position * 0.25;
     }
     //Converts an encoder value to a distance in millimeters.
-    public double getDistanceToGo(double encoderValue){
+    public double getDistanceToGo(double encoderValue) {
         double distanceToGo = encoderValue * (1 / ENCODER_TICKS_PER_MM);
         return distanceToGo;
+    }
+
+    public double getRightEncoderPosition()
+    {
+        double rightTotal = backRight.getCurrentPosition() + frontRight.getCurrentPosition();
+        return rightTotal * 0.5;
+    }
+
+    public double getLeftEncoderPosition()
+    {
+        double leftTotal = backLeft.getCurrentPosition() +frontLeft.getCurrentPosition();
+        return leftTotal * 0.5;
+    }
+
+    public boolean isLeftRightEqual(double leftVal, double rightVal)
+    {
+        boolean equal;
+
+        if(leftVal == 0 && rightVal == 0)
+        {
+            equal = true;
+        }
+        else
+        {
+            double percentDifference;
+            if(Math.abs(rightVal) > Math.abs(leftVal)) {
+                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(rightVal);
+            }
+            else
+            {
+                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(leftVal);
+            }
+
+            if(percentDifference < DEADBAND_ENCODERS)
+            {
+                equal = true;
+            }
+            else
+            {
+                equal = false;
+            }
+        }
+        return equal;
+
     }
 }
 

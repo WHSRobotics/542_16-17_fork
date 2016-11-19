@@ -13,6 +13,8 @@ import org.whs542.lib.Toggler;
  * Created by Jiangda on 10/1/2016.
  */
 public class Flywheel {
+    //5 degree increments
+    //count by squares for different power levels
 
     private DcMotor rightFly;
     private DcMotor leftFly;
