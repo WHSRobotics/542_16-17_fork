@@ -10,18 +10,20 @@ import org.whs542.ftc2017.subsys.WHSRobot;
 @Autonomous(name = "AutoOpTest", group = "AutoOp")
 public class TestAutoOp extends OpMode{
     WHSRobot robot;
-    //IMU imu;
-    //Vuforia vuforia;
+    int state;
 
     public void init() {
         robot = new WHSRobot(hardwareMap);
-        //imu = new IMU(hardwareMap);
-        //vuforia = new Vuforia();
-
+        state = 0;
     }
 
-    public void loop() {
-
+    public void loop()
+    {
+        switch(state)
+        {
+            case 0:
+                robot.flywheel.
+        }
     }
 }
 

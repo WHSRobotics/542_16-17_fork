@@ -41,7 +41,7 @@ public class Drivetrain {
         backRight = driveMap.dcMotor.get("drive_br");
         backLeft = driveMap.dcMotor.get("drive_bl");
 
-        frontRight.setZeroPowerBehavior( ZeroPowerBehavior.BRAKE );
+        frontRight.setZeroPowerBehavior( ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);

@@ -1,12 +1,9 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.whs542.lib.Coordinate;
 import org.whs542.lib.Toggler;
 
 /**
@@ -14,101 +11,123 @@ import org.whs542.lib.Toggler;
  */
 public class Flywheel {
     //5 degree increments
-    //count by squares for different power levels
+    //count by squares for different flywheelPower levels
 
-    private DcMotor rightFly;
-    private DcMotor leftFly;
+    private DcMotor flywheel;
     private Servo flywheelGate;
 
-    private static double CIRCUMFERENCE = Math.PI * 11.43; //11.43 is diameter of wheel
-    private double TICKS_PER_SEC;
-    private static double TICKS_PER_REV = 1120;
-    private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
-    private static double MAX_VELOCITY = 23.08397;
+    private boolean isFlywheelRunning;
+    private boolean isGateOpen;
 
-    private double flySpeed = 0;
-    Toggler toggler = new Toggler(20);
-
-    private boolean status;
-    private boolean gateStatus;
-    private final double MAX_SPEED = 4000; //ticks per sec
-
-    private Coordinate currentPosition;
-    private Coordinate Vortex = new Coordinate(304.8,304.8,304.8,1);
-    double power = 1;                   //Defualt power level. Can be changed via the alternate contructor, or using the method setPower
+    private final double[] teleflywheelPowers = {0.5, 0.7, 1.0}; //3 different mat location types
+    public final double[] autoFlywheelPowers = {}; //TODO: test for these
+    private double flywheelPower;
 
     private Toggler flyToggler = new Toggler(2);
+    private Toggler flyModeToggler = new Toggler(3);
     private Toggler gateToggler = new Toggler(2);
 
-   //HardwareMap: basically tells the program where each device is located on the robot. The name in argument(e.g. "rightFly") should correspond exactly to the name on the phone.
-    public Flywheel(HardwareMap map){
-        rightFly = map.dcMotor.get("rightFly");
-        leftFly = map.dcMotor.get("leftFly");
+    private final int MAX_SPEED = 4000; //ticks per sec
+    private final double MIN_SPEED = 1000;
+
+    private static double CIRCUMFERENCE = Math.PI * 101.6; //11.43 is diameter of wheel
+    //private static
+    //private double TICKS_PER_SEC;
+    private static double TICKS_PER_REV = 1120;
+    //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
+    private static double MAX_VELOCITY = 23.08397;
+
+    //private double flySpeed = 0;
+    //Toggler toggler = new Toggler(20);
+
+    //private Coordinate Vortex = new Coordinate(304.8,304.8,304.8,1);
+
+    public Flywheel(HardwareMap map)
+    {
+        flywheel = map.dcMotor.get("flywheel");
         flywheelGate = map.servo.get("flywheelGate");
-        status = false;
-        leftFly.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFly.setMaxSpeed(4000);
-        leftFly.setMaxSpeed(4000);
-        //particleRelease = aMap.servo.get("particleRelease");
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setMaxSpeed(MAX_SPEED);
+
+        flywheelPower = 0.0; //Default flywheelPower
+
+        isFlywheelRunning = false;
+        isGateOpen = false;
     }
 
-    //The core of the flywheel program. Spins flywheels if right bumper is pressed, stops spinning if pressed again.
-    public void run(boolean b1){
-        flyToggler.changeState(b1);
-        if(flyToggler.currentState() == 1){
-            status = true;
-            rightFly.setPower(power);
-            leftFly.setPower(-power);
+    //Spins flywheels if right bumper is pressed, stops spinning if pressed again.
+    public void rampFlywheel(boolean rBumper)
+    {
+        flyToggler.changeState(rBumper);
+        switch(flyToggler.currentState())
+        {
+            case 0:
+                flywheel.setPower(flywheelPower);
+                isFlywheelRunning = true;
+                break;
+            case 1:
+                flywheel.setPower(0.0);
+                isFlywheelRunning = false;
         }
-        else{
-            status = false;
-            rightFly.setPower(0);
-            leftFly.setPower(0);
+    }
+
+    public String getFlywheelMode(boolean a)
+    {
+        flyModeToggler.changeState(a);
+        String flywheelMode = "";
+
+        switch(flyModeToggler.currentState())
+        {
+            case 0:
+                flywheelMode = "approx. 1 tiles";
+                flywheelPower = teleflywheelPowers[0];
+                break;
+            case 1:
+                flywheelMode = "approx. 2 tiles";
+                flywheelPower = teleflywheelPowers[1];
+                break;
+            case 2:
+                flywheelMode = "approx. 3 tiles";
+                flywheelPower = teleflywheelPowers[2];
+                break;
         }
+        return flywheelMode;
     }
 
     //Might change these to state and cases. Not necessary for now
     public void run(boolean b1, double powerIn)
     {
-        flyToggler.changeState(b1);
-        if(flyToggler.currentState() == 1)
+        flyModeToggler.changeState(b1);
+        if(flyModeToggler.currentState() == 1)
         {
-            status = true;
-            rightFly.setPower(powerIn);
-            leftFly.setPower(-powerIn);
+            isFlywheelRunning = true;
+            flywheel.setPower(powerIn);
         }
         else
         {
-            status = false;
-            rightFly.setPower(0);
-            leftFly.setPower(0);
+            isFlywheelRunning = false;
+            flywheel.setPower(0);
         }
     }
-    public void testRun(boolean bool1, boolean bool2){
 
-        toggler.changeState(bool1, bool2);
-
-        rightFly.setPower((double) (toggler.currentState()) / 20);
-        leftFly.setPower((double)(toggler.currentState()) / 20);
-    }
-    public double getSpeed(){
-        return (double) (toggler.currentState()) / 20;
+    public void setFlywheelPower(double power)
+    {
+        flywheel.setPower(power);
     }
 
     public void operateGate(boolean a)
     {
         gateToggler.changeState(a);
-        if(gateToggler.currentState() == 1)
+        switch(gateToggler.currentState())
         {
-            gateStatus = true;
-            flywheelGate.setPosition(1.0);
-        }
-        else
-        {
-            gateStatus = false;
-            flywheelGate.setPosition(0.0);
+            case 0:
+                flywheelGate.setPosition(0.0);
+                isGateOpen = false;
+                break;
+            case 2:
+                flywheelGate.setPosition(1.0);
+                isGateOpen = true;
+                break;
         }
     }
 
@@ -118,23 +137,12 @@ public class Flywheel {
         if(trigger > 0.05) {triggerPressed = true;}
         else {triggerPressed = false;}
 
-        gateToggler.changeState(triggerPressed);
-        if(gateToggler.currentState() == 1)
-        {
-            gateStatus = true;
-            flywheelGate.setPosition(1.0);
-        }
-        else
-        {
-            gateStatus = false;
-            flywheelGate.setPosition(0.0);
-        }
+        operateGate(triggerPressed);
     }
-
 
     public String getFlywheelStatus()
     {
-        if(status)
+        if(isFlywheelRunning)
             return "Spinning";
         else
             return "Not spinning";
@@ -142,7 +150,7 @@ public class Flywheel {
 
     public String getGateStatus()
     {
-        if(gateStatus)
+        if(isGateOpen)
             return "Default";
         else
             return "Not Default";
@@ -153,17 +161,13 @@ public class Flywheel {
         flywheelGate.setPosition(0);
     }
 
-    public void setPower(double power){
-        this.power = power;
-    }
-
     public double findPower(){
         //current position = use vuforia, take picture
         //calculate distance
-        rightFly.setMaxSpeed((int) MAX_SPEED);
+        flywheel.setMaxSpeed((int) MAX_SPEED);
         double velocity = 1; //distance/ constant if it's linear, ticks per second
-        power = velocity/MAX_SPEED;
-        return power;
+        flywheelPower = velocity/MAX_SPEED;
+        return flywheelPower;
         //https://ftc-tricks.com/dc-motors/
     }
 
@@ -172,11 +176,11 @@ public class Flywheel {
         {
             //thread.sleep
             //target position face vortex
-            setPower(findPower());
+            setFlywheelPower(findPower());
             run(b1);
             boolean loop = true;
             while (loop) {
-                if (rightFly.getPower() == power && b2) {releaseParticle(b2);}
+                if (flywheel.getPower() == flywheelPower && b2) {releaseParticle(b2);}
                 else if (b1){loop = false;}
                 else if (joystick != 0 ){loop = false;}
             }
@@ -184,23 +188,33 @@ public class Flywheel {
     }
 
     public void test(boolean b1, double velocity){
-        power = velocity/MAX_VELOCITY;
-        flyToggler.changeState(b1);
-        if(flyToggler.currentState() == 1)
+        flywheelPower = velocity/MAX_VELOCITY;
+        flyModeToggler.changeState(b1);
+        if(flyModeToggler.currentState() == 1)
         {
-            status = true;
-            rightFly.setPower(power);
-            leftFly.setPower(-power);
+            isFlywheelRunning = true;
+            flywheel.setPower(flywheelPower);
         }
         else
         {
-            status = false;
-            rightFly.setPower(0);
-            leftFly.setPower(0);
+            isFlywheelRunning = false;
+            flywheel.setPower(0);
         }
     }
 
     public double getCurrentVelocity(){
-        return (rightFly.getPower()*MAX_VELOCITY);
+        return (flywheel.getPower()*MAX_VELOCITY);
     }
+
+    /*
+    public void testRun(boolean bool1, boolean bool2){
+
+        toggler.changeState(bool1, bool2);
+
+        flywheel.setFlywheelPower((double) (toggler.currentState()) / 20);
+    }
+    public double getSpeed(){
+        return (double) (toggler.currentState()) / 20;
+    }
+    */
 }
