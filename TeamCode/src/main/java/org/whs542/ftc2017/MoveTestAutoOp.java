@@ -35,9 +35,15 @@ public class MoveTestAutoOp extends LinearOpMode{
         //caseNumber = 0;
 
         waitForStart();
-        whsRobot.drivetrain.moveDistanceMilli2(610*3, imu);
+        final double MM_PER_MAT = 594;
+        whsRobot.drivetrain.moveDistanceMilli2(4 * MM_PER_MAT, imu);
+
+        stop();
 
     }
+
+
+
 
     /*@Override
     public void loop(){

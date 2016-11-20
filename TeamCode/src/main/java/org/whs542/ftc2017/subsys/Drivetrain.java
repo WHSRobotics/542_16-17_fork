@@ -194,18 +194,27 @@ public class Drivetrain {
 
     public void moveDistanceMilli2(double distanceMM, IMU imu)
     {
-        int targetPosition =   (int) (24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
+        int targetPosition =   (int) (72 / 72.25 * 24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
 
         this.setRunMode( RunMode.STOP_AND_RESET_ENCODER );
         this.setRunMode(RunMode.RUN_TO_POSITION);
         this.setMaxSpeed(4000);
         this.setTargetPosition(targetPosition);
         int stage = 0;
-        while(Math.abs(targetPosition) - Math.abs(getEncoderPosition()) > 50)
+        while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
             double distanceToGo = Math.abs(getDistanceToGo(targetPosition)) - Math.abs(getDistanceToGo(getEncoderPosition()));
+            if( distanceToGo > 1220){
+                this.setLRPower(1, 1);
+            }
+            else if (distanceToGo <= 1220 & distanceToGo > 610) {
+                this.setLRPower(0.3, 0.3);
+            }
+            else if (distanceToGo <= 610){
+                this.setLRPower(0.1, 0.1);
+            }
 
-            switch (stage) {
+            /*switch (stage) {
                 case 0:
                     while (distanceToGo > 1220) {
                         this.setLRPower(1, 1);
@@ -222,9 +231,12 @@ public class Drivetrain {
                     while (distanceToGo <= 610) {
                         this.setLRPower(0.1, 0.1);
                     }
+                    stage = 3;
                     break;
+                case 3:
+                    this.setLRPower(0.0, 0.0);
 
-            }
+            }*/
 
             //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
             //that the robot slammed into something, stop the robot.
