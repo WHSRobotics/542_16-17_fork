@@ -33,19 +33,21 @@ public class TestTeleOp extends OpMode{
         //Gamepad 2
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
         //robot.flywheel.testRun(gamepad2.dpad_up, gamepad1.dpad_down);
-        robot.flywheel.operateGate(gamepad1.right_trigger);
+        robot.flywheel.getFlywheelMode(gamepad2.a);
+        robot.flywheel.operateGate(gamepad2.right_trigger);
 
         //Telemetry
+        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.a));
+        telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
+        telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
+
         telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);
         telemetry.addData("RightStick Y:", gamepad1.right_stick_y);
         telemetry.addData("Orientation:", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake:", robot.intake.getIntakeDirection(gamepad1.left_bumper, gamepad1.left_trigger));
 
-        telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
-        telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
-
-        telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
+        //telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
 
         telemetry.addData("Capball Fork:", robot.capball.getForkState());
         telemetry.addData("Capball Lift:", robot.capball.getLiftState());
