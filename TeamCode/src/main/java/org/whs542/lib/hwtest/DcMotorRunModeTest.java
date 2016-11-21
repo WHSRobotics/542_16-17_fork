@@ -16,14 +16,20 @@ public class DcMotorRunModeTest extends OpMode{
     public void init() {
         a = hardwareMap.dcMotor.get("a");
         a.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        a.setMaxSpeed(500);
+        a.setMaxSpeed(1000);
+    }
+
+    public void start(){
+        resetStartTime();
     }
 
     @Override
     public void loop() {
         a.setPower(1);
-        final double TIME2 = time;
         telemetry.addData("Enc Ticks", a.getCurrentPosition());
-        telemetry.addData("Loop Runtime", time-TIME2);
+        telemetry.addData("Loop Runtime", getRuntime());
+        if(getRuntime() >= 2){
+            requestOpModeStop();
+        }
     }
 }
