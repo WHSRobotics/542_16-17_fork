@@ -9,14 +9,13 @@ import org.whs542.lib.Toggler;
 /**
  * Created by Jiangda on 10/1/2016.
  */
-public class Flywheel {
-    //5 degree increments
-    //count by squares for different flywheelPower levels
-
+public class Flywheel
+{
     private DcMotor flywheel;
     private Servo flywheelGate;
 
     private boolean isFlywheelRunning;
+    private boolean isFlywheelAtSpeed;
     private boolean isGateOpen;
 
     private final double[] teleflywheelPowers = {0.5, 0.7, 1.0}; //3 different mat location types
@@ -53,6 +52,7 @@ public class Flywheel {
 
         isFlywheelRunning = false;
         isGateOpen = false;
+        isFlywheelAtSpeed = false;
     }
 
     //Spins flywheels if right bumper is pressed, stops spinning if pressed again.
@@ -92,6 +92,19 @@ public class Flywheel {
                 break;
         }
         return flywheelMode;
+    }
+
+    public boolean isFlyWheelAtRightSpeed(double targetSpeed)
+    {
+        if(Math.abs(flywheel.getPower()) - Math.abs(targetSpeed) > 0.05)
+        {
+            isFlywheelAtSpeed = false;
+        }
+        else
+        {
+            isFlywheelAtSpeed = true;
+        }
+        return isFlywheelAtSpeed;
     }
 
     //Might change these to state and cases. Not necessary for now
@@ -177,7 +190,7 @@ public class Flywheel {
             //thread.sleep
             //target position face vortex
             setFlywheelPower(findPower());
-            //run(b1);
+            run(b1, 1.0);
             boolean loop = true;
             while (loop) {
                 if (flywheel.getPower() == flywheelPower && b2) {releaseParticle(b2);}
