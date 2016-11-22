@@ -18,8 +18,8 @@ public class WHSRobot
     public Vuforia vuforia;
     public IMU imu;
 
-    boolean rotateToTargetInProgress;
-    boolean driveToTargetInProgress;
+    public boolean rotateToTargetInProgress;
+    public boolean driveToTargetInProgress;
     boolean drivingInReverse = false;
 
     static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
