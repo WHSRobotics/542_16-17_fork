@@ -2,6 +2,7 @@ package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.whs542.lib.Toggler;
 
@@ -13,10 +14,13 @@ public class CapballLift
 {
     private DcMotor capballFork;
     private DcMotor capballLift;
+    private Servo rightServo;
+    private Servo leftServo;
 
     private String liftState;
 
     private Toggler forkToggle = new Toggler(2);
+    private Toggler servoToggle = new Toggler(2);
 
     public CapballLift(HardwareMap map)
     {
@@ -37,6 +41,22 @@ public class CapballLift
                 break;
         }
 
+    }
+
+    public void changeServo(boolean rBumper)
+    {
+        servoToggle.changeState(rBumper);
+        switch(servoToggle.currentState())
+        {
+            case 0:
+                rightServo.setPosition(1.0);
+                leftServo.setPosition(1.0);
+                break;
+            case 1:
+                rightServo.setPosition(0.0);
+                leftServo.setPosition(0.0);
+                break;
+        }
     }
 
     public void liftCapball(boolean trigger)
