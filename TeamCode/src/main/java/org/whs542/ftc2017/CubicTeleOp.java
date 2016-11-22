@@ -56,7 +56,7 @@ public class CubicTeleOp extends OpMode {
         backRight.setPower(rightScaledPower);
         backLeft.setPower(leftScaledPower);
 
-        flywheel.run(gamepad1.right_bumper);
+        flywheel.run(gamepad1.right_bumper, 0.5);
 
 
         telemetry.addData("Right Power", rightScaledPower);

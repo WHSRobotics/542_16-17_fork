@@ -22,7 +22,7 @@ public class TestAutoOp extends OpMode{
         switch(state)
         {
             case 0:
-                robot.flywheel.
+                
         }
     }
 }

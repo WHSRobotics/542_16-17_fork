@@ -1,5 +1,6 @@
 package org.whs542.ftc2017.subsys;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.*;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -28,10 +29,14 @@ public class Drivetrain {
     private final double RADIUS_OF_WHEEL = 50;
     private final double CIRC_OF_WHEEL = RADIUS_OF_WHEEL * 2 * Math.PI;
     private final double ENCODER_TICKS_PER_REV = 1120;
-    private final double ENCODER_TICKS_PER_MM = ENCODER_TICKS_PER_REV / CIRC_OF_WHEEL;
+    private final double CALIBRATION_FACTOR = 72 / 72.25 * 24 / 24.5 * 0.5;
+    private final double ENCODER_TICKS_PER_MM = CALIBRATION_FACTOR * ENCODER_TICKS_PER_REV / CIRC_OF_WHEEL;
+
+
     private static final double JOY_THRESHOLD = 0.05;
 
     private final double MIN_POWER_VALUE = 0.15;
+    private final double MM_PER_MAT = 594;
 
 
     public Drivetrain (HardwareMap driveMap)
@@ -194,23 +199,26 @@ public class Drivetrain {
 
     public void moveDistanceMilli2(double distanceMM, IMU imu)
     {
-        int targetPosition =   (int) (72 / 72.25 * 24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
+        int targetPosition =   (int) (distanceMM * ENCODER_TICKS_PER_MM);
 
-        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER );
+        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);
         this.setMaxSpeed(4000);
         this.setTargetPosition(targetPosition);
-        int stage = 0;
         while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
-            double distanceToGo = Math.abs(getDistanceToGo(targetPosition)) - Math.abs(getDistanceToGo(getEncoderPosition()));
-            if( distanceToGo > 1220){
+            double distanceToGo = Math.abs(distanceMM) - Math.abs(getDistanceToGo(getEncoderPosition()));
+            DbgLog.msg("Distance to go in mm:" + Double.toString(distanceToGo));
+            DbgLog.msg("FrontRight encoder:" + Double.toString(frontRight.getCurrentPosition()));
+            if( distanceToGo > MM_PER_MAT * 3){
                 this.setLRPower(1, 1);
             }
-            else if (distanceToGo <= 1220 & distanceToGo > 610) {
+            else if (distanceToGo <= MM_PER_MAT * 3 & distanceToGo > MM_PER_MAT * 2) {
+                //double powerScale = 0.5 * (distanceToGo - MM_PER_MAT * 2) / MM_PER_MAT;
                 this.setLRPower(0.3, 0.3);
             }
-            else if (distanceToGo <= 610){
+            else if (distanceToGo <= MM_PER_MAT * 2 & distanceToGo > 0){
+                //double powerScale2 = 0.4 * (distanceToGo - MM_PER_MAT ) / MM_PER_MAT;
                 this.setLRPower(0.1, 0.1);
             }
 
