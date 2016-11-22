@@ -23,6 +23,7 @@ import java.io.File;
 public class IMU {
 
     private double imuBias;
+    private double zeroIMUValue = 0;
 
     BNO055IMU imu;
 
@@ -34,8 +35,8 @@ public class IMU {
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
-        File file = AppUtil.getInstance().getSettingsFile("AdafruitIMUCalibration.json");
-        parameters.calibrationDataFile = ReadWriteFile.readFile(file);
+        //File file = AppUtil.getInstance().getSettingsFile("AdafruitIMUCalibration.json");
+        //parameters.calibrationDataFile = ReadWriteFile.readFile(file);
         //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -45,8 +46,11 @@ public class IMU {
     }
 
     public double getHeading(){
-        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle;
+        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle - zeroIMUValue;
         return Functions.normalizeAngle(heading); //-180 to 180 deg
+    }
+    public void calibrateHeading(){
+        zeroIMUValue = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle;
     }
 
     //Returns the magnitude of the acceleration, not the direction.
