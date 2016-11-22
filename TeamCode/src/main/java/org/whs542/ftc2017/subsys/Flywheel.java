@@ -177,7 +177,7 @@ public class Flywheel {
             //thread.sleep
             //target position face vortex
             setFlywheelPower(findPower());
-            run(b1);
+            //run(b1);
             boolean loop = true;
             while (loop) {
                 if (flywheel.getPower() == flywheelPower && b2) {releaseParticle(b2);}
