@@ -17,6 +17,7 @@ public class WHSRobot
     public CapballLift capball;
     public Vuforia vuforia;
     public IMU imu;
+    public Color color;
 
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
@@ -43,6 +44,7 @@ public class WHSRobot
         //capball = new CapballLift(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
+        color = new Color(robotMap);
     }
 
     public void driveToTarget(Position targetPos /*field frame*/) {
