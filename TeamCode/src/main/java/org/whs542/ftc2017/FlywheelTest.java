@@ -1,46 +1,42 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.whs542.ftc2017.subsys.Flywheel;
 
 /**
  * Created by jian on 11/5/2016.
  */
-public class FlywheelTest {
-    public class CubicTeleOp extends OpMode {
+@Autonomous(name = "Flywheel Test", group = "Tests")
+public class FlywheelTest extends OpMode{
 
-        private Flywheel flywheel;
+    private Flywheel flywheel;
+    String state;
 
-        @Override
-        public void init(){
+    @Override
+    public void init(){
 
-            flywheel = new Flywheel(hardwareMap);
+        flywheel = new Flywheel(hardwareMap);
 
+    }
 
+    @Override
+    public void loop(){
 
-
+        flywheel.setFlywheelPower(1.0);
+        if(flywheel.isFlywheelAtCorrectSpeed(4000)){
+            state = "At correct speed";
+        }
+        else {
+            state = "Not at correct speed";
         }
 
-        @Override
-        public void loop(){
+        telemetry.addData("Flywheel Speed", flywheel.getCurrentSpeed());
+        telemetry.addData("Correct Speed?", state);
 
-    /*
-     * Keep in mind that when the joystick is pushed all the way forward, gamepad1.right_stick_y returns -14
-     * The following two lines of code raise the joystick input to a power of 3, making speed control more precise
-     */
-
-            double rightScaledPower = -Math.pow(gamepad1.right_stick_y, 3);
-            double leftScaledPower = -Math.pow(gamepad1.left_stick_y, 3);
-
-            telemetry.addData("Right Power", rightScaledPower);
-            telemetry.addData("Left Power", leftScaledPower);
-            telemetry.addData("Flywheel", flywheel.getFlywheelStatus());
-            telemetry.update();
-
-
-        }
     }
 
 }

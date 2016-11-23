@@ -9,7 +9,7 @@ import org.whs542.ftc2017.subsys.WHSRobot;
  * Created by Lucy on 11/19/2016.
  */
 
-@TeleOp(name = "TeleOpTest", group = "WHSTeleOp")
+@TeleOp(name = "WHSTeleOp", group = "WHSTeleOp")
 public class WHSTeleOp extends OpMode
 {
     WHSRobot robot;

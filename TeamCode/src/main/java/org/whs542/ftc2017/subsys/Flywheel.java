@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.whs542.lib.Toggler;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Jiangda on 10/1/2016.
  */
@@ -190,11 +192,7 @@ public class Flywheel
             //thread.sleep
             //target position face vortex
             setFlywheelPower(findPower());
-<<<<<<< HEAD
-            run(b1, 0.5);
-=======
             run(b1, 1.0);
->>>>>>> 12bc1914b0b12aabdead221ba4e17373e2d2c72d
             boolean loop = true;
             while (loop) {
                 if (flywheel.getPower() == flywheelPower && b2) {releaseParticle(b2);}
@@ -219,9 +217,63 @@ public class Flywheel
         }
     }
 
+
+    public double getCurrentSpeed(){
+
+        int encoder1 = flywheel.getCurrentPosition();
+        double time1 = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        double velocity = (flywheel.getCurrentPosition()-encoder1)/(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
+        return Math.abs(velocity);
+
+    }
+
+
+    public double[] getCurrentSpeedTest(){
+
+        int encoder1 = flywheel.getCurrentPosition();
+        double time1 = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        double d1 = (flywheel.getCurrentPosition()-encoder1);
+        double d2 = (TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
+
+        double[] returnVal = {d1, d2};
+        return returnVal;
+
+    }
+
+    public boolean isFlywheelAtCorrectSpeed(int targetSpeed) {
+
+        boolean status;
+
+        if(Math.abs(targetSpeed-getCurrentSpeed()) <= 50){
+            status = true;
+        }
+        else{
+            status = false;
+        }
+
+        return status;
+
+    }
+
+    /*
     public double getCurrentVelocity(){
         return (flywheel.getPower()*MAX_VELOCITY);
     }
+    */
 
     /*
     public void testRun(boolean bool1, boolean bool2){

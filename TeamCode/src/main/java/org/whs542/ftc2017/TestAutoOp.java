@@ -30,9 +30,6 @@ public class TestAutoOp extends OpMode{
         switch(state)
         {
             case 0:
-<<<<<<< HEAD
-                
-=======
                 stateInfo = "Shoot flywheel";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if(robot.flywheel.isFlyWheelAtRightSpeed(powers[startingPosition - 1]))
@@ -84,7 +81,6 @@ public class TestAutoOp extends OpMode{
                     stateInfo = "AutoOp done :)";
                 }
                 break;
->>>>>>> 12bc1914b0b12aabdead221ba4e17373e2d2c72d
         }
 
         telemetry.addData("State Number: ", stateInfo);
