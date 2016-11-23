@@ -43,7 +43,7 @@ public class Flywheel
 
     public Flywheel(HardwareMap map)
     {
-        flywheel = map.dcMotor.get("flywheel");
+        flywheel = map.dcMotor.get("rightFly");
         flywheelGate = map.servo.get("flywheelGate");
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMaxSpeed(MAX_SPEED);
@@ -190,7 +190,11 @@ public class Flywheel
             //thread.sleep
             //target position face vortex
             setFlywheelPower(findPower());
+<<<<<<< HEAD
+            run(b1, 0.5);
+=======
             run(b1, 1.0);
+>>>>>>> 12bc1914b0b12aabdead221ba4e17373e2d2c72d
             boolean loop = true;
             while (loop) {
                 if (flywheel.getPower() == flywheelPower && b2) {releaseParticle(b2);}
