@@ -34,10 +34,6 @@ public class FlywheelTest {
             double rightScaledPower = -Math.pow(gamepad1.right_stick_y, 3);
             double leftScaledPower = -Math.pow(gamepad1.left_stick_y, 3);
 
-
-            flywheel.run(gamepad1.right_bumper, 0.5);
-
-
             telemetry.addData("Right Power", rightScaledPower);
             telemetry.addData("Left Power", leftScaledPower);
             telemetry.addData("Flywheel", flywheel.getFlywheelStatus());

@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  *   This code assumes there is a compass configured with the name "compass"
  *
- *   This code will put the compass into calibration mode, wait three seconds and then attempt
+ *   This code will put the compass into calibration mode, wait sthree seconds and then attempt
  *   to rotate two full turns clockwise.  This will allow the compass to do a magnetic calibration.
  *
  *   Once compete, the program will put the compass back into measurement mode and check to see if the

@@ -5,11 +5,12 @@ package org.whs542.lib.hwtest;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Test 180 Servo", group = "Tests")
-//@Disabled
+@Disabled
 public class Test180Servo extends LinearOpMode{
 
     @Override

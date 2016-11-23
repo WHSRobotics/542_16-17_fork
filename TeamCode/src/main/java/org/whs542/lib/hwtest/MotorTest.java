@@ -26,7 +26,7 @@ public class MotorTest extends OpMode {
         if(power >= -1.0){
             power += 0.01;
         }
-        else if(power >= 1){
+        else if(power >= 1.0){
             power += -0.01;
         }
 
