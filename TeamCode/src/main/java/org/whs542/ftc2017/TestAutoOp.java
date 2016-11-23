@@ -15,7 +15,8 @@ public class TestAutoOp extends OpMode{
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
-    Position[] beaconPositions = {new Position(100,100,100), new Position(100,100,100), new Position(100,100,100)};
+    //Wheels, Legos, Tools, Gears
+    Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
 
