@@ -217,7 +217,8 @@ public class Flywheel
         }
     }
 
-
+    //TODO: Fix this so it stops returning NaN or Infinity (probably result of divide by 0)
+    //Possible cause: Encoder positions may not update until a loop refresh
     public double getCurrentSpeed(){
 
         int encoder1 = flywheel.getCurrentPosition();
