@@ -12,8 +12,6 @@ import org.whs542.ftc2017.subsys.WHSRobot;
 public class TestTeleOp extends OpMode{
 
     WHSRobot robot;
-    //IMU imu;
-
 
     @Override
     public void init() {
@@ -27,7 +25,7 @@ public class TestTeleOp extends OpMode{
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger, 1.0);
-        robot.capball.dropFork(gamepad1.dpad_down);
+        robot.capball.liftCB(gamepad1.dpad_down);
         robot.capball.liftCapball(gamepad1.dpad_up);
 
         //Gamepad 2
@@ -50,7 +48,7 @@ public class TestTeleOp extends OpMode{
         //telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
 
         telemetry.addData("Capball Fork:", robot.capball.getForkState());
-        telemetry.addData("Capball Lift:", robot.capball.getLiftState());
+        telemetry.addData("Capball Lift:", robot.capball.getCBState());
 
         //test for flywheel velocity vs distance
         /*robot.flywheel.test(gamepad1.a, 1);
