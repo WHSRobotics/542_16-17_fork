@@ -1,24 +1,27 @@
-package org.whs542.ftc2017.subsys;
+package org.whs542.lib.hwtest;
 
 import com.qualcomm.ftccommon.DbgLog;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotor.*;
+import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
+import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.whs542.ftc2017.subsys.IMU;
+import org.whs542.ftc2017.subsys.Vuforia;
 import org.whs542.lib.Coordinate;
-import org.whs542.lib.Functions;
 import org.whs542.lib.Toggler;
 
 /**
  * Created by Amar2 on 10/22/2016.
  */
-public class Drivetrain {
+public class TestDrivetrain extends OpMode{
 
-    private DcMotor frontLeft;
-    private DcMotor frontRight;
-    private DcMotor backLeft;
-    private DcMotor backRight;
+    public DcMotor frontLeft;
+    public DcMotor frontRight;
+
+    int targetPosition;
 
     public double[] encoderValues;
     public final double DEADBAND_ENCODERS = 5; //TODO: test this value
@@ -39,49 +42,43 @@ public class Drivetrain {
     private final double MM_PER_MAT = 594;
 
 
-    public Drivetrain (HardwareMap driveMap)
+    public TestDrivetrain(HardwareMap driveMap)
     {
         frontRight = driveMap.dcMotor.get("drive_fr");
         frontLeft = driveMap.dcMotor.get("drive_fl");
-        backRight = driveMap.dcMotor.get("drive_br");
-        backLeft = driveMap.dcMotor.get("drive_bl");
 
         frontRight.setZeroPowerBehavior( ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     public void setRunMode( RunMode theMode )
     {
         frontLeft.setMode(theMode);
         frontRight.setMode(theMode);
-        backLeft.setMode(theMode);
-        backRight.setMode(theMode);
+
     }
 
     public void setMaxSpeed(int maxSpeed)
     {
         frontLeft.setMaxSpeed(maxSpeed);
         frontRight.setMaxSpeed(maxSpeed);
-        backLeft.setMaxSpeed(maxSpeed);
-        backRight.setMaxSpeed(maxSpeed);
+
     }
 
     //Set power methods
     public void setRightPower(double power)
     {
         frontRight.setPower(power);
-        backRight.setPower(power);
+
     }
 
     public void setLeftPower(double power)
     {
         frontLeft.setPower(power);
-        backLeft.setPower(power);
+
     }
 
     public void setLRPower(double leftPower, double rightPower)
@@ -144,8 +141,7 @@ public class Drivetrain {
     {
         frontLeft.setTargetPosition(position);
         frontRight.setTargetPosition(position);
-        backLeft.setTargetPosition(position);
-        backRight.setTargetPosition(position);
+
     }
 
     //Input: destination coordinate object(values are in millimeters)
@@ -197,23 +193,23 @@ public class Drivetrain {
         }
     }
 
-    public void moveDistanceMilli2(double distanceMM, IMU imu)
+    public void moveDistanceMilli2(double distanceMM)
     {
-        int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
+        targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
 
         this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);
         this.setMaxSpeed(2100);
         this.setTargetPosition(targetPosition);
 
-        imu.calibrateHeading();
+        //imu.calibrateHeading();
 
         while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
             double distanceToGo = Math.abs(distanceMM) - Math.abs(getDistanceToGo(getEncoderPosition()));
-            double headingError = imu.getHeading();
+            //double headingError = imu.getHeading();
 
-            DbgLog.msg("Distance to go in mm:" + Double.toString(distanceToGo));
+            DbgLog.msg("Target" + targetPosition);
             DbgLog.msg("FrontRight encoder:" + Double.toString(frontRight.getCurrentPosition()));
             if( distanceToGo > MM_PER_MAT * 3){
                 this.setLRPower(1, 1);
@@ -259,16 +255,20 @@ public class Drivetrain {
             }*/
 
             //Stop and turn
-            if(Math.abs(headingError) > 1){
+            /*if(Math.abs(headingError) > 1){
                 this.setLRPower(0, 0);
                 this.turn(0, headingError, imu);
-            }
+            }*/
             //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
             //that the robot slammed into something, stop the robot.
-            if(imu.getAccelerationMag() > 10.0){
+            /*if(imu.getAccelerationMag() > 10.0){
                 this.setLRPower(0, 0);
-            }
+            }*/
         }
+    }
+
+    public double getTargetPosition(){
+        return targetPosition;
     }
 
 
@@ -332,8 +332,8 @@ public class Drivetrain {
     }
 
     public double getEncoderPosition() {
-        double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition() + backRight.getCurrentPosition() + backLeft.getCurrentPosition();
-        return position * 0.25;
+        double position = frontRight.getCurrentPosition() + frontLeft.getCurrentPosition();
+        return position * 0.5;
     }
     //Converts an encoder value to a distance in millimeters.
     public double getDistanceToGo(double encoderValue) {
@@ -343,14 +343,14 @@ public class Drivetrain {
 
     public double getRightEncoderPosition()
     {
-        double rightTotal = backRight.getCurrentPosition() + frontRight.getCurrentPosition();
-        return rightTotal * 0.5;
+        double rightTotal =  frontRight.getCurrentPosition();
+        return rightTotal ;
     }
 
     public double getLeftEncoderPosition()
     {
-        double leftTotal = backLeft.getCurrentPosition() +frontLeft.getCurrentPosition();
-        return leftTotal * 0.5;
+        double leftTotal = frontLeft.getCurrentPosition();
+        return leftTotal;
     }
 
     public boolean isLeftRightEqual(double leftVal, double rightVal)
@@ -384,5 +384,9 @@ public class Drivetrain {
         return equal;
 
     }
+    @Override
+    public void init(){}
+    @Override
+    public void loop(){}
 }
 
