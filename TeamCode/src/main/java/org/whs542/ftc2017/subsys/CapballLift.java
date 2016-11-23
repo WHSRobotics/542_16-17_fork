@@ -12,35 +12,53 @@ import org.whs542.lib.Toggler;
 
 public class CapballLift
 {
-    private DcMotor capballFork;
-    private DcMotor capballLift;
+    private DcMotor capballLeft;
+    private DcMotor capballRight;
     private Servo rightServo;
     private Servo leftServo;
 
-    private String liftState;
+    private String cbState;
 
-    private Toggler forkToggle = new Toggler(2);
     private Toggler servoToggle = new Toggler(2);
+
+    private static final double cbPower = 1.0;
 
     public CapballLift(HardwareMap map)
     {
-        capballFork = map.dcMotor.get("dropFork");
-        capballLift = map.dcMotor.get("liftBall");
+        capballRight = map.dcMotor.get("cb_rightm");
+        capballLeft = map.dcMotor.get("cb_leftm");
+        rightServo = map.servo.get("cb_rights");
+        leftServo = map.servo.get("cb_lefts");
     }
 
-    public void dropFork(boolean trigger)
+    public void liftCB(boolean dpadUp)
     {
-        forkToggle.changeState(trigger);
-        switch(forkToggle.currentState())
-        {
-            case 0:
-                capballFork.setPower(1.0);
-                break;
-            case 1:
-                capballFork.setPower(0.0);
-                break;
+        if(dpadUp) {
+            capballLeft.setPower(cbPower);
+            capballRight.setPower(cbPower);
+            cbState = "Lifting";
         }
+        else
+        {
+            capballLeft.setPower(0.0);
+            capballRight.setPower(0.0);
+            cbState = "Not moving";
+        }
+    }
 
+    public void dropCB(boolean dpadDown)
+    {
+        if(dpadDown) {
+            capballLeft.setPower(cbPower);
+            capballRight.setPower(cbPower);
+            cbState = "Dropping";
+        }
+        else
+        {
+            capballLeft.setPower(0.0);
+            capballRight.setPower(0.0);
+            cbState = "Not moving";
+        }
     }
 
     public void changeServo(boolean rBumper)
@@ -59,36 +77,8 @@ public class CapballLift
         }
     }
 
-    public void liftCapball(boolean trigger)
+    public String getCBState()
     {
-        if(trigger)
-        {
-            capballLift.setPower(1.0);
-            liftState = "Lifting";
-        }
-        else
-        {
-            capballLift.setPower(0.0);
-            liftState = "Not lifting";
-        }
-    }
-
-    public String getForkState()
-    {
-        String state = "";
-        switch(forkToggle.currentState())
-        {
-            case 0:
-                state = "Dropping Fork";
-                break;
-            case 1:
-                state = "Not moving fork";
-        }
-        return state;
-    }
-
-    public String getLiftState()
-    {
-        return liftState;
+        return cbState;
     }
 }

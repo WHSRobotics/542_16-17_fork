@@ -1,5 +1,6 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import org.whs542.ftc2017.subsys.Flywheel;
  */
 
 @TeleOp(name = "CubicTeleOp", group = "HwTest")
+@Disabled
 public class CubicTeleOp extends OpMode {
 
     private DcMotor frontRight;
@@ -56,7 +58,7 @@ public class CubicTeleOp extends OpMode {
         backRight.setPower(rightScaledPower);
         backLeft.setPower(leftScaledPower);
 
-        flywheel.run(gamepad1.right_bumper);
+        //flywheel.run(gamepad1.right_bumper);
 
 
         telemetry.addData("Right Power", rightScaledPower);

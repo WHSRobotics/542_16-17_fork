@@ -15,6 +15,7 @@ public class WHSRobot
     public Intake intake;
     public Flywheel flywheel;
     public CapballLift capball;
+    public BeaconPusher pusher;
     public Vuforia vuforia;
     public IMU imu;
 
@@ -40,7 +41,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
-        //capball = new CapballLift(robotMap);
+        capball = new CapballLift(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
     }
@@ -59,7 +60,7 @@ public class WHSRobot
         if (rotateToTargetInProgress) {
             //if rotating, do nothing
         } else {
-            if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) { //TODO:fix a stop value because it will never hit 0
+            if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 driveToTargetInProgress = true;

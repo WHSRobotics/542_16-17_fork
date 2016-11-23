@@ -20,7 +20,7 @@ public class Intake {
         if(bumper){
             intakeMotor.setPower(defaultPower);
         }
-        else if(trigger>0.05){
+        else if(trigger > 0.05){
             intakeMotor.setPower(-defaultPower);
         }
         else {
