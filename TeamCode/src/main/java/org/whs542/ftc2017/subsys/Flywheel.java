@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Flywheel
 {
-    private DcMotor flywheel;
+    public DcMotor flywheel;
     private Servo flywheelGate;
 
     private boolean isFlywheelRunning;
@@ -29,7 +29,7 @@ public class Flywheel
     private Toggler flyModeToggler = new Toggler(3);
     private Toggler gateToggler = new Toggler(2);
 
-    private final int MAX_SPEED = 4000; //ticks per sec
+    private final int MAX_SPEED = 2100; //ticks per sec
     private final double MIN_SPEED = 1000;
 
     private static double CIRCUMFERENCE = Math.PI * 101.6; //11.43 is diameter of wheel
@@ -46,9 +46,9 @@ public class Flywheel
 
     public Flywheel(HardwareMap map)
     {
-        flywheel = map.dcMotor.get("rightFly");
+        flywheel = map.dcMotor.get("leftFly");
         flywheelGate = map.servo.get("flywheelGate");
-        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         flywheel.setMaxSpeed(MAX_SPEED);
 
         flywheelPower = 0.0; //Default flywheelPower
@@ -220,19 +220,21 @@ public class Flywheel
 
     //TODO: Fix this so it stops returning NaN or Infinity (probably result of divide by 0)
     //Possible cause: Encoder positions may not update until a loop refresh
-    public double getCurrentSpeed(){
+    public double [] getCurrentSpeed(){
 
         int encoder1 = flywheel.getCurrentPosition();
-        double time1 = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        double time1 = (double) (System.nanoTime()) / 1000000000;
+        double time2 = 0;
+        double deltaTime = 0;
+        while(deltaTime < 0.5){
+            time2 = (double) (System.nanoTime()) / 1000000000;
+            deltaTime = time2-time1;
         }
+        int encoder2 = flywheel.getCurrentPosition();
+        double enc = encoder2-encoder1;
 
-        double velocity = (flywheel.getCurrentPosition()-encoder1)/(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
-        return Math.abs(velocity);
+        double [] encAndTime =  {encoder1, encoder2, enc, time1, time2, deltaTime, Math.abs(enc / deltaTime)};
+        return encAndTime;
 
     }
 
@@ -260,7 +262,7 @@ public class Flywheel
 
         boolean status;
 
-        if(Math.abs(targetSpeed-getCurrentSpeed()) <= 50){
+        if(Math.abs(targetSpeed-getCurrentSpeed()[2]) <= 50){
             status = true;
         }
         else{
