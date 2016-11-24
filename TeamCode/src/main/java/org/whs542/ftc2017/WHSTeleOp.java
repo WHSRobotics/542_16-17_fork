@@ -44,7 +44,7 @@ public class WHSTeleOp extends OpMode
 
         telemetry.addData("Intake:", robot.intake.getIntakeDirection(gamepad1.left_bumper, gamepad1.left_trigger));
 
-        telemetry.addData("Capball Fork:", robot.capball.getForkState());
+        //telemetry.addData("Capball Fork:", robot.capball.getForkState());
         telemetry.addData("Capball Lift:", robot.capball.getCBState());
     }
 

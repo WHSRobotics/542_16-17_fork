@@ -25,17 +25,25 @@ public class FlywheelTest extends OpMode{
 
     @Override
     public void loop(){
-
+        flywheel.flywheel.setTargetPosition(100000000);
         flywheel.setFlywheelPower(1.0);
-        if(flywheel.isFlywheelAtCorrectSpeed(4000)){
+        /*if(flywheel.isFlywheelAtCorrectSpeed(2100)){
             state = "At correct speed";
         }
         else {
             state = "Not at correct speed";
-        }
-
-        telemetry.addData("Flywheel Speed", flywheel.getCurrentSpeed());
-        telemetry.addData("Correct Speed?", state);
+        }*/
+        /*double [] encAndTime = flywheel.getCurrentSpeed();
+        telemetry.addData("Encoder pre", encAndTime[0]);
+        telemetry.addData("Encoder post", encAndTime[1]);
+        telemetry.addData("Encoder change", encAndTime[2]);
+        telemetry.addData("Time pre", encAndTime[3]);
+        telemetry.addData("Time post", encAndTime[4]);
+        telemetry.addData("Time change", encAndTime[5]);
+        telemetry.addData("Flywheel Speed", encAndTime[6]);*/
+        int pos = flywheel.flywheel.getCurrentPosition();
+        telemetry.addData("Encoder pos", pos);
+        //telemetry.addData("Correct Speed?", state);
 
     }
 
