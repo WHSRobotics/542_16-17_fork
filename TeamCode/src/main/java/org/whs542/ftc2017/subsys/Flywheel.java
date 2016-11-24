@@ -9,8 +9,9 @@ import org.whs542.lib.Toggler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Jiangda on 10/1/2016.
+ * Flywheel Subsystem Class
  */
+
 public class Flywheel
 {
     private DcMotor flywheel;

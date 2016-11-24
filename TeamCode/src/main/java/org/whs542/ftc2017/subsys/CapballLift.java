@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Lucy Wang on 11/12/2016.
+ * Capball Lift Subsystem Class
  */
 
 public class CapballLift
@@ -16,10 +16,12 @@ public class CapballLift
     private DcMotor capballRight;
     private Servo rightServo;
     private Servo leftServo;
+    private Servo ratchetServo;
 
     private String cbState;
 
     private Toggler servoToggle = new Toggler(2);
+    private Toggler ratchetToggle = new Toggler(2);
 
     private static final double cbPower = 1.0;
 
@@ -29,6 +31,7 @@ public class CapballLift
         capballLeft = map.dcMotor.get("cb_leftm");
         rightServo = map.servo.get("cb_rights");
         leftServo = map.servo.get("cb_lefts");
+        ratchetServo = map.servo.get("cb_ratchet");
     }
 
     public void liftCB(boolean dpadUp)
@@ -73,6 +76,25 @@ public class CapballLift
             case 1:
                 rightServo.setPosition(0.0);
                 leftServo.setPosition(0.0);
+                break;
+        }
+    }
+
+    public void changeRatchet(float lTrigger)
+    {
+        boolean pressed;
+
+        if(lTrigger > 0.05) {pressed = true;}
+        else {pressed = false;}
+
+        ratchetToggle.changeState(pressed);
+        switch(ratchetToggle.currentState())
+        {
+            case 0:
+                ratchetServo.setPosition(1.0);
+                break;
+            case 1:
+                ratchetServo.setPosition(1.0);
                 break;
         }
     }

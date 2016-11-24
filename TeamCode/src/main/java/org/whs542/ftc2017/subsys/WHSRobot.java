@@ -113,6 +113,21 @@ public class WHSRobot
         }
     }
 
+    public void rotateToVortex()
+    {
+        Position vortexPos = new Position(0,0,0);
+        Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
+        vectorToTarget = field2body(vectorToTarget); //body frame
+
+        double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+
+        //TODO: Confirm logic for this
+        double degreesToRotate = Math.atan2(vortexPos.getY(), vortexPos.getX()); //from -pi to pi rad
+        degreesToRotate = degreesToRotate * 180 / Math.PI;
+        double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+        rotateToTarget(targetHeading);
+    }
+
     public void estimatePosition()
     {
         if(vuforia.vuforiaIsValid())
