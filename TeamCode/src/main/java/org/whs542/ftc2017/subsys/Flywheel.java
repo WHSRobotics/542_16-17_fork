@@ -32,7 +32,7 @@ public class Flywheel
     private final int MAX_SPEED = 2100; //ticks per sec
     private final double MIN_SPEED = 1000;
 
-    private static double CIRCUMFERENCE = Math.PI * /*insert radius*/; //11.43 is diameter of wheel
+    private static double CIRCUMFERENCE = Math.PI  /*insert radius*/; //11.43 is diameter of wheel
     //private double TICKS_PER_SEC;
     private static double TICKS_PER_REV = 1120;
     //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
@@ -97,6 +97,7 @@ public class Flywheel
         return flywheelMode;
     }
 
+    /*
     public boolean isFlyWheelAtRightSpeed(double targetSpeed)
     {
         if(Math.abs(getCurrentSpeed()) - Math.abs(targetSpeed) > 0.05)
@@ -110,6 +111,7 @@ public class Flywheel
         return isFlywheelAtSpeed;
     }
 
+*/
     //Might change these to state and cases. Not necessary for now
     public void run(boolean b1, double powerIn)
     {
@@ -237,7 +239,6 @@ public class Flywheel
         return encAndTime;
 
     }
-
 
     public double[] getCurrentSpeedTest(){
 
