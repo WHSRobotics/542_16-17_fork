@@ -47,6 +47,7 @@ public class Flywheel
     {
         flywheel = map.dcMotor.get("leftFly");
         flywheelGate = map.servo.get("flywheelGate");
+
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMaxSpeed(MAX_SPEED);
 
@@ -222,24 +223,24 @@ public class Flywheel
 
     //TODO: Fix this so it stops returning NaN or Infinity (probably result of divide by 0)
     //Possible cause: Encoder positions may not update until a loop refresh
-    public double [] getCurrentSpeed(){
+    public double getCurrentSpeed(){
 
         int encoder1 = flywheel.getCurrentPosition();
         double time1 = (double) (System.nanoTime()) / 1000000000;
         double time2 = 0;
         double deltaTime = 0;
-        while(deltaTime < 0.5){
+        while(deltaTime < 0.3){
             time2 = (double) (System.nanoTime()) / 1000000000;
             deltaTime = time2-time1;
         }
         int encoder2 = flywheel.getCurrentPosition();
         double enc = encoder2-encoder1;
 
-        double [] encAndTime =  {encoder1, encoder2, enc, time1, time2, deltaTime, Math.abs(enc / deltaTime)};
-        return encAndTime;
+        return Math.abs(enc / deltaTime);
 
     }
 
+    /* Test Program for getCurrentSpeed()
     public double[] getCurrentSpeedTest(){
 
         int encoder1 = flywheel.getCurrentPosition();
@@ -253,17 +254,15 @@ public class Flywheel
 
         double d1 = (flywheel.getCurrentPosition()-encoder1);
         double d2 = (TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
+    */
 
-        double[] returnVal = {d1, d2};
-        return returnVal;
-
-    }
-
-    public boolean isFlywheelAtCorrectSpeed(int targetSpeed) {
+    public boolean isFlywheelAtCorrectSpeed(double power) {
 
         boolean status;
+        double targetSpeed = power * MAX_SPEED;
 
-        if(Math.abs(targetSpeed-getCurrentSpeed()[2]) <= 50){
+
+        if(Math.abs(targetSpeed-getCurrentSpeed()) <= 50){
             status = true;
         }
         else{
