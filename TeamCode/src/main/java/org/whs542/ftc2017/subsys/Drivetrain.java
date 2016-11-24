@@ -11,8 +11,9 @@ import org.whs542.lib.Functions;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Amar2 on 10/22/2016.
+ * Drivetrain Subsystem Class
  */
+
 public class Drivetrain {
 
     private DcMotor frontLeft;

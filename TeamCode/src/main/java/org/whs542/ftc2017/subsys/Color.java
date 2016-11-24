@@ -6,7 +6,6 @@ import android.view.View;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-
 /**
  * Created by Jason on 11/22/2016.
  */

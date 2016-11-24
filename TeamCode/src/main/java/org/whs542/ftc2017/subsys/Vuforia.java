@@ -1,9 +1,5 @@
 package org.whs542.ftc2017.subsys;
 
-/**
- * Created by Jiangda on 10/16/2016.
- */
-
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -26,6 +22,11 @@ import org.whs542.lib.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Vuforia Class
+ */
+
 public class Vuforia {
 
     public static final String TAG = "Vuforia AutoOp";

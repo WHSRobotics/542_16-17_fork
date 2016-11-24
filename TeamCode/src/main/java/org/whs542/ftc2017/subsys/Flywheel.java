@@ -9,8 +9,9 @@ import org.whs542.lib.Toggler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Jiangda on 10/1/2016.
+ * Flywheel Subsystem Class
  */
+
 public class Flywheel
 {
     public DcMotor flywheel;
@@ -31,8 +32,7 @@ public class Flywheel
     private final int MAX_SPEED = 2100; //ticks per sec
     private final double MIN_SPEED = 1000;
 
-    private static double CIRCUMFERENCE = Math.PI * 101.6; //11.43 is diameter of wheel
-    //private static
+    private static double CIRCUMFERENCE = Math.PI * /*insert radius*/; //11.43 is diameter of wheel
     //private double TICKS_PER_SEC;
     private static double TICKS_PER_REV = 1120;
     //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
@@ -46,7 +46,8 @@ public class Flywheel
     public Flywheel(HardwareMap map)
     {
         flywheel = map.dcMotor.get("leftFly");
-        //flywheelGate = map.servo.get("flywheelGate");
+        flywheelGate = map.servo.get("flywheelGate");
+
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMaxSpeed(MAX_SPEED);
 
@@ -73,9 +74,10 @@ public class Flywheel
         }
     }
 
-    public String getFlywheelMode(boolean a)
+    //use dpad and put linear slides on joysticks
+    public String getFlywheelMode(boolean dpadUp, boolean dpadDown)
     {
-        flyModeToggler.changeState(a);
+        flyModeToggler.changeState(dpadUp,dpadDown);
         String flywheelMode = "";
 
         switch(flyModeToggler.currentState())
@@ -98,7 +100,7 @@ public class Flywheel
 
     public boolean isFlyWheelAtRightSpeed(double targetSpeed)
     {
-        if(Math.abs(flywheel.getPower()) - Math.abs(targetSpeed) > 0.05)
+        if(Math.abs(getCurrentSpeed()) - Math.abs(targetSpeed) > 0.05)
         {
             isFlywheelAtSpeed = false;
         }
