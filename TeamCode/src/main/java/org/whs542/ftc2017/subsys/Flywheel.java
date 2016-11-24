@@ -32,8 +32,7 @@ public class Flywheel
     private final int MAX_SPEED = 2100; //ticks per sec
     private final double MIN_SPEED = 1000;
 
-    private static double CIRCUMFERENCE = Math.PI * 101.6; //11.43 is diameter of wheel
-    //private static
+    private static double CIRCUMFERENCE = Math.PI * /*insert radius*/; //11.43 is diameter of wheel
     //private double TICKS_PER_SEC;
     private static double TICKS_PER_REV = 1120;
     //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
@@ -48,7 +47,7 @@ public class Flywheel
     {
         flywheel = map.dcMotor.get("leftFly");
         flywheelGate = map.servo.get("flywheelGate");
-        flywheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMaxSpeed(MAX_SPEED);
 
         flywheelPower = 0.0; //Default flywheelPower
@@ -74,9 +73,10 @@ public class Flywheel
         }
     }
 
-    public String getFlywheelMode(boolean a)
+    //use dpad and put linear slides on joysticks
+    public String getFlywheelMode(boolean dpadUp, boolean dpadDown)
     {
-        flyModeToggler.changeState(a);
+        flyModeToggler.changeState(dpadUp,dpadDown);
         String flywheelMode = "";
 
         switch(flyModeToggler.currentState())
@@ -99,7 +99,7 @@ public class Flywheel
 
     public boolean isFlyWheelAtRightSpeed(double targetSpeed)
     {
-        if(Math.abs(flywheel.getPower()) - Math.abs(targetSpeed) > 0.05)
+        if(Math.abs(getCurrentSpeed()) - Math.abs(targetSpeed) > 0.05)
         {
             isFlywheelAtSpeed = false;
         }

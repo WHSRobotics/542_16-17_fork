@@ -1,8 +1,5 @@
 package org.whs542.ftc2017.subsys;
 
-/**
- * Created by Jiangda on 10/29/2016.
- */
 import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.hardware.adafruit.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -20,6 +17,11 @@ import org.firstinspires.ftc.robotcore.internal.AppUtil;
 import org.whs542.lib.Functions;
 
 import java.io.File;
+
+/**
+ * IMU Class
+ */
+
 public class IMU {
 
     private double imuBias;

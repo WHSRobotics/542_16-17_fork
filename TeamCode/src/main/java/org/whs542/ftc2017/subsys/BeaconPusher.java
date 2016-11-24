@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Lucy on 11/22/2016.
+ * Beacon Pusher Subsystem Class
  */
 
 public class BeaconPusher {

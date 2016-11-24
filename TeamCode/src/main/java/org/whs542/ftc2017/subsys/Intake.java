@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 /**
  * Intake Subsystem Class
  */
+
 public class Intake {
 
     private DcMotor intakeMotor;

@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
+import org.whs542.lib.Toggler;
 
-/**
- * Created by Amar2 on 10/22/2016.
- */
 public class WHSRobot
 {
     public Drivetrain drivetrain;
@@ -23,6 +21,9 @@ public class WHSRobot
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
     boolean drivingInReverse = false;
+
+    private Toggler beaconToggle = new Toggler(4);
+    private Toggler autoBeaconToggle = new Toggler(2);
 
     static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.125, 0.25, 0.5, 1.0};
@@ -43,12 +44,16 @@ public class WHSRobot
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
         capball = new CapballLift(robotMap);
+        pusher = new BeaconPusher(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
         color = new Color(robotMap);
     }
 
     public void driveToTarget(Position targetPos /*field frame*/) {
+        estimatePosition();
+        estimateHeading();
+
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
@@ -61,7 +66,8 @@ public class WHSRobot
 
         if (rotateToTargetInProgress) {
             //if rotating, do nothing
-        } else {
+        }
+        else {
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
@@ -136,7 +142,6 @@ public class WHSRobot
             vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
             Position currentPos = vuforiaCoord.getPos(); //field frame
             currentCoord.setPos(currentPos); //field frame
-
         }
         else
         {
@@ -185,6 +190,49 @@ public class WHSRobot
         else {
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading);
+        }
+    }
+
+    public void setInitialPosition(Position initPos)
+    {
+        currentCoord.setPos(initPos);
+    }
+
+    public String getTeleOpBeaconChoice(boolean dpadUp, boolean dpadDown)
+    {
+        String targetBeacon = "";
+        beaconToggle.changeState(dpadUp, dpadDown);
+        switch(beaconToggle.currentState())
+        {
+            case 0:
+                targetBeacon = "Wheels";
+                break;
+            case 1:
+                targetBeacon = "Legos";
+                break;
+            case 2:
+                targetBeacon = "Tools";
+                break;
+            case 3:
+                targetBeacon = "Gears";
+                break;
+        }
+        return targetBeacon;
+    }
+
+    public void autoMoveToBeacon(boolean b)
+    {
+        Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
+
+        autoBeaconToggle.changeState(b);
+
+        switch(autoBeaconToggle.currentState())
+        {
+            case 0:
+                driveToTarget(beaconPositions[beaconToggle.currentState()]);
+                break;
+            case 1:
+                drivetrain.setLRPower(0.0,0.0);
         }
     }
 
