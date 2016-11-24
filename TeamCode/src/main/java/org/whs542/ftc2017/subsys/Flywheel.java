@@ -238,24 +238,8 @@ public class Flywheel
     }
 
 
-    public double[] getCurrentSpeedTest(){
 
-        int encoder1 = flywheel.getCurrentPosition();
-        double time1 = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        double d1 = (flywheel.getCurrentPosition()-encoder1);
-        double d2 = (TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
-
-        double[] returnVal = {d1, d2};
-        return returnVal;
-
-    }
 
     public boolean isFlywheelAtCorrectSpeed(int targetSpeed) {
 
