@@ -27,7 +27,7 @@ public class WHSTeleOp extends OpMode
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
 
         //Gamepad 2 Controls
-        robot.flywheel.getFlywheelMode(gamepad2.a);
+        robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
         robot.flywheel.rampFlywheel(gamepad2.right_bumper);
         robot.flywheel.operateGate(gamepad2.right_trigger);
         robot.capball.liftCB(gamepad2.dpad_up);
@@ -36,7 +36,7 @@ public class WHSTeleOp extends OpMode
         robot.capball.changeRatchet(gamepad2.left_trigger);
 
         //Telemetry
-        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.a));
+        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
         telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
         telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
 
@@ -46,7 +46,7 @@ public class WHSTeleOp extends OpMode
 
         telemetry.addData("Intake:", robot.intake.getIntakeState());
 
-	telemetry.addData("Capball:", robot.capball.getCBState());
+	    telemetry.addData("Capball:", robot.capball.getCBState());
     }
 
 }
