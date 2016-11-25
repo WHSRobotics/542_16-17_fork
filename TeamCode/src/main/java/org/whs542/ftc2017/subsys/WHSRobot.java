@@ -2,6 +2,7 @@ package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
@@ -39,16 +40,28 @@ public class WHSRobot
 
     Coordinate currentCoord; //field frame
 
+    public WHSRobot(HardwareMap robotMap, Alliance side){
+        drivetrain = new Drivetrain(robotMap);
+        intake = new Intake(robotMap);
+        flywheel = new Flywheel(robotMap);
+        capball = new CapballLift(robotMap);
+        pusher = new BeaconPusher(robotMap, side);
+        vuforia = new Vuforia();
+        imu = new IMU(robotMap);
+        color = new Color(robotMap);
+    }
+
     public WHSRobot(HardwareMap robotMap){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
         capball = new CapballLift(robotMap);
-        pusher = new BeaconPusher(robotMap);
+        //pusher = new BeaconPusher(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
         color = new Color(robotMap);
     }
+
 
     public void driveToTarget(Position targetPos /*field frame*/) {
         estimatePosition();

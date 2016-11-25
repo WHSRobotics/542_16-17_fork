@@ -3,6 +3,7 @@ package org.whs542.ftc2017.subsys;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Toggler;
 
 /**
@@ -11,11 +12,15 @@ import org.whs542.lib.Toggler;
 
 public class BeaconPusher {
     private Servo beaconPusher;
+    public Color color;
+    Alliance side;
 
     private Toggler beaconToggler = new Toggler(2);
 
-    public BeaconPusher(HardwareMap map) {
+    public BeaconPusher(HardwareMap map, Alliance side) {
         beaconPusher = map.servo.get("beacon");
+        color = new Color(map);
+        this.side = side;
     }
 
     public void extendBeacon(boolean lBumper)
@@ -32,6 +37,24 @@ public class BeaconPusher {
         }
     }
 
+    public String analyzeBeacon(){
+
+        String s;
+
+        if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
+            s = "match";
+        }
+        else if(color.state.equals("purple")){
+            s = "unknown";
+        }
+        else {
+            s = "notmatch";
+        }
+
+        return s;
+
+    }
+
     public String getBeaconPusherStatus()
     {
         String state = "";
@@ -46,4 +69,7 @@ public class BeaconPusher {
         }
         return state;
     }
+
+
+
 }
