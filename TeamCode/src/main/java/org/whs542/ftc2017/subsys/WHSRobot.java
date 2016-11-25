@@ -236,13 +236,17 @@ public class WHSRobot
     public void autoMoveToBeacon(boolean b)
     {
         Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
+        Position[] firstMovement = {new Position(100,100,100), new Position(100,100,100), new Position(100,100,100), new Position(100,100,100)};
+        //TODO: CHECK FOR THESE POSITIONS
 
         autoBeaconToggle.changeState(b);
 
         switch(autoBeaconToggle.currentState())
         {
             case 0:
+                driveToTarget(firstMovement[beaconToggle.currentState()]);
                 driveToTarget(beaconPositions[beaconToggle.currentState()]);
+                //scan beacon and press based on correct value //TODO: ADD IN COLOR SENSING
                 break;
             case 1:
                 drivetrain.setLRPower(0.0,0.0);

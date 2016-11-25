@@ -14,6 +14,7 @@ public class CapballLift
 {
     private DcMotor capballLeft;
     private DcMotor capballRight;
+
     private Servo rightServo;
     private Servo leftServo;
     private Servo ratchetServo;
@@ -27,10 +28,10 @@ public class CapballLift
 
     public CapballLift(HardwareMap map)
     {
-        capballRight = map.dcMotor.get("cb_rightm");
-        capballLeft = map.dcMotor.get("cb_leftm");
-        rightServo = map.servo.get("cb_rights");
-        leftServo = map.servo.get("cb_lefts");
+        capballRight = map.dcMotor.get("cb_rm");
+        capballLeft = map.dcMotor.get("cb_lm");
+        rightServo = map.servo.get("cb_rs");
+        leftServo = map.servo.get("cb_ls");
         ratchetServo = map.servo.get("cb_ratchet");
     }
 
