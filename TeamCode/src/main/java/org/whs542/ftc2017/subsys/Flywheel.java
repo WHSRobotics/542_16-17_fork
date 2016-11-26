@@ -124,7 +124,15 @@ public class Flywheel
         if(trigger > 0.05) {triggerPressed = true;}
         else {triggerPressed = false;}
 
-        gateToggler.changeState(triggerPressed);
+        if(triggerPressed == true){
+            flywheelGate.setPosition(1.0);
+            while(flywheelGate.getPosition() <= 1.0)
+                if(flywheelGate.getPosition() == 1.0)
+                    flywheelGate.setPosition(0.0);
+
+        }
+
+        /*gateToggler.changeState(triggerPressed);
         switch (gateToggler.currentState()) {
             case 0:
                 flywheelGate.setPosition(1.0);
@@ -134,7 +142,7 @@ public class Flywheel
                 flywheelGate.setPosition(0.0);
                 isGateOpen = false;
                 break;
-        }
+        }*/
     }
 
     public void operateGateNoToggle(boolean button){

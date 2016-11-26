@@ -20,6 +20,7 @@ public class RedAutoPlay5 extends OpMode {
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     @Override
     public void init() {
@@ -32,8 +33,10 @@ public class RedAutoPlay5 extends OpMode {
 
         switch(state){
             case 0:
-                stateInfo = "Turning to vortex";
-                robot.rotateToVortex();
+
+                stateInfo = "turning to vortex";
+                robot.rotateToVortex(vortexPositions[1]);
+
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
@@ -42,7 +45,7 @@ public class RedAutoPlay5 extends OpMode {
                 stateInfo = "Shooting particles";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])){
-                    robot.flywheel.operateGate(true);
+                    robot.flywheel.operateGate(1.0);
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {

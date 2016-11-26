@@ -28,6 +28,7 @@ public class RedAutoPlay3 extends OpMode
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
@@ -38,14 +39,20 @@ public class RedAutoPlay3 extends OpMode
 
         switch (state){
             case 0:
+                stateInfo = "rotating to red vortex";
+                robot.rotateToVortex(vortexPositions[1]);
+                if(!robot.rotateToTargetInProgress){
+                    state++;
+                }
+            case 1:
                 stateInfo = "Shoot flywheel";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if (true) {
-                    robot.flywheel.operateGate(true);
+                    robot.flywheel.operateGate(1.0);
                     state = 1;
                 }
                 break;
-            case 1:
+            case 2:
                 stateInfo = "Driving to position 1";
                 if (robot.driveToTargetInProgress) {
                     robot.driveToTarget(redPositions[0]);
@@ -53,7 +60,7 @@ public class RedAutoPlay3 extends OpMode
                     state = 2;
                 }
                 break;
-            case 2:
+            case 3:
                 stateInfo = "Driving to beacon 1";
                 if (robot.driveToTargetInProgress) {
                     robot.driveToTarget(redPositions[1]);
@@ -61,9 +68,9 @@ public class RedAutoPlay3 extends OpMode
                     state = 3;
                 }
                 break;
-            case 3:
-
             case 4:
+
+            case 5:
                 stateInfo = "Checking beacon status";
                 if (robot.pusher.isBeaconPushed()) {
                     robot.pusher.extendPusherNoToggle(true);
@@ -73,14 +80,14 @@ public class RedAutoPlay3 extends OpMode
                 }
                 state = 5;
                 break;
-            case 5:
+            case 6:
                 stateInfo = "Pressing beacon";
                 if (robot.beaconState == "Extended") {
                     robot.pusher.extendPusherNoToggle(false);
                 }
                 state = 6;
                 break;
-            case 6:
+            case 7:
                 stateInfo = "Driving to center vortex";
                 if (robot.driveToTargetInProgress) {
                     robot.driveToTarget(redPositions[2]);

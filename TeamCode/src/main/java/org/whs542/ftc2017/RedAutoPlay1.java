@@ -20,10 +20,13 @@ public class RedAutoPlay1 extends OpMode {
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
+
     //Red: Tools, Gears
     Position[] beaconPositions = {new Position(-1800,900,150), new Position(-1800,-300,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
@@ -40,7 +43,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Turning to vortex";
                 if(robot.rotateToTargetInProgress || loop == 1)
                 {
-                    robot.rotateToVortex();
+                    robot.rotateToVortex(vortexPositions[1]);
                     loop = 2;
                 }
                 else {
@@ -95,7 +98,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Checking beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position());
+                    robot.driveToTarget(new Position(-1800, -200, 150));
                 }
                 else {state++;}
                 break;
@@ -116,7 +119,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Checking second beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position());
+                    robot.driveToTarget(new Position(-1800, 1000, 150));
                 }
                 else {state++;}
                 break;

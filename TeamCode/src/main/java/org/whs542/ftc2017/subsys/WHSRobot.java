@@ -120,9 +120,8 @@ public class WHSRobot
         }
     }
 
-    public void rotateToVortex()
+    public void rotateToVortex(Position vortexPos)
     {
-        Position vortexPos = new Position(0,0,0);
         Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
