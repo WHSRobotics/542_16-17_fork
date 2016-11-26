@@ -12,7 +12,7 @@ import org.whs542.lib.Position;
 
 //Play 3
 @Autonomous(name = "AutoOpTest3", group = "Autonomous")
-public class TestAutoOp3 extends OpMode
+public class RedAutoPlay3 extends OpMode
 {
     WHSRobot robot;
     int state;

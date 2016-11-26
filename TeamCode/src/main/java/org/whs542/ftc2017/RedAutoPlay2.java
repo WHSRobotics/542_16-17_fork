@@ -8,7 +8,7 @@ import org.whs542.lib.Position;
 /**
  * Created by Amar2 on 11/22/2016.
  */
-public class TestAutoOp2 extends OpMode {
+public class RedAutoPlay2 extends OpMode {
 //Play 2
     WHSRobot robot;
     int state;
@@ -31,6 +31,28 @@ public class TestAutoOp2 extends OpMode {
 
         switch (state){
             case 0:
+                robot.rotateToTarget();
+                robot.flywheel.setFlywheelPower();
+                //wait until the flywheel is at the correct speed
+                while(!robot.flywheel.isFlywheelAtCorrectSpeed()){}
+                robot.flywheel.releaseParticle();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                state = 1;
+                break;
+            case 1:
+                while(robot.driveToTargetInProgress) {
+                    robot.driveToTarget(new Position(0, -300, 150));
+                }
+                state = 2;
+                break;
+            case 2:
+                break;
+
 
         }
 

@@ -9,7 +9,7 @@ import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Position;
 //Play 4
 @Autonomous(name = "AutoOpTest", group = "AutoOp")
-public class TestAutoOp extends OpMode{
+public class RedAutoPlay4 extends OpMode{
     WHSRobot robot;
     int state;
     String stateInfo;
