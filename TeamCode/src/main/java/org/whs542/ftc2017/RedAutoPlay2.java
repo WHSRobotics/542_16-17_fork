@@ -7,8 +7,9 @@ import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
- * Created by Amar2 on 11/22/2016.
+ * Red Play 3 NEED TO FIX - LUCY
  */
+
 public class RedAutoPlay2 extends OpMode {
 //Play 2
     WHSRobot robot;

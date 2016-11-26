@@ -1,17 +1,18 @@
 package org.whs542.ftc2017;
 
 /**
- * Created by Jiangda on 10/30/2016.
+ * Red Play 4 NEED TO FIX - LUCY
  */
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 import java.util.Objects;
 
 //Play 4
-@Autonomous(name = "AutoOpTest", group = "AutoOp")
+@Autonomous(name = "RedAutoPlay4", group = "AutoOp")
 public class RedAutoPlay4 extends OpMode{
     WHSRobot robot;
     int state;
@@ -31,7 +32,7 @@ public class RedAutoPlay4 extends OpMode{
     double[] beaconWall = {180, 90};
 
     public void init() {
-        robot = new WHSRobot(hardwareMap);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
     }
 
@@ -86,15 +87,15 @@ public class RedAutoPlay4 extends OpMode{
                 break;
             case 6:
             stateInfo = "Checking beacon status";
-            if (Objects.equals(robot.pusher.analyzeBeacon(), "match")) {
-                robot.pusher.extendBeaconNoToggle(true);
+            if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
+                robot.pusher.extendPusherNoToggle(true);
             }
             state++;
             break;
             case 7:
             stateInfo = "Pressing beacon";
             if (robot.beaconState == "Extended") {
-                robot.pusher.extendBeaconNoToggle(false);
+                robot.pusher.extendPusherNoToggle(false);
             }
             state++;
             break;

@@ -26,7 +26,7 @@ public class WHSRedTeleOp extends OpMode
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-        robot.pusher.extendBeacon(gamepad1.left_bumper);
+        robot.pusher.extendPusher(gamepad1.left_bumper);
         robot.autoMoveToBeacon(gamepad1.b);
         robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down);
 

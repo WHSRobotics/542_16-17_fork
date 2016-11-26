@@ -18,6 +18,11 @@ public class Intake {
         intakeMotor = intakeMap.dcMotor.get("intake");
     }
 
+    public void runIntake(double power)
+    {
+        intakeMotor.setPower(power);
+    }
+
     public void runIntake(float rTrigger, float lTrigger)
     {
         if(rTrigger > 0.05)

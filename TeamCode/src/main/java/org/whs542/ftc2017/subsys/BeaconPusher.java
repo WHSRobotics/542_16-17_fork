@@ -23,7 +23,7 @@ public class BeaconPusher {
         this.side = side;
     }
 
-    public void extendBeacon(boolean lBumper)
+    public void extendPusher(boolean lBumper)
     {
         beaconToggler.changeState(lBumper);
         switch(beaconToggler.currentState())
@@ -37,7 +37,7 @@ public class BeaconPusher {
         }
     }
 
-    public void extendBeaconNoToggle(boolean extend){
+    public void extendPusherNoToggle(boolean extend){
         if(extend){
             beaconPusher.setPosition(1.0);
         }
@@ -46,14 +46,14 @@ public class BeaconPusher {
         }
     }
 
-    public boolean analyzeBeacon()
+    public boolean isBeaconPushed()
     {
         String status;
         boolean isPressed = false;
 
         if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
             status = "Match";
-            extendBeaconNoToggle(true);
+            extendPusherNoToggle(true);
             isPressed = true;
         }
         else if(color.state.equals("purple")){

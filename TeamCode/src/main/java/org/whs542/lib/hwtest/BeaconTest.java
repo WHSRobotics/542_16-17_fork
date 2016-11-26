@@ -22,6 +22,6 @@ public class BeaconTest extends OpMode
 
     public void loop()
     {
-        beaconPusher.extendBeacon(gamepad1.left_bumper);
+        beaconPusher.extendPusher(gamepad1.left_bumper);
     }
 }
