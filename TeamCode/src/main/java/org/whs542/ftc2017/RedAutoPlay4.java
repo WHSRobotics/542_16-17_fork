@@ -32,7 +32,7 @@ public class RedAutoPlay4 extends OpMode{
             case 0:
                 stateInfo = "Shoot flywheel";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
-                if(true)//robot.flywheel.isFlyWheelAtRightSpeed(powers[startingPosition - 1]))
+                if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
                     robot.flywheel.operateGate(true);
                     state = 1;

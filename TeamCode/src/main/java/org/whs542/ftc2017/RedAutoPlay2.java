@@ -31,26 +31,40 @@ public class RedAutoPlay2 extends OpMode {
 
         switch (state){
             case 0:
+                stateInfo = "turning to vortex";
                 robot.rotateToVortex();
-                robot.flywheel.setFlywheelPower();
-                //wait until the flywheel is at the correct speed
-                while(!robot.flywheel.isFlywheelAtCorrectSpeed()){}
-                robot.flywheel.releaseParticle();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if(!robot.rotateToTargetInProgress){
+                    state++;
                 }
-
-                state = 1;
                 break;
             case 1:
-                while(robot.driveToTargetInProgress) {
-                    robot.driveToTarget(new Position(0, -300, 150));
+                stateInfo = "shooting particles";
+                robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
+                if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])){
+                    robot.flywheel.releaseParticle(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    robot.flywheel.setFlywheelPower(0);
+                    state++;
                 }
-                state = 2;
                 break;
             case 2:
+                stateInfo = "driving to position 1"
+                robot.driveToTarget()
+                if(!robot.driveToTargetInProgress){
+                    state++;
+                }
+            case 3:
+                stateInfo = "driving to center";
+                robot.driveToTarget(new Position(0, -300, 150));
+                if(!robot.driveToTargetInProgress) {
+                    state++;
+                }
+                break;
+            case 4:
                 break;
 
 
