@@ -86,11 +86,11 @@ public class RedAutoPlay4 extends OpMode{
                 }
                 break;
             case 6:
-            stateInfo = "Checking beacon status";
-            if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
-                robot.pusher.extendPusherNoToggle(true);
-            }
-            state++;
+                stateInfo = "Checking beacon status";
+                if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
+                    robot.pusher.extendPusherNoToggle(true);
+                }
+                state++;
             break;
             case 7:
             stateInfo = "Pressing beacon";

@@ -7,11 +7,10 @@ import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
- * Red Play 3 NEED TO FIX - LUCY
+ * Red Auto Play 3
  */
 
 public class RedAutoPlay2 extends OpMode {
-//Play 2
     WHSRobot robot;
     int state;
     String stateInfo;

@@ -8,7 +8,7 @@ import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
- * Blue Play 1
+ * Blue Auto Play 1
  */
 
 @Autonomous(name = "BlueAutoPlay1", group = "AutoOp")
