@@ -117,12 +117,8 @@ public class Drivetrain {
         }
     }
 
-    public double getLScaledPower(double leftPower){
-        return Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower,3) : 0.0;
-    }
-
-    public double getRScaledPower(double rightPower){
-        return Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower,3) : 0.0;
+    public double getScaledPower(double power){
+        return Math.abs(power) > JOY_THRESHOLD ? Math.pow(power,3) : 0.0;
     }
 
     //Orientation Switch Methods

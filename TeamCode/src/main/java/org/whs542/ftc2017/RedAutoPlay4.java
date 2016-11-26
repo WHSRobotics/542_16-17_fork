@@ -49,7 +49,7 @@ public class RedAutoPlay4 extends OpMode{
         {
             case 0:
                 stateInfo = "Rotating to face flywheel";
-                robot.rotateToVortex(vortexPositions[1]);
+                robot.rotateToVortex(vortexPositions[1]); //FIXME
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
@@ -59,7 +59,7 @@ public class RedAutoPlay4 extends OpMode{
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
-                    robot.flywheel.operateGate(true);
+                    robot.flywheel.operateGateNoToggle(true);
                     try {
                         Thread.sleep(200);                  //Give the particles a little bit of time to reach the flywheel
                     } catch (InterruptedException e) {
@@ -91,18 +91,8 @@ public class RedAutoPlay4 extends OpMode{
                 }
                 break;
             case 6:
-		/*
-                stateInfo = "Checking beacon status";
-                if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
-                    robot.pusher.extendPusherNoToggle(true);
-                }
-                state++;
-            	break;
-		*/
-
                 stateInfo = "Checking beacon status, pressing if match";
-                if (Objects.equals(robot.pusher.analyzeBeacon(), "match")) {
-                    robot.pusher.extendBeaconNoToggle(true);
+                if (robot.pusher.isBeaconPushed()) {
                     state++;
                 }
                 else {                          //If the beacon color does not match, go to case 100
@@ -112,7 +102,7 @@ public class RedAutoPlay4 extends OpMode{
             case 7:
                 stateInfo = "Depressing beacon";
                 if (Objects.equals(robot.beaconState, "Extended")) {
-                    robot.pusher.extendBeaconNoToggle(false);
+                    robot.pusher.extendPusherNoToggle(false);
                 }
                 state++;
                 break;

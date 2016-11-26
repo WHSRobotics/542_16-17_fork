@@ -46,8 +46,8 @@ public class WHSRedTeleOp extends OpMode
 
         telemetry.addData("Auto Beacon Choice: ", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
 
-        telemetry.addData("Left Drivetrain: ", gamepad1.left_stick_y);
-        telemetry.addData("Right Drivetrain: ", gamepad1.right_stick_y);
+        telemetry.addData("Left Drivetrain: ", robot.drivetrain.getScaledPower(gamepad1.left_stick_y));
+        telemetry.addData("Right Drivetrain: ", robot.drivetrain.getScaledPower(gamepad1.right_stick_y));
         telemetry.addData("Orientation: ", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake: ", robot.intake.getIntakeState());

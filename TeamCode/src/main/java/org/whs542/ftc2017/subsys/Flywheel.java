@@ -137,6 +137,15 @@ public class Flywheel
         }
     }
 
+    public void operateGateNoToggle(boolean button){
+        if(button){
+            flywheelGate.setPosition(1.0);
+        }
+        else{
+            flywheelGate.setPosition(0.0);
+        }
+    }
+
     public String getGateStatus()
     {
         if(isGateOpen)
