@@ -23,7 +23,7 @@ public class RedAutoPlay4 extends OpMode{
     Alliance side = Alliance.RED;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    //TODO: Find actual values for all of these
+    
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
     //first: get close to beacons, second: get in front / within pushing range of beacon, third: center vortex, fourth: if the beacon color doesn't match
@@ -91,6 +91,15 @@ public class RedAutoPlay4 extends OpMode{
                 }
                 break;
             case 6:
+		/*
+                stateInfo = "Checking beacon status";
+                if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
+                    robot.pusher.extendPusherNoToggle(true);
+                }
+                state++;
+            	break;
+		*/
+
                 stateInfo = "Checking beacon status, pressing if match";
                 if (Objects.equals(robot.pusher.analyzeBeacon(), "match")) {
                     robot.pusher.extendBeaconNoToggle(true);
