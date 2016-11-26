@@ -1,6 +1,7 @@
 package org.whs542.lib.swtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -10,6 +11,7 @@ import org.whs542.ftc2017.subsys.IMU;
  * Created by Jiangda on 11/21/2016.
  */
 @Autonomous(name = "IMUHeadingTest", group = "Sensor")
+@Disabled
 public class IMUHeadingTest extends OpMode{
     IMU imu;
 

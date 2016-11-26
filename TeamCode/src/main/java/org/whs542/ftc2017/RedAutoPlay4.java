@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
+import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 
 import java.util.Objects;
@@ -19,17 +20,23 @@ public class RedAutoPlay4 extends OpMode{
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
+    Alliance side = Alliance.RED;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
+    
     //first: align to parallel beacons, second: end of beacons, third: center vortex
-    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
+    //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
+    //first: get close to beacons, second: get in front / within pushing range of beacon, third: center vortex, fourth: if the beacon color doesn't match
+    Position[] redPositions = {new Position(-1200, 900, 150), new Position(-1300, 900, 150), new Position(0, 0, 150), new Position(-1300, 800, 150)};
+
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     //Blue Vortex, Red Vortex
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
-    //Directions of the wall
-    //Blue, Red
-    double[] beaconWall = {180, 90};
+    //Directions the robot needs to face to parallel walls
+    double blueBeaconWall = Functions.normalizeAngle(180);
+    double redBeaconWall = Functions.normalizeAngle(90);
+    //Direction to be perpendicular with red beacon wall
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
@@ -41,7 +48,6 @@ public class RedAutoPlay4 extends OpMode{
         switch(state)
         {
             case 0:
-
                 stateInfo = "Rotating to face flywheel";
                 robot.rotateToVortex(vortexPositions[1]);
                 if(!robot.rotateToTargetInProgress){
@@ -55,7 +61,7 @@ public class RedAutoPlay4 extends OpMode{
                 {
                     robot.flywheel.operateGate(true);
                     try {
-                        Thread.sleep(100);                  //Give the particles a little bit of time to reach the flywheel
+                        Thread.sleep(200);                  //Give the particles a little bit of time to reach the flywheel
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -71,48 +77,65 @@ public class RedAutoPlay4 extends OpMode{
                 }
                 break;
             case 4:
-                stateInfo = "Turning to face beacon";
-                robot.rotateToTarget(beaconWall[1]);
+                stateInfo = "Driving closer to beacon";
+                robot.driveToTarget(redPositions[1]);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
             case 5:
-                stateInfo = "Driving to beacon 1";
-                robot.driveToTarget(redPositions[1]);
-                if(!robot.driveToTargetInProgress)
-                {
+                stateInfo = "Turning to parallel wall";
+                robot.rotateToTarget(redBeaconWall);
+                if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
             case 6:
+		/*
                 stateInfo = "Checking beacon status";
                 if (Objects.equals(robot.pusher.isBeaconPushed(), "match")) {
                     robot.pusher.extendPusherNoToggle(true);
                 }
                 state++;
-            break;
+            	break;
+		*/
+
+                stateInfo = "Checking beacon status, pressing if match";
+                if (Objects.equals(robot.pusher.analyzeBeacon(), "match")) {
+                    robot.pusher.extendBeaconNoToggle(true);
+                    state++;
+                }
+                else {                          //If the beacon color does not match, go to case 100
+                    state = 100;
+                }
+                break;
             case 7:
-            stateInfo = "Pressing beacon";
-            if (robot.beaconState == "Extended") {
-                robot.pusher.extendPusherNoToggle(false);
-            }
-            state++;
-            break;
+                stateInfo = "Depressing beacon";
+                if (Objects.equals(robot.beaconState, "Extended")) {
+                    robot.pusher.extendBeaconNoToggle(false);
+                }
+                state++;
+                break;
             case 8:
-            stateInfo = "Driving to center vortex";
-            if(robot.driveToTargetInProgress)
-            {
+                stateInfo = "Driving to center vortex";
                 robot.driveToTarget(redPositions[2]);
-            }
-            else
-            {
-                stateInfo = "AutoOp done :)";
-            }
-            break;
+                if(!robot.driveToTargetInProgress) {
+                    stateInfo = "AutoOp done :) (somehow)";
+                    state++;
+                }
+                break;
+            case 100: /*This case will only run if the beacon does not match*/
+                stateInfo = "Beacon did not match, moving forwards";
+                robot.driveToTarget(redPositions[3]);
+                if (!robot.driveToTargetInProgress){
+                    state = 6;
+                }
+                break;
+            default: break;
         }
 
-        telemetry.addData("State Number: ", stateInfo);
+        telemetry.addData("State Info: ", stateInfo);
+        telemetry.addData("State Number", state);
     }
 }
 
