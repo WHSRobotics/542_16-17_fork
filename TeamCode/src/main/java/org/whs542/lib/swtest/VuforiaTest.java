@@ -170,14 +170,14 @@ public class VuforiaTest extends LinearOpMode {
         VuforiaTrackable wheels = ftcTargets.get(0);
         wheels.setName("Wheels");
 
-        VuforiaTrackable gears = ftcTargets.get(1);
-        gears.setName("Gears");
-
-        VuforiaTrackable tools = ftcTargets.get(2);
+        VuforiaTrackable tools = ftcTargets.get(1);
         tools.setName("Tools");
 
-        VuforiaTrackable legos = ftcTargets.get(3);
+        VuforiaTrackable legos = ftcTargets.get(2);
         legos.setName("Legos");
+
+        VuforiaTrackable gears = ftcTargets.get(3);
+        gears.setName("Gears");
 
         /** For convenience, gather together all the trackable objects in one easily-iterable collection */
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
