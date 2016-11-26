@@ -27,6 +27,7 @@ public class RedAutoPlay3 extends OpMode
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap);

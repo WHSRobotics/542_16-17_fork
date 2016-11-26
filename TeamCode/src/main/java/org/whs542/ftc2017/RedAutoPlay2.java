@@ -19,6 +19,7 @@ public class RedAutoPlay2 extends OpMode {
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     @Override
     public void init() {
@@ -32,7 +33,7 @@ public class RedAutoPlay2 extends OpMode {
         switch (state){
             case 0:
                 stateInfo = "turning to vortex";
-                robot.rotateToVortex();
+                robot.rotateToVortex(vortexPositions[1]);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
@@ -52,12 +53,6 @@ public class RedAutoPlay2 extends OpMode {
                 }
                 break;
             case 2:
-                stateInfo = "driving to position 1"
-                robot.driveToTarget()
-                if(!robot.driveToTargetInProgress){
-                    state++;
-                }
-            case 3:
                 stateInfo = "driving to center";
                 robot.driveToTarget(new Position(0, -300, 150));
                 if(!robot.driveToTargetInProgress) {

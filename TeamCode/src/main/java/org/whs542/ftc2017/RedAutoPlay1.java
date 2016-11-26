@@ -21,6 +21,7 @@ public class RedAutoPlay1 extends OpMode {
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap);
