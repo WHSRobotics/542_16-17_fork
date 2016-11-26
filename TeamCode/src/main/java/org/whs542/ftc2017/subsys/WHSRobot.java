@@ -17,7 +17,6 @@ public class WHSRobot
     public BeaconPusher pusher;
     public Vuforia vuforia;
     public IMU imu;
-    public Color color;
 
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
@@ -50,7 +49,6 @@ public class WHSRobot
         pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
-        color = new Color(robotMap);
     }
 
     public WHSRobot(HardwareMap robotMap){
@@ -61,7 +59,6 @@ public class WHSRobot
         pusher = new BeaconPusher(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
-        color = new Color(robotMap);
     }
 
 
@@ -134,9 +131,9 @@ public class WHSRobot
         }
     }
 
-    public void rotateToVortex()
+    public void rotateToVortex(Position pos)
     {
-        Position vortexPos = new Position(0,0,0);
+        Position vortexPos = pos;
         Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
@@ -313,8 +310,5 @@ public class WHSRobot
         return backVector;
     }
 
-    public void BeaconPusher() {
-        String s = pusher.analyzeBeacon();
-        String beaconState = pusher.getBeaconPusherStatus();
-    }
+
 }
