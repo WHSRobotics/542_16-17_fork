@@ -9,7 +9,7 @@ import org.whs542.lib.Position;
  * Created by Amar2 on 11/22/2016.
  */
 public class TestAutoOp2 extends OpMode {
-
+//Play 2
     WHSRobot robot;
     int state;
     String stateInfo;

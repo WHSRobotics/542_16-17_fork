@@ -10,6 +10,7 @@ import org.whs542.lib.Position;
  * Created by Lucy on 11/23/2016.
  */
 
+//Play 3
 @Autonomous(name = "AutoOpTest3", group = "Autonomous")
 public class TestAutoOp3 extends OpMode
 {
@@ -20,8 +21,10 @@ public class TestAutoOp3 extends OpMode
     final int startingPosition = 1; //1 or 2
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
-    Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
+    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
+    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap);
@@ -32,7 +35,34 @@ public class TestAutoOp3 extends OpMode
 
         switch (state){
             case 0:
-                
+                stateInfo = "Shoot flywheel";
+                robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
+                if (true) {
+                    robot.flywheel.operateGate(true);
+                    state = 1;
+                }
+                break;
+            case 1:
+                stateInfo = "Driving to position 1";
+                if (robot.driveToTargetInProgress) {
+                    robot.driveToTarget(redPositions[0]);
+                } else {
+                    state = 2;
+                }
+                break;
+            case 2:
+                stateInfo = "Driving to beacon 1";
+                if (robot.driveToTargetInProgress) {
+                    robot.driveToTarget(redPositions[1]);
+                } else {
+                    state = 3;
+                }
+                break;
+            case 3:
+                stateInfo = "Checking beacon status";
+                if (robot.color = )
+                state = 4;
+                break;
         }
 
     }
