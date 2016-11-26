@@ -58,14 +58,14 @@ public class Vuforia {
         VuforiaTrackable wheels = ftcTargets.get(0);
         wheels.setName("Wheels");
 
-        VuforiaTrackable gears = ftcTargets.get(1);
-        gears.setName("Gears");
-
-        VuforiaTrackable tools = ftcTargets.get(2);
+        VuforiaTrackable tools = ftcTargets.get(1);
         tools.setName("Tools");
 
-        VuforiaTrackable legos = ftcTargets.get(3);
+        VuforiaTrackable legos = ftcTargets.get(2);
         legos.setName("Legos");
+
+        VuforiaTrackable gears = ftcTargets.get(3);
+        gears.setName("Gears");
 
         // List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables = new ArrayList<VuforiaTrackable>();
@@ -104,16 +104,18 @@ public class Vuforia {
         RobotLog.ii(TAG, "Tools Target=%s", format(toolsTargetLocationOnField));
 
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(mmBotWidth/2,0,0)
+                .translation(0,0,0/*164, 148, 265*/)
                 .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.YZY,
-                        AngleUnit.DEGREES, -90, 0, 0));
+                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90*/));
         RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
 
         ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)gears.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)tools.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)legos.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+
+        ftcTargets.activate();
     }
 
     /**
@@ -123,8 +125,6 @@ public class Vuforia {
      * The first, second, and third values in the xyzCoords [] correspond to x, y, and z coordinates, respectively.
      */
     public Coordinate getHeadingAndLocation(){
-        ftcTargets.activate();
-
         float[] xyzCoords = {INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE};
 
         double heading = INVALID_VUFORIA_VALUE;
@@ -132,10 +132,9 @@ public class Vuforia {
 
         for(VuforiaTrackable trackable : allTrackables){
 
-            OpenGLMatrix robotLocationTransform = null;
-            while( robotLocationTransform == null ){
-                robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-            }
+            OpenGLMatrix robotLocationTransform;
+
+            robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
             if(robotLocationTransform != null) {
                 xyzCoords = robotLocationTransform.getTranslation().getData();
 
@@ -145,7 +144,7 @@ public class Vuforia {
             }
             else {}
         }
-        ftcTargets.deactivate();
+        //ftcTargets.deactivate();
         return new Coordinate(xyzCoords[0], xyzCoords[1], xyzCoords[2], vuforiaAngleConverter(heading));
     }
 
@@ -163,13 +162,16 @@ public class Vuforia {
     }
 
 
-    //Converts vuforia angle to absolute angle value. Vuforia gives values from -180 t0 180; this method
+    //Converts vuforia angle to absolute angle value. Vuforia gives values from -180 to 180; this method
     //Converts it to 0 to 360. 0 = +x
     public static double vuforiaAngleConverter( double degrees ){
 
         if(degrees < 0 && degrees >= -180){
             degrees = degrees + 360;
         }
+        degrees = degrees + 90;
+        if(degrees >= 360)
+            degrees = degrees - 360;
         return degrees;
     }
     /**

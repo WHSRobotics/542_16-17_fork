@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Position;
-
+//Play 4
 @Autonomous(name = "AutoOpTest", group = "AutoOp")
 public class TestAutoOp extends OpMode{
     WHSRobot robot;

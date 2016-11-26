@@ -12,6 +12,7 @@ public class VuforiaTest2 extends OpMode{
 
     Coordinate coordinate;
     Vuforia vuforia;
+    String lastLocation;
 
     @Override
     public void init(){
@@ -24,12 +25,20 @@ public class VuforiaTest2 extends OpMode{
     public void loop(){
         coordinate = vuforia.getHeadingAndLocation();
 
+
         double xPos = coordinate.getX();
         double yPos = coordinate.getY();
+        double zPos = coordinate.getZ();
         double hdg = coordinate.getHeading();
-        String location = "XPos: " + xPos + " Ypos: " + yPos + " Heading: " + hdg;
+        if(xPos != 10000) {
+            String location = "Xpos: " + xPos + " Ypos: " + yPos + " Zpos: " + zPos + " Heading: " + hdg;
 
-        telemetry.addData("Data:", location);
+            telemetry.addData("Data:", location);
+            lastLocation = location;
+        }
+        else{
+            telemetry.addData("Data:", lastLocation);
+        }
         telemetry.update();
     }
 
