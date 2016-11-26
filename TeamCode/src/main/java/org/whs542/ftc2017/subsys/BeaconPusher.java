@@ -46,22 +46,23 @@ public class BeaconPusher {
         }
     }
 
-    public String analyzeBeacon(){
-
-        String s;
+    public boolean analyzeBeacon()
+    {
+        String status;
+        boolean isPressed = false;
 
         if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
-            s = "match";
+            status = "Match";
+            extendBeaconNoToggle(true);
+            isPressed = true;
         }
         else if(color.state.equals("purple")){
-            s = "unknown";
+            status = "Unknown";
         }
         else {
-            s = "notmatch";
+            status = "Not match";
         }
-
-        return s;
-
+        return isPressed;
     }
 
     public String getBeaconPusherStatus()

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
@@ -23,7 +24,7 @@ public class RedAutoPlay1 extends OpMode {
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
 
     public void init() {
-        robot = new WHSRobot(hardwareMap);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
     }
 
@@ -32,47 +33,62 @@ public class RedAutoPlay1 extends OpMode {
         switch(state)
         {
             case 0:
-                stateInfo = "Shoot flywheel";
+                stateInfo = "Turning to vortex";
+                robot.rotateToVortex();
+                if(!robot.rotateToTargetInProgress){
+                    state++;
+                }
+                break;
+            case 1:
+                stateInfo = "Shooting particles";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
                     robot.flywheel.operateGate(true);
-                    state = 1;
+                    state++;
                 }
                 break;
-            case 1:
+            case 2:
                 stateInfo = "Driving to target position 1";
+
                 if(robot.driveToTargetInProgress)
                 {
                     robot.driveToTarget(redPositions[0]);
                 }
                 else
                 {
-                    state = 2;
-                }
-                break;
-            case 2:
-                stateInfo = "Driving to beacon 1";
-                if(robot.driveToTargetInProgress)
-                {
-                    robot.driveToTarget(redPositions[1]);
-                }
-                else
-                {
-                    state = 3;
+                    state++;
                 }
                 break;
             case 3:
-                stateInfo = "Checking beacon status";
-                //Check beacon status
-                state = 4;
+                stateInfo = "Driving close to beacon";
+                if(robot.driveToTargetInProgress)
+                {
+                    robot.driveToTarget(beaconPositions[1]);
+                }
+                else
+                {
+                    state++;
+                }
                 break;
             case 4:
-                stateInfo = "Driving to beacon 2";
-                //Move forward until we see second beacon
-                state = 5;
+                stateInfo = "Checking beacon status";
+
+                if(!robot.pusher.analyzeBeacon())
+                {
+                    robot.driveToTarget(new Position());
+                }
+                state++;
                 break;
             case 5:
+                stateInfo = "Driving to beacon 2";
+                //Move forward until we see second beacon
+                state++;
+                break;
+            case 6:
+                stateInfo = "Checking second beacon status";
+                //
+            case 7:
                 stateInfo = "Driving to center vortex";
                 if(robot.driveToTargetInProgress)
                 {

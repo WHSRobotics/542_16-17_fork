@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class RedAutoPlay3 extends OpMode
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
 
     public void init() {
-        robot = new WHSRobot(hardwareMap);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
     }
 
@@ -64,7 +65,7 @@ public class RedAutoPlay3 extends OpMode
 
             case 4:
                 stateInfo = "Checking beacon status";
-                if (robot.pusher.analyzeBeacon() == "match") {
+                if (robot.pusher.analyzeBeacon()) {
                     robot.pusher.extendBeaconNoToggle(true);
                 }
                 else if(Objects.equals(robot.pusher.analyzeBeacon(), "notmatch")){

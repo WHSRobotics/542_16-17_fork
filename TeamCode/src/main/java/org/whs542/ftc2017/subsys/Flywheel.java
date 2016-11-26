@@ -208,6 +208,7 @@ public class Flywheel
         double deltaTime = 0;
         while(deltaTime < 0.3){
             time2 = (double) (System.nanoTime()) / 1000000000;
+
             deltaTime = time2-time1;
         }
         int encoder2 = flywheel.getCurrentPosition();
