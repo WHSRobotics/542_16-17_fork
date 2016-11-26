@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.whs542.lib.Toggler;
 
 import java.util.concurrent.TimeUnit;
@@ -24,22 +25,20 @@ public class Flywheel
     private final double[] teleflywheelPowers = {0.5, 0.7, 1.0}; //3 different mat location types
     public final double[] autoFlywheelPowers = {}; //TODO: test for these
     private double flywheelPower;
+    private final int MAX_SPEED = 2100; //ticks per sec
+    private final double MIN_SPEED = 1000;
 
     private Toggler flyToggler = new Toggler(2);
     private Toggler flyModeToggler = new Toggler(3);
     private Toggler gateToggler = new Toggler(2);
 
-    private final int MAX_SPEED = 2100; //ticks per sec
-    private final double MIN_SPEED = 1000;
-
+    private String flywheelStatus;
+    /*
     private static double CIRCUMFERENCE = Math.PI  /*insert radius*/; //11.43 is diameter of wheel
     //private double TICKS_PER_SEC;
     private static double TICKS_PER_REV = 1120;
-    //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV;
-    private static double MAX_VELOCITY = 23.08397;
-
-    //private double flySpeed = 0;
-    //Toggler toggler = new Toggler(20);
+    //private double METERS_PER_SEC = CIRCUMFERENCE*TICKS_PER_SEC/ TICKS_PER_REV; *.
+    //private static double MAX_VELOCITY = 23.08397;
 
     //private Coordinate Vortex = new Coordinate(304.8,304.8,304.8,1);
 
@@ -51,7 +50,7 @@ public class Flywheel
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheel.setMaxSpeed(MAX_SPEED);
 
-        flywheelPower = 0.0; //Default flywheelPower
+        flywheelPower = 1.0; //Default flywheelPower
 
         isFlywheelRunning = false;
         isGateOpen = false;
@@ -62,8 +61,7 @@ public class Flywheel
     public void rampFlywheel(boolean rBumper)
     {
         flyToggler.changeState(rBumper);
-        switch(flyToggler.currentState())
-        {
+        switch (flyToggler.currentState()) {
             case 0:
                 flywheel.setPower(flywheelPower);
                 isFlywheelRunning = true;
@@ -98,22 +96,8 @@ public class Flywheel
         return flywheelMode;
     }
 
-    /*
-    public boolean isFlyWheelAtRightSpeed(double targetSpeed)
-    {
-        if(Math.abs(getCurrentSpeed()) - Math.abs(targetSpeed) > 0.05)
-        {
-            isFlywheelAtSpeed = false;
-        }
-        else
-        {
-            isFlywheelAtSpeed = true;
-        }
-        return isFlywheelAtSpeed;
-    }
-
-*/
     //Might change these to state and cases. Not necessary for now
+    /*
     public void run(boolean b1, double powerIn)
     {
         flyModeToggler.changeState(b1);
@@ -128,7 +112,7 @@ public class Flywheel
             flywheel.setPower(0);
         }
     }
-
+*/
     public void setFlywheelPower(double power)
     {
         flywheel.setPower(power);
@@ -136,17 +120,22 @@ public class Flywheel
 
     public void operateGate(boolean a)
     {
-        gateToggler.changeState(a);
-        switch(gateToggler.currentState())
+        if(!isFlywheelAtSpeed)
         {
-            case 0:
-                flywheelGate.setPosition(0.0);
-                isGateOpen = false;
-                break;
-            case 2:
-                flywheelGate.setPosition(1.0);
-                isGateOpen = true;
-                break;
+
+        }
+        else {
+            gateToggler.changeState(a);
+            switch (gateToggler.currentState()) {
+                case 0:
+                    flywheelGate.setPosition(1.0);
+                    isGateOpen = true;
+                    break;
+                case 2:
+                    flywheelGate.setPosition(0.0);
+                    isGateOpen = false;
+                    break;
+            }
         }
     }
 
@@ -159,25 +148,12 @@ public class Flywheel
         operateGate(triggerPressed);
     }
 
-    public String getFlywheelStatus()
-    {
-        if(isFlywheelRunning)
-            return "Spinning";
-        else
-            return "Not spinning";
-    }
-
     public String getGateStatus()
     {
         if(isGateOpen)
             return "Default";
         else
             return "Not Default";
-    }
-
-    public void releaseParticle(boolean b2){
-        flywheelGate.setPosition(120);
-        flywheelGate.setPosition(0);
     }
 
     public double findPower(){
@@ -190,6 +166,7 @@ public class Flywheel
         //https://ftc-tricks.com/dc-motors/
     }
 
+    /*
     public void shoot(boolean b1, boolean b2, double joystick){
         if (b1)
         {
@@ -205,9 +182,11 @@ public class Flywheel
             }
         }
     }
+    */
 
+    /*
     public void test(boolean b1, double velocity){
-        flywheelPower = velocity/MAX_VELOCITY;
+        flywheelPower = velocity/1.0; //ORIGINAL DIVIDED BY MAX_VELOCITY
         flyModeToggler.changeState(b1);
         if(flyModeToggler.currentState() == 1)
         {
@@ -220,9 +199,7 @@ public class Flywheel
             flywheel.setPower(0);
         }
     }
-
-    //TODO: Fix this so it stops returning NaN or Infinity (probably result of divide by 0)
-    //Possible cause: Encoder positions may not update until a loop refresh
+*/
     public double getCurrentSpeed(){
 
         int encoder1 = flywheel.getCurrentPosition();
@@ -240,6 +217,27 @@ public class Flywheel
 
     }
 
+    public boolean isFlywheelAtCorrectSpeed(double power)
+    {
+        double targetSpeed = power * MAX_SPEED;
+
+        if(Math.abs(targetSpeed-getCurrentSpeed()) <= 50){
+            isFlywheelAtSpeed = true;
+            flywheelStatus = "At speed. Ready to shoot.";
+        }
+        else{
+            isFlywheelAtSpeed = false;
+            flywheelStatus = "Not at speed yet. Don't shoot yet.";
+        }
+
+        return isFlywheelAtSpeed;
+    }
+
+    public String getFlywheelStatus()
+    {
+        return flywheelStatus;
+    }
+
     /* Test Program for getCurrentSpeed()
     public double[] getCurrentSpeedTest(){
 
@@ -255,23 +253,6 @@ public class Flywheel
         double d1 = (flywheel.getCurrentPosition()-encoder1);
         double d2 = (TimeUnit.NANOSECONDS.toSeconds(System.nanoTime())-time1);
     */
-
-    public boolean isFlywheelAtCorrectSpeed(double power) {
-
-        boolean status;
-        double targetSpeed = power * MAX_SPEED;
-
-
-        if(Math.abs(targetSpeed-getCurrentSpeed()) <= 50){
-            status = true;
-        }
-        else{
-            status = false;
-        }
-
-        return status;
-
-    }
 
     /*
     public double getCurrentVelocity(){

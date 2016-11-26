@@ -175,29 +175,6 @@ public class Drivetrain {
     }
 
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli(double distanceMM, IMU imu){
-
-        int encoderPosition = (int) (24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
-
-        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER );
-        this.setRunMode( RunMode.RUN_TO_POSITION );
-        this.setMaxSpeed(4000);
-        this.setTargetPosition(encoderPosition);
-
-        while( Math.abs(getEncoderPosition() )
-            < Math.abs( encoderPosition )) {
-
-            this.setLRPower(0.3, 0.3);
-
-            //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
-            //that the robot slammed into something, stop the robot.
-            if( imu.getAccelerationMag() > 10.0 ){
-                this.setLRPower(0, 0);
-                System.exit(0);
-            }
-        }
-    }
-
     public void moveDistanceMilli2(double distanceMM, IMU imu)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);

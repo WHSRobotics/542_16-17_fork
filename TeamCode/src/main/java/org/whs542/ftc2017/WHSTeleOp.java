@@ -37,11 +37,11 @@ public class WHSTeleOp extends OpMode
 
         //Telemetry
         telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
-        telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
-        telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
+        telemetry.addData("Flywheel Status:", robot.flywheel.getFlywheelStatus());
+        telemetry.addData("Flywheel Gate Status:", robot.flywheel.getGateStatus());
 
-        telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);
-        telemetry.addData("RightStick Y:", gamepad1.right_stick_y);
+        telemetry.addData("Left Drivetrain:", gamepad1.left_stick_y);
+        telemetry.addData("Right Drivetrain:", gamepad1.right_stick_y);
         telemetry.addData("Orientation:", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake:", robot.intake.getIntakeState());
