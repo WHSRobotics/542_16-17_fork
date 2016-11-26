@@ -1,7 +1,7 @@
 package org.whs542.ftc2017;
 
 /**
- * Created by Jiangda on 10/30/2016.
+ * Red Play 4 NEED TO FIX - LUCY
  */
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
@@ -13,7 +13,7 @@ import org.whs542.lib.Position;
 import java.util.Objects;
 
 //Play 4
-@Autonomous(name = "AutoOpTest", group = "AutoOp")
+@Autonomous(name = "RedAutoPlay4", group = "AutoOp")
 public class RedAutoPlay4 extends OpMode{
     WHSRobot robot;
     int state;
@@ -39,7 +39,7 @@ public class RedAutoPlay4 extends OpMode{
     //Direction to be perpendicular with red beacon wall
 
     public void init() {
-        robot = new WHSRobot(hardwareMap, side);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
     }
 

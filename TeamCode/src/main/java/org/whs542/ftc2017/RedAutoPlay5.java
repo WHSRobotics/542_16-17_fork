@@ -3,6 +3,7 @@ package org.whs542.ftc2017;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
@@ -22,7 +23,7 @@ public class RedAutoPlay5 extends OpMode {
 
     @Override
     public void init() {
-        robot = new WHSRobot(hardwareMap);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
     }
 
@@ -31,17 +32,17 @@ public class RedAutoPlay5 extends OpMode {
 
         switch(state){
             case 0:
-                stateInfo = "turning to vortex";
+                stateInfo = "Turning to vortex";
                 robot.rotateToVortex();
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
             case 1:
-                stateInfo = "shooting particles";
+                stateInfo = "Shooting particles";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])){
-                    robot.flywheel.releaseParticle(true);
+                    robot.flywheel.operateGate(true);
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -59,7 +60,7 @@ public class RedAutoPlay5 extends OpMode {
                 }
                 break;
             case 3:
-                stateInfo = ""
+                stateInfo = "";
 
         }
 

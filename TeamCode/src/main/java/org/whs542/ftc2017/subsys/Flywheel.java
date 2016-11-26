@@ -118,34 +118,23 @@ public class Flywheel
         flywheel.setPower(power);
     }
 
-    public void operateGate(boolean a)
-    {
-        if(!isFlywheelAtSpeed)
-        {
-
-        }
-        else {
-            gateToggler.changeState(a);
-            switch (gateToggler.currentState()) {
-                case 0:
-                    flywheelGate.setPosition(1.0);
-                    isGateOpen = true;
-                    break;
-                case 2:
-                    flywheelGate.setPosition(0.0);
-                    isGateOpen = false;
-                    break;
-            }
-        }
-    }
-
-    public void operateGate(float trigger)
+    public void operateGate(double trigger)
     {
         boolean triggerPressed;
         if(trigger > 0.05) {triggerPressed = true;}
         else {triggerPressed = false;}
 
-        operateGate(triggerPressed);
+        gateToggler.changeState(triggerPressed);
+        switch (gateToggler.currentState()) {
+            case 0:
+                flywheelGate.setPosition(1.0);
+                isGateOpen = true;
+                break;
+            case 2:
+                flywheelGate.setPosition(0.0);
+                isGateOpen = false;
+                break;
+        }
     }
 
     public String getGateStatus()
@@ -208,6 +197,7 @@ public class Flywheel
         double deltaTime = 0;
         while(deltaTime < 0.3){
             time2 = (double) (System.nanoTime()) / 1000000000;
+
             deltaTime = time2-time1;
         }
         int encoder2 = flywheel.getCurrentPosition();

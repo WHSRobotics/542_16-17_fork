@@ -26,9 +26,9 @@ public class Color {
     }
 
     public String state() {
-        if (colorSensor.red() - colorSensor.blue() >= TOLERANCE) state = "red";
-        else if (colorSensor.blue() - colorSensor.red() >=TOLERANCE) state = "blue";
-        else state = "purple";
+        if (colorSensor.red() - colorSensor.blue() >= TOLERANCE) {state = "red";}
+        else if (colorSensor.blue() - colorSensor.red() >=TOLERANCE) {state = "blue";}
+        else {state = "purple";}
         return state;
     }
 
