@@ -1,6 +1,7 @@
 package org.whs542.ftc2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,6 +12,7 @@ import org.whs542.ftc2017.subsys.Flywheel;
  * Created by jian on 11/5/2016.
  */
 @Autonomous(name = "Flywheel Test", group = "Tests")
+@Disabled
 public class FlywheelTest extends OpMode{
 
     private Flywheel flywheel;

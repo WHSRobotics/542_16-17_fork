@@ -6,9 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor.*;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.whs542.lib.Coordinate;
-import org.whs542.lib.Functions;
-import org.whs542.lib.Toggler;
+import org.whs542.lib.*;
 
 /**
  * Drivetrain Subsystem Class
@@ -119,6 +117,14 @@ public class Drivetrain {
         }
     }
 
+    public double getLScaledPower(double leftPower){
+        return Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower,3) : 0.0;
+    }
+
+    public double getRScaledPower(double rightPower){
+        return Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower,3) : 0.0;
+    }
+
     //Orientation Switch Methods
     public void setOrientation(boolean trigger)
     {
@@ -151,6 +157,11 @@ public class Drivetrain {
 
     //Input: destination coordinate object(values are in millimeters)
     //Output: robot automatically moves to that point on the field.
+    /**
+     * Moves the robot to a target location
+     * @deprecated use {@link WHSRobot#driveToTarget(Position)}}
+     */
+    @Deprecated
     public void move(Coordinate target, Vuforia vuforia, IMU imu){
         Coordinate current = vuforia.getHeadingAndLocation();
 
@@ -175,29 +186,6 @@ public class Drivetrain {
     }
 
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli(double distanceMM, IMU imu){
-
-        int encoderPosition = (int) (24 / 24.5 * 0.5 * distanceMM * ENCODER_TICKS_PER_MM);
-
-        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER );
-        this.setRunMode( RunMode.RUN_TO_POSITION );
-        this.setMaxSpeed(4000);
-        this.setTargetPosition(encoderPosition);
-
-        while( Math.abs(getEncoderPosition() )
-            < Math.abs( encoderPosition )) {
-
-            this.setLRPower(0.3, 0.3);
-
-            //If the acceleration measured by the accelerometer exceeds a certain threshold, indicating
-            //that the robot slammed into something, stop the robot.
-            if( imu.getAccelerationMag() > 10.0 ){
-                this.setLRPower(0, 0);
-                System.exit(0);
-            }
-        }
-    }
-
     public void moveDistanceMilli2(double distanceMM, IMU imu)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
@@ -275,6 +263,11 @@ public class Drivetrain {
 
     //Tells the robot how much left (positive value) or right (negative) to turn based on the initial heading, from 0
     //to 359.9, and the final heading, also from 0 to 360. Accounts for the jump from 359.9 to 0.
+    /**
+     * The old method for turning a given number of degrees
+     * @deprecated use {@link WHSRobot#rotateToTarget(double)}
+     */
+    @Deprecated
     public void turn( double destinationDegrees, double currentDegrees, IMU imu){
         this.setRunMode(RunMode.RUN_WITHOUT_ENCODER);
         double difference = turnValue(destinationDegrees, currentDegrees);

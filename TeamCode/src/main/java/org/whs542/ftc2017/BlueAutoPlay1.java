@@ -8,25 +8,25 @@ import org.whs542.lib.Alliance;
 import org.whs542.lib.Position;
 
 /**
- * Red Play 1
+ * Blue Play 1
  */
 
-@Autonomous(name = "RedAutoPlay1", group = "AutoOp")
-public class RedAutoPlay1 extends OpMode {
+@Autonomous(name = "BlueAutoPlay1", group = "AutoOp")
+public class BlueAutoPlay1 extends OpMode {
     WHSRobot robot;
+
     int state;
-    int wait;
     int loop;
+    int wait;
+
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
 
-    //Red: Tools, Gears
-    Position[] beaconPositions = {new Position(-1800,900,150), new Position(-1800,-300,150)};
+    //Blue: Wheels, Legos
+    Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
-    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
-    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
-
+    Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
@@ -43,7 +43,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Turning to vortex";
                 if(robot.rotateToTargetInProgress || loop == 1)
                 {
-                    robot.rotateToVortex(vortexPositions[1]);
+                    robot.rotateToVortex();
                     loop = 2;
                 }
                 else {
@@ -72,7 +72,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Driving to target position 1";
                 if(robot.driveToTargetInProgress || loop == 1)
                 {
-                    robot.driveToTarget(redPositions[0]);
+                    robot.driveToTarget(bluePositions[0]);
                     loop = 2;
                 }
                 else
@@ -98,7 +98,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Checking beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position(-1800, -200, 150));
+                    robot.driveToTarget(new Position());
                 }
                 else {state++;}
                 break;
@@ -119,7 +119,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Checking second beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position(-1800, 1000, 150));
+                    robot.driveToTarget(new Position());
                 }
                 else {state++;}
                 break;
@@ -127,7 +127,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Driving to center vortex";
                 if(robot.driveToTargetInProgress || loop == 1)
                 {
-                    robot.driveToTarget(redPositions[2]);
+                    robot.driveToTarget(bluePositions[2]);
                     loop = 2;
                 }
                 else
@@ -140,4 +140,3 @@ public class RedAutoPlay1 extends OpMode {
         telemetry.addData("State Number: ", stateInfo);
     }
 }
-

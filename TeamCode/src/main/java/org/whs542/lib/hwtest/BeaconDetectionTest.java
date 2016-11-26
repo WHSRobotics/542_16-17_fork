@@ -1,11 +1,9 @@
 package org.whs542.lib.hwtest;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.BeaconPusher;
-import org.whs542.ftc2017.subsys.Color;
 import org.whs542.lib.Alliance;
 
 /**
@@ -26,8 +24,8 @@ public class BeaconDetectionTest extends OpMode{
     @Override
     public void loop() {
 
-        pusher.extendBeacon(gamepad1.a);
-        telemetry.addData("To Push?", pusher.analyzeBeacon());
+        pusher.extendPusher(gamepad1.a);
+        telemetry.addData("To Push?", pusher.isBeaconPushed());
         telemetry.addData("Color val", pusher.color.state());
         telemetry.addData("R", pusher.color.getR());
         telemetry.addData("G", pusher.color.getG());

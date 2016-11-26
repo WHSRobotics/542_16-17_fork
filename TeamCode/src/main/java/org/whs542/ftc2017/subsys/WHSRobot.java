@@ -13,7 +13,7 @@ public class WHSRobot
     public Drivetrain drivetrain;
     public Intake intake;
     public Flywheel flywheel;
-    public CapballLift capball;
+    //public CapballLift capball;
     public BeaconPusher pusher;
     public Vuforia vuforia;
     public IMU imu;
@@ -45,22 +45,11 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
-        capball = new CapballLift(robotMap);
+        //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
     }
-
-    public WHSRobot(HardwareMap robotMap){
-        drivetrain = new Drivetrain(robotMap);
-        intake = new Intake(robotMap);
-        flywheel = new Flywheel(robotMap);
-        capball = new CapballLift(robotMap);
-        pusher = new BeaconPusher(robotMap);
-        vuforia = new Vuforia();
-        imu = new IMU(robotMap);
-    }
-
 
     public void driveToTarget(Position targetPos /*field frame*/) {
         estimatePosition();
@@ -131,9 +120,8 @@ public class WHSRobot
         }
     }
 
-    public void rotateToVortex(Position pos)
+    public void rotateToVortex(Position vortexPos)
     {
-        Position vortexPos = pos;
         Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
@@ -245,7 +233,7 @@ public class WHSRobot
             case 0:
                 driveToTarget(firstMovement[beaconToggle.currentState()]);
                 driveToTarget(beaconPositions[beaconToggle.currentState()]);
-                //scan beacon and press based on correct value //TODO: ADD IN COLOR SENSING
+
                 break;
             case 1:
                 drivetrain.setLRPower(0.0,0.0);
