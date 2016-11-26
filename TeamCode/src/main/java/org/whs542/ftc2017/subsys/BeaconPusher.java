@@ -37,6 +37,15 @@ public class BeaconPusher {
         }
     }
 
+    public void extendBeaconNoToggle(boolean extend){
+        if(extend){
+            beaconPusher.setPosition(1.0);
+        }
+        else {
+            beaconPusher.setPosition(0.0);
+        }
+    }
+
     public String analyzeBeacon(){
 
         String s;
