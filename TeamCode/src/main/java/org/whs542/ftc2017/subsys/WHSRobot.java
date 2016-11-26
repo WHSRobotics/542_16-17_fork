@@ -22,6 +22,8 @@ public class WHSRobot
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
     boolean drivingInReverse = false;
+    public String s = "";
+    public String beaconState = "";
 
     private Toggler beaconToggle = new Toggler(4);
     private Toggler autoBeaconToggle = new Toggler(2);
@@ -56,7 +58,7 @@ public class WHSRobot
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
         capball = new CapballLift(robotMap);
-        //pusher = new BeaconPusher(robotMap);
+        pusher = new BeaconPusher(robotMap);
         vuforia = new Vuforia();
         imu = new IMU(robotMap);
         color = new Color(robotMap);
@@ -309,5 +311,10 @@ public class WHSRobot
 
         backVector = Functions.transformCoordinates(C_f2b,frontVector);
         return backVector;
+    }
+
+    public void BeaconPusher() {
+        String s = pusher.analyzeBeacon();
+        String beaconState = pusher.getBeaconPusherStatus();
     }
 }

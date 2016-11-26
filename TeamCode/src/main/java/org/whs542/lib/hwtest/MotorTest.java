@@ -26,6 +26,16 @@ public class MotorTest extends OpMode {
         {
             motor.setPower(0.5);
         }
+        else if(Math.abs(gamepad1.left_stick_y) >= 0.05){
+            motor.setPower(gamepad1.left_stick_y);
+        }
+        else{
+            motor.setPower(0.0);
+        }
+
+        telemetry.addData("Enc Ticks", motor.getCurrentPosition());
+
+
         /*
         if(power >= -1.0){
             power += 0.01;

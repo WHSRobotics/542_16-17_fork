@@ -60,10 +60,29 @@ public class RedAutoPlay3 extends OpMode
                 break;
             case 3:
                 stateInfo = "Checking beacon status";
-                if (robot.color = )
+                if (robot.s == "match") {
+                    robot.pusher.extendBeaconNoToggle(true);
+                }
                 state = 4;
                 break;
+            case 4:
+                stateInfo = "Pressing beacon";
+                if (robot.beaconState == "Extended") {
+                    robot.pusher.extendBeaconNoToggle(false);
+                }
+                state = 5;
+                break;
+            case 5:
+                stateInfo = "Driving to center vortex";
+                if (robot.driveToTargetInProgress) {
+                    robot.driveToTarget(redPositions[2]);
+                } else {
+                    stateInfo = "AutoOp done :)";
+                    state = 6;
+                }
+                break;
+            case 6: break;
         }
-
+       telemetry.addData("State Number: ", stateInfo);
     }
 }

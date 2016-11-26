@@ -31,7 +31,7 @@ public class RedAutoPlay2 extends OpMode {
 
         switch (state){
             case 0:
-                robot.rotateToTarget();
+                robot.rotateToVortex();
                 robot.flywheel.setFlywheelPower();
                 //wait until the flywheel is at the correct speed
                 while(!robot.flywheel.isFlywheelAtCorrectSpeed()){}
