@@ -51,6 +51,17 @@ public class WHSRobot
         imu = new IMU(robotMap);
     }
 
+    public WHSRobot(HardwareMap robotMap)
+    {
+        drivetrain = new Drivetrain(robotMap);
+        intake = new Intake(robotMap);
+        flywheel = new Flywheel(robotMap);
+        //capball = new CapballLift(robotMap);
+        //pusher = new BeaconPusher(robotMap, side);
+        vuforia = new Vuforia();
+        imu = new IMU(robotMap);
+    }
+
     public void driveToTarget(Position targetPos /*field frame*/) {
         estimatePosition();
         estimateHeading();
@@ -191,7 +202,7 @@ public class WHSRobot
         else {
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading);
-        }
+        }a
     }
 
     public void setInitialPosition(Position initPos)

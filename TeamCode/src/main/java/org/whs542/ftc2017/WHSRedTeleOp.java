@@ -43,6 +43,7 @@ public class WHSRedTeleOp extends OpMode
         telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
         telemetry.addData("Flywheel Status: ", robot.flywheel.getFlywheelStatus());
         telemetry.addData("Flywheel Gate Status: ", robot.flywheel.getGateStatus());
+        //flywheel speed check to close gate and check if particle is launched
 
         telemetry.addData("Auto Beacon Choice: ", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
 

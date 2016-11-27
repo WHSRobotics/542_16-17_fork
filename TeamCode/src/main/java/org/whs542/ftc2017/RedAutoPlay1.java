@@ -15,7 +15,7 @@ import org.whs542.lib.Position;
 public class RedAutoPlay1 extends OpMode {
     WHSRobot robot;
     int state;
-    int wait;
+    int waitForIntake;
     int loop;
     String stateInfo;
     double[] powers = {0.7, 0.8};
@@ -28,7 +28,7 @@ public class RedAutoPlay1 extends OpMode {
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
-        wait = 1000;
+        waitForIntake = 1000;
         loop = 1;
     }
 
@@ -38,6 +38,7 @@ public class RedAutoPlay1 extends OpMode {
         {
             case 0:
                 stateInfo = "Turning to vortex";
+                robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.rotateToTargetInProgress || loop == 1)
                 {
                     robot.rotateToVortex();
@@ -50,19 +51,23 @@ public class RedAutoPlay1 extends OpMode {
                 break;
             case 1:
                 stateInfo = "Shooting particles";
-                robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
-                if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
+                if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) //maybe use time to check instead
                 {
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGate(1.0); //write separate method for autonomous
                     robot.intake.runIntake(1.0);
-                    if(wait > 0)
+                    //add another delay loop waitforgravityfeed
+                    //close gate
+                    if(waitForIntake > 0) //rename this variable
                     {
-                        wait--;
+                        waitForIntake--;
                     }
-                    state++;
+                    //check for flywheel speed again
+                    //open gate and shut downw intake
                     robot.intake.runIntake(0.0);
+                    //add another delay loop
                     robot.flywheel.setFlywheelPower(0.0);
                     robot.flywheel.operateGate(1.0);
+                    state++;
                 }
                 break;
             case 2:

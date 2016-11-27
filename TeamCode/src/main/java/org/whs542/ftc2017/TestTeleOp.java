@@ -25,8 +25,8 @@ public class TestTeleOp extends OpMode{
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-        robot.capball.liftCB(gamepad1.dpad_up);
-        robot.capball.dropCB(gamepad1.dpad_down);
+        //robot.capball.liftCB(gamepad1.dpad_up);
+        //robot.capball.dropCB(gamepad1.dpad_down);
 
         //Gamepad 2
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
@@ -47,7 +47,7 @@ public class TestTeleOp extends OpMode{
 
         //telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
 
-        telemetry.addData("Capball Lift:", robot.capball.getCBState());
+        //telemetry.addData("Capball Lift:", robot.capball.getCBState());
 
         //test for flywheel velocity vs distance
         /*robot.flywheel.test(gamepad1.a, 1);
