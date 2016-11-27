@@ -74,6 +74,7 @@ public class RedAutoPlay2 extends OpMode {
 
 
         }
+        telemetry.addData("StateInfo:", stateInfo);
 
     }
 }

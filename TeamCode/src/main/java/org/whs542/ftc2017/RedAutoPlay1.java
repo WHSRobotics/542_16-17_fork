@@ -56,7 +56,7 @@ public class RedAutoPlay1 extends OpMode {
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGateNoToggle(true);
                     robot.intake.runIntake(1.0);
                     if(wait > 0)
                     {
@@ -65,7 +65,7 @@ public class RedAutoPlay1 extends OpMode {
                     state++;
                     robot.intake.runIntake(0.0);
                     robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGateNoToggle(false);
                 }
                 break;
             case 2:
