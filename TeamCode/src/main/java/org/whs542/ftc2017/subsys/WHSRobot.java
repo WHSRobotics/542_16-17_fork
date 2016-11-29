@@ -41,14 +41,15 @@ public class WHSRobot
 
     Coordinate currentCoord; //field frame
 
-    public WHSRobot(HardwareMap robotMap, Alliance side){
+    public WHSRobot(HardwareMap robotMap, Alliance side, Coordinate startingPosition, double initialHeading){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
-        imu = new IMU(robotMap);
+        imu = new IMU(robotMap, initialHeading);
+        currentCoord = startingPosition;
     }
 
     public void driveToTarget(Position targetPos /*field frame*/) {
@@ -136,9 +137,15 @@ public class WHSRobot
 
     public void estimatePosition()
     {
-        if(vuforia.vuforiaIsValid())
+        Coordinate vuforiaCoord = null;
+        for(int i = 0; i < 100; i++){
+            if(vuforia.vuforiaIsValid()){
+                vuforiaCoord = vuforia.getHeadingAndLocation();
+            }
+        }
+        if(vuforiaCoord != null)
         {
-            Coordinate vuforiaCoord = vuforia.getHeadingAndLocation(); //coordinate of camera in field frame
+            //vuforiaCoord = coordinate of camera in field frame
             vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
             Position currentPos = vuforiaCoord.getPos(); //field frame
             currentCoord.setPos(currentPos); //field frame
@@ -252,6 +259,11 @@ public class WHSRobot
         Position bodyPos = Functions.addPositions(vuforiaPos, cameraToBodyPos); //field frame
 
         double heading = vuforiaCoord.getHeading() - CAMERA_TO_BODY_ANGLE; //field frame
+
+        if(heading < 0)
+            heading += 360;
+        else if(heading >=360)
+            heading -= 360;
 
         bodyCoord = new Coordinate(bodyPos, heading); //field frame
         return bodyCoord;

@@ -19,7 +19,7 @@ public class Drivetrain {
     private DcMotor backLeft;
     private DcMotor backRight;
 
-    public double[] encoderValues;
+    public double[] encoderValues = {0, 0};
     public final double DEADBAND_ENCODERS = 5; //TODO: test this value
 
     private Toggler orientationSwitch = new Toggler(2);
@@ -359,11 +359,11 @@ public class Drivetrain {
         {
             double percentDifference;
             if(Math.abs(rightVal) > Math.abs(leftVal)) {
-                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(rightVal);
+                percentDifference = 100* Math.abs(leftVal - rightVal) / Math.abs(rightVal);
             }
             else
             {
-                percentDifference = Math.abs(leftVal - rightVal) / Math.abs(leftVal);
+                percentDifference = 100* Math.abs(leftVal - rightVal) / Math.abs(leftVal);
             }
 
             if(percentDifference < DEADBAND_ENCODERS)

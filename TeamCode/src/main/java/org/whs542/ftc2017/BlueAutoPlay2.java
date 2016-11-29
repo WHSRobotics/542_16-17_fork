@@ -81,6 +81,7 @@ public class BlueAutoPlay2 extends OpMode {
                 if(!robot.driveToTargetInProgress){
                     state++;
                 }
+                break;
             case 4:
                 stateInfo = "determining / pressing first beacon";
                 if(!robot.pusher.isBeaconPushed()){
@@ -89,12 +90,14 @@ public class BlueAutoPlay2 extends OpMode {
                 else{
                     state++;
                 }
+                break;
             case 5:
                 stateInfo = "moving to second beacon";
                 robot.driveToTarget(beaconPositions[1]);
                 if(!robot.driveToTargetInProgress){
                     state++;
                 }
+                break;
             case 6:
                 stateInfo = "determining / pressing second beacon";
                 if(!robot.pusher.isBeaconPushed()){
@@ -103,14 +106,17 @@ public class BlueAutoPlay2 extends OpMode {
                 else{
                     state++;
                 }
+                break;
             case 7:
                 stateInfo = "moving to position 2";
                 robot.driveToTarget(bluePositions[1]);
                 if(!robot.driveToTargetInProgress){
                     state++;
                 }
+                break;
             case 8:
-                stateInfo = "Auto Op Done!"
+                stateInfo = "Auto Op Done!";
+                break;
 
 
         }

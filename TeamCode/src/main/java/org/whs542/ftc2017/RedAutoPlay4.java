@@ -50,7 +50,7 @@ public class RedAutoPlay4 extends OpMode{
         {
             case 0:
                 stateInfo = "Rotating to face flywheel";
-                robot.rotateToVortex(vortexPositions[1]);
+                robot.rotateToVortex(vortexPositions[1]); //FIXME
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
@@ -77,21 +77,21 @@ public class RedAutoPlay4 extends OpMode{
                     state++;
                 }
                 break;
-            case 3:
+            case 4:
                 stateInfo = "Driving closer to beacon";
                 robot.driveToTarget(redPositions[1]);
-                if(!robot.driveToTargetInProgress){
+                if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
-            case 4:
+            case 5:
                 stateInfo = "Turning to parallel wall";
                 robot.rotateToTarget(redBeaconWall);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
-            case 5:
+            case 6:
                 stateInfo = "Checking beacon status, pressing if match";
                 if (robot.pusher.isBeaconPushed()) {
                     state++;
@@ -100,7 +100,14 @@ public class RedAutoPlay4 extends OpMode{
                     state = 100;
                 }
                 break;
-            case 6:
+            case 7:
+                stateInfo = "Depressing beacon";
+                if (Objects.equals(robot.beaconState, "Extended")) {
+                    robot.pusher.extendPusherNoToggle(false);
+                }
+                state++;
+                break;
+            case 8:
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(redPositions[2]);
                 if(!robot.driveToTargetInProgress) {
@@ -112,7 +119,7 @@ public class RedAutoPlay4 extends OpMode{
                 stateInfo = "Beacon did not match, moving forwards";
                 robot.driveToTarget(redPositions[3]);
                 if (!robot.driveToTargetInProgress){
-                    state = 5;
+                    state = 6;
                 }
                 break;
             default: break;
