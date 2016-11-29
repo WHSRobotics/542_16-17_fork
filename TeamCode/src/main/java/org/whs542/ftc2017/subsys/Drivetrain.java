@@ -155,7 +155,7 @@ public class Drivetrain {
     //Output: robot automatically moves to that point on the field.
     /**
      * Moves the robot to a target location
-     * @deprecated use {@link WHSRobot#driveToTarget(Position)}}
+     * @deprecated use {@link WHSRobot#driveToTarget(Position)}
      */
     @Deprecated
     public void move(Coordinate target, Vuforia vuforia, IMU imu){
@@ -293,7 +293,11 @@ public class Drivetrain {
         this.setLRPower(0, 0);
     }
 
-
+    /**
+     * A supplementary method for {@link #turn(double, double, IMU)}
+     * @deprecated along with {@link #turn(double, double, IMU)} Use {@link WHSRobot#rotateToTarget(double)} instead
+     */
+    @Deprecated
     public double turnValue(double destinationDegrees, double currentDegrees){
         double difference = destinationDegrees - currentDegrees;
         if( Math.abs( difference ) > 180){
