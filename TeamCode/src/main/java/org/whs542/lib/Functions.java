@@ -82,7 +82,7 @@ public class Functions
 
     public static double calculateMagnitude(Position pos)
     {
-        double magnitude = Math.pow(pos.getX(),2) + Math.pow(pos.getY(),2) + Math.pow(pos.getZ(),2);
+        double magnitude = Math.pow(pos.getX(),2) + Math.pow(pos.getY(),2);
         magnitude = Math.sqrt(magnitude);
         return magnitude;
     }
