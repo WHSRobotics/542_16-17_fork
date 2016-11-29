@@ -1,7 +1,7 @@
 package org.whs542.ftc2017;
 
 /**
- * Red Play 4 NEED TO FIX - LUCY
+ * Red Play 4 NOT NEED TO FIX, PROBABLY - JASON
  */
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
@@ -20,6 +20,7 @@ public class RedAutoPlay4 extends OpMode{
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
+    final long particleDelay = 300; //in milliseconds
     Alliance side = Alliance.RED;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
@@ -61,7 +62,7 @@ public class RedAutoPlay4 extends OpMode{
                 {
                     robot.flywheel.operateGateNoToggle(true);
                     try {
-                        Thread.sleep(200);                  //Give the particles a little bit of time to reach the flywheel
+                        Thread.sleep(particleDelay);                  //Give the particles a little bit of time to reach the flywheel
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -103,7 +104,7 @@ public class RedAutoPlay4 extends OpMode{
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(redPositions[2]);
                 if(!robot.driveToTargetInProgress) {
-                    stateInfo = "AutoOp done :) (somehow)";
+                    stateInfo = "AutoOp done :) (if you made it this far, congratz)";
                     state++;
                 }
                 break;
