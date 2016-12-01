@@ -31,6 +31,8 @@ public class Vuforia {
 
     public static final String TAG = "Vuforia AutoOp";
 
+    private Coordinate validVuforiaCoord;
+
     VuforiaLocalizer vuforia;
 
     List<VuforiaTrackable> allTrackables;
@@ -125,10 +127,10 @@ public class Vuforia {
      * The first, second, and third values in the xyzCoords [] correspond to x, y, and z coordinates, respectively.
      */
     public Coordinate getHeadingAndLocation(){
-        float[] xyzCoords = {INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE};
-
-        double heading = INVALID_VUFORIA_VALUE;
+        float[] xyzCoords;
+        double heading;
         Orientation robotOrientation;
+        Coordinate coordToReturn = new Coordinate(INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE, INVALID_VUFORIA_VALUE);;
 
         for(VuforiaTrackable trackable : allTrackables){
 
@@ -141,22 +143,27 @@ public class Vuforia {
                 robotOrientation = Orientation.getOrientation(robotLocationTransform, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, Orientation.AngleSet.THEONE);
                 heading = robotOrientation.thirdAngle;
                 //DbgLog.msg("%f, %f, %f, %f", xyzCoords[0], xyzCoords[1], xyzCoords[2], heading);
+                coordToReturn = new Coordinate(xyzCoords[0], xyzCoords[1], xyzCoords[2], vuforiaAngleConverter(heading));
             }
-            else {}
+            else if(validVuforiaCoord != null){
+                coordToReturn = validVuforiaCoord;
+            }
+            else{}
         }
         //ftcTargets.deactivate();
-        return new Coordinate(xyzCoords[0], xyzCoords[1], xyzCoords[2], vuforiaAngleConverter(heading));
+        return coordToReturn;
     }
 
     public boolean vuforiaIsValid()
     {
         Coordinate currentCoord = getHeadingAndLocation();
-        if(currentCoord.getX() == INVALID_VUFORIA_VALUE)
+        if(currentCoord.getX() == INVALID_VUFORIA_VALUE || currentCoord.getX() == validVuforiaCoord.getX())
         {
             return false;
         }
         else
         {
+            validVuforiaCoord = currentCoord;
             return true;
         }
     }

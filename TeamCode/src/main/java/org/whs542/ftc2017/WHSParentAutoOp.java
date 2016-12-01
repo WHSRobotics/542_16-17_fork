@@ -27,7 +27,7 @@ public abstract class WHSParentAutoOp extends OpMode {
 
     @Override
     public void init(){
-        robot = new WHSRobot(hardwareMap, Alliance);
+        robot = new WHSRobot(hardwareMap, allianceColor);
         //DbgLog.msg("Rbt init");
         telemetry.addData("RBT Init", 1);
     }

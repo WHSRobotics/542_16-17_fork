@@ -27,9 +27,10 @@ public class BlueAutoPlay1 extends OpMode {
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED);
+        robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         state = 0;
         wait = 1000;
         loop = 1;
@@ -43,7 +44,7 @@ public class BlueAutoPlay1 extends OpMode {
                 stateInfo = "Turning to vortex";
                 if(robot.rotateToTargetInProgress || loop == 1)
                 {
-                    robot.rotateToVortex();
+                    robot.rotateToVortex(vortexPositions[0]);
                     loop = 2;
                 }
                 else {
@@ -56,7 +57,7 @@ public class BlueAutoPlay1 extends OpMode {
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGateNoToggle(true);
                     robot.intake.runIntake(1.0);
                     if(wait > 0)
                     {
@@ -65,7 +66,7 @@ public class BlueAutoPlay1 extends OpMode {
                     state++;
                     robot.intake.runIntake(0.0);
                     robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGateNoToggle(false);
                 }
                 break;
             case 2:
@@ -124,6 +125,18 @@ public class BlueAutoPlay1 extends OpMode {
                 else {state++;}
                 break;
             case 7:
+                stateInfo = "Driving to position 2";
+                    if(robot.driveToTargetInProgress || loop == 1){
+                        robot.driveToTarget(beaconPositions[1]);
+                        loop = 2;
+                    }
+                    else{
+                        loop = 1;
+                        state++;
+                    }
+
+
+            case 8:
                 stateInfo = "Driving to center vortex";
                 if(robot.driveToTargetInProgress || loop == 1)
                 {
