@@ -1,6 +1,7 @@
 package org.whs542.ftc2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -14,6 +15,7 @@ import java.util.Objects;
  */
 
 @Autonomous(name = "RedAutoPlay1", group = "AutoOp")
+@Disabled
 public class RedAutoPlay1 extends OpMode {
     WHSRobot robot;
     int state;

@@ -191,7 +191,7 @@ public class Drivetrain {
         this.setMaxSpeed(2100);
         this.setTargetPosition(targetPosition);
 
-        imu.calibrateHeading();
+        imu.zeroHeading();
 
         while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {

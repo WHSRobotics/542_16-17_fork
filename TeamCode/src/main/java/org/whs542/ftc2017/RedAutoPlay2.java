@@ -1,15 +1,17 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
 import org.whs542.lib.Position;
 
 /**
  * Red Auto Play 3
  */
-
+@Disabled
 public class RedAutoPlay2 extends OpMode {
     WHSRobot robot;
     int state;
@@ -21,6 +23,7 @@ public class RedAutoPlay2 extends OpMode {
     Position[] redPositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] bluePositions = {new Position(100,100,100), new Position(100,100,100), new Position(0,0,0)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+    Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
     @Override
     public void init() {

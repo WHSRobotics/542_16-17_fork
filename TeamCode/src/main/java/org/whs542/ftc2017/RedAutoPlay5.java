@@ -1,6 +1,7 @@
 package org.whs542.ftc2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -12,7 +13,7 @@ import org.whs542.lib.Position;
  * Created by Jiangda on 11/25/2016.
  */
 @Autonomous(name = "RedAutoPlay5", group = "Autonomous  ")
-
+//@Disabled
 public class RedAutoPlay5 extends OpMode {
 
     WHSRobot robot;
@@ -31,7 +32,8 @@ public class RedAutoPlay5 extends OpMode {
 
     @Override
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED, startingPositions[1], 90);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
+        robot.setInitialCoordinate(startingPositions[1]);
         state = 0;
     }
 

@@ -31,7 +31,7 @@ public class IMUHeadingTest extends OpMode{
         telemetry.addData("Acceleration: ", accelValue);
 
         if(gamepad1.x){
-            imu.calibrateHeading();
+            //imu.calibrateHeading();
         }
     }
 

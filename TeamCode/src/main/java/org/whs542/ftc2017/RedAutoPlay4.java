@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 //Play 4
 @Autonomous(name = "RedAutoPlay4", group = "AutoOp")
+//@Disabled
 public class RedAutoPlay4 extends OpMode{
     WHSRobot robot;
     int state;
@@ -38,6 +40,7 @@ public class RedAutoPlay4 extends OpMode{
     double blueBeaconWall = Functions.normalizeAngle(180);
     double redBeaconWall = Functions.normalizeAngle(90);
     //Direction to be perpendicular with red beacon wall
+    Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
