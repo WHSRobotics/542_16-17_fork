@@ -2,6 +2,7 @@ package org.whs542.ftc2017;
 
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +19,7 @@ import org.whs542.lib.hwtest.TestDrivetrain;
  */
 
 @Autonomous( name = "MoveTestAutoOp", group = "test" )
+@Disabled
 public class MoveTestAutoOp extends LinearOpMode {
 
     //Vuforia vuforia;

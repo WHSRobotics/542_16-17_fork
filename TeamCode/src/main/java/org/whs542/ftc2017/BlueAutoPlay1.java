@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
 import org.whs542.lib.Position;
 
 /**
@@ -12,6 +13,7 @@ import org.whs542.lib.Position;
  */
 
 @Autonomous(name = "BlueAutoPlay1", group = "AutoOp")
+//@Disabled
 public class BlueAutoPlay1 extends OpMode {
     WHSRobot robot;
 
@@ -28,9 +30,12 @@ public class BlueAutoPlay1 extends OpMode {
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+    Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
+
 
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
+        robot.setInitialCoordinate(startingPositions[1]);
         state = 0;
         wait = 1000;
         loop = 1;
@@ -99,7 +104,7 @@ public class BlueAutoPlay1 extends OpMode {
                 stateInfo = "Checking beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position());
+                    robot.driveToTarget(new Position(-890,1800,150));
                 }
                 else {state++;}
                 break;
@@ -120,7 +125,7 @@ public class BlueAutoPlay1 extends OpMode {
                 stateInfo = "Checking second beacon status";
                 if(!robot.pusher.isBeaconPushed())
                 {
-                    robot.driveToTarget(new Position());
+                    robot.driveToTarget(new Position(310,1800,150));
                 }
                 else {state++;}
                 break;

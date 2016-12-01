@@ -10,7 +10,7 @@ import org.whs542.lib.Alliance;
  * Created by Lucy on 11/19/2016.
  */
 
-@TeleOp(name = "WHSTeleop", group = "TeleOp")
+@TeleOp(name = "WHSBlueTeleop", group = "TeleOp")
 public class WHSBlueTeleOp extends OpMode
 {
     WHSRobot robot;

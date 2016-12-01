@@ -39,10 +39,10 @@ public class BeaconPusher {
 
     public void extendPusherNoToggle(boolean extend){
         if(extend){
-            beaconPusher.setPosition(1.0);
+            beaconPusher.setPosition(0.0);
         }
         else {
-            beaconPusher.setPosition(0.0);
+            beaconPusher.setPosition(1.0);
         }
     }
 

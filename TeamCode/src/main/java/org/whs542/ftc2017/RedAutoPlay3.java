@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 
@@ -13,6 +14,7 @@ import org.whs542.lib.Position;
  */
 
 @Autonomous(name = "AutoOpTest3", group = "Autonomous")
+//@Disabled
 public class RedAutoPlay3 extends OpMode
 {
     WHSRobot robot;
@@ -30,7 +32,7 @@ public class RedAutoPlay3 extends OpMode
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     double redBeaconWall = Functions.normalizeAngle(90);
     //Direction to be perpendicular with red beacon wall
-
+    Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;

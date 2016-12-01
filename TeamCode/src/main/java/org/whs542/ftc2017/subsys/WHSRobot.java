@@ -41,15 +41,14 @@ public class WHSRobot
 
     Coordinate currentCoord; //field frame
 
-    public WHSRobot(HardwareMap robotMap, Alliance side, Coordinate startingPosition, double initialHeading){
+    public WHSRobot(HardwareMap robotMap, Alliance side){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
-        imu = new IMU(robotMap, initialHeading);
-        currentCoord = startingPosition;
+        imu = new IMU(robotMap);
     }
 
     public WHSRobot(HardwareMap robotMap)
@@ -60,7 +59,7 @@ public class WHSRobot
         //capball = new CapballLift(robotMap);
         //pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
-        imu = new IMU(robotMap);
+        imu = new IMU(robotMap, 0);
     }
 
     public void driveToTarget(Position targetPos /*field frame*/) {
@@ -208,12 +207,12 @@ public class WHSRobot
         else {
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading);
-        }a
+        }
     }
 
-    public void setInitialPosition(Position initPos)
+    public void setInitialCoordinate(Coordinate initCoord)
     {
-        currentCoord.setPos(initPos);
+        currentCoord = initCoord;
     }
 
     public String getTeleOpBeaconChoice(boolean dpadUp, boolean dpadDown)

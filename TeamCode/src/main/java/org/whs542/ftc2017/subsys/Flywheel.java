@@ -44,7 +44,7 @@ public class Flywheel
 
     public Flywheel(HardwareMap map)
     {
-        flywheel = map.dcMotor.get("leftFly");
+        flywheel = map.dcMotor.get("flywheel");
         flywheelGate = map.servo.get("flywheelGate");
 
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

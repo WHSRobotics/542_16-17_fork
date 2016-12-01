@@ -17,10 +17,11 @@ public class IMU {
     private double calibration = 0;
 
     BNO055IMU imu;
+    BNO055IMU.Parameters parameters;
 
     public IMU(HardwareMap theMap, double initialHeading){
         imu = theMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
@@ -35,6 +36,28 @@ public class IMU {
         // and named "imu".
         imu.initialize(parameters);
         this.setHeading(initialHeading);
+    }
+
+    public IMU(HardwareMap theMap){
+        imu = theMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        //File file = AppUtil.getInstance().getSettingsFile("AdafruitIMUCalibration.json");
+        //parameters.calibrationDataFile = ReadWriteFile.readFile(file);
+        //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+
+    }
+
+    public void initalize(){
+        imu.initialize(parameters);
     }
 
     public double getHeading(){
