@@ -31,7 +31,7 @@ public class BlueAutoPlay2 extends OpMode {
 
     @Override
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.BLUE);
+        robot = new WHSRobot(hardwareMap);
         state = 0;
         wait = 1000;
         loop = 1;
@@ -43,6 +43,7 @@ public class BlueAutoPlay2 extends OpMode {
             case 0:
 
                 stateInfo = "turning to blue vortex";
+                try{
                 robot.rotateToVortex(vortexPositions[0]);
 
                 if(!robot.rotateToTargetInProgress){

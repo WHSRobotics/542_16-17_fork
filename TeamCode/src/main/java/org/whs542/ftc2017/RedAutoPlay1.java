@@ -31,9 +31,9 @@ public class RedAutoPlay1 extends OpMode {
 
 
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED);
+        robot = new WHSRobot(hardwareMap, Alliance.RED, startingPosition);
         state = 0;
-        waitForIntake = 1000;
+        //waitForIntake = 1000;
         loop = 1;
         particleDelay = 300;
     }

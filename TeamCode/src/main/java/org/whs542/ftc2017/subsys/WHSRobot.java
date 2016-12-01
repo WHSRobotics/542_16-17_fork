@@ -208,7 +208,7 @@ public class WHSRobot
         else {
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading);
-        }a
+        }
     }
 
     public void setInitialPosition(Position initPos)

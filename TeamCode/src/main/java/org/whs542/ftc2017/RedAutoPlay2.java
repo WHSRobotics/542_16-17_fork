@@ -24,7 +24,7 @@ public class RedAutoPlay2 extends OpMode {
 
     @Override
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED);
+        robot = new WHSRobot(hardwareMap);
         state = 0;
     }
 
