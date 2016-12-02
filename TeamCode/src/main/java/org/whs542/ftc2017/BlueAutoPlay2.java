@@ -40,52 +40,55 @@ public class BlueAutoPlay2 extends OpMode {
 
     @Override
     public void init() {
+        DbgLog.msg("Starting init");
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         //robot.setInitialCoordinate(startingPositions[0]);
         state = -1;
         wait = 1000;
         loop = 1;
+        DbgLog.msg("Init complete");
     }
     @Override
     public void loop() {
-        DbgLog.msg("before switch" + debug);
+        DbgLog.msg("Start of loop " + debug);
         switch (state){
             case -1:
-                DbgLog.msg("case -1 before Vuforia");
+                DbgLog.msg("Starting case -1");
                 robot.vuforia.initializeVuforia();
-                DbgLog.msg("after Vuforia");
+                DbgLog.msg("Vuforia initialized");
 
                 robot.imu.initalize();
-                DbgLog.msg("after IMU");
+                DbgLog.msg("IMU initialized");
                 robot.setInitialCoordinate(startingPositions[1]);
-                state = 0;
-                debug = "a";
+                state = 1;
+                debug += "-1 ";
                 break;
             case 0:
-                stateInfo = "turning to blue vortex";
-                DbgLog.msg("before rotate");
-                try {
-                    robot.rotateToVortex(vortexPositions[0]);
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-                DbgLog.msg("end of case 0");
-                state = 2;
-                /*if(!robot.rotateToTargetInProgress){
+                DbgLog.msg("Starting case 0");
+                stateInfo = "Starting case 0";
+
+                robot.rotateToVortex(vortexPositions[0]);
+
+                DbgLog.msg("Robot has rotated to Vortex");
+                DbgLog.msg("rotateToTargetInProgress: " + robot.rotateToTargetInProgress);
+
+                state = 1;
+                if(!robot.rotateToTargetInProgress){
                     state++;
                 }
-                */
-                debug = "b";
+
+                debug += "0 ";
                 break;
             case 1:
+                DbgLog.msg("Starting case 1");
                 stateInfo = "Shooting particles";
-                DbgLog.msg("Flywheel before set power");
                 //robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
-                robot.flywheel.setFlywheelPower(1.0);
-                if(robot.flywheel.flywheel.getPower() == 1){
-                //if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])){
+                robot.flywheel.setFlywheelPower(/*powers[startingPosition - 1]*/1.0);
+                DbgLog.msg("Power has been set");
+                //if(robot.flywheel.flywheel.getPower() == 1){
+                telemetry.addData("Speed of flywheel ", robot.flywheel.getCurrentSpeed());
+                if(robot.flywheel.isFlywheelAtCorrectSpeed(/*powers[startingPosition - 1]*/1.0)){
+                    DbgLog.msg("Flywheel is at correct speed");
                     robot.flywheel.operateGateNoToggle(true);
                     robot.intake.runIntake(1.0);
                     if(loop == 1){
@@ -99,17 +102,22 @@ public class BlueAutoPlay2 extends OpMode {
                         state++;
                         loop = 1;
                     }
-                    debug = "c";
+                    DbgLog.msg("Particle firing finished");
 
                 }
+                debug += "1 ";
+
                 break;
             case 2:
+                DbgLog.msg("Starting case 2");
                 stateInfo = "driving to position 1";
                 robot.driveToTarget(bluePositions[0]);
+                DbgLog.msg("Driving to target");
                 if(!robot.driveToTargetInProgress){
+                    DbgLog.msg("Driving finished");
                     state++;
                 }
-                debug = "d";
+                debug += "2 ";
                 break;
             case 3:
                 stateInfo = "driving to beacon 1";

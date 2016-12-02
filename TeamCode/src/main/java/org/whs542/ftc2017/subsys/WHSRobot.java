@@ -19,8 +19,8 @@ public class WHSRobot
     public Vuforia vuforia;
     public IMU imu;
 
-    public boolean rotateToTargetInProgress;
-    public boolean driveToTargetInProgress;
+    public boolean rotateToTargetInProgress = true;
+    public boolean driveToTargetInProgress = true;
     boolean drivingInReverse = false;
     public String s = "";
     public String beaconState = "";
@@ -110,48 +110,56 @@ public class WHSRobot
     }
 
     public void rotateToTarget(double targetHeading /*-180 to 180 deg*/){
+        DbgLog.msg("Start of rotateToTarget");
 
         double angleToTarget = targetHeading-currentCoord.getHeading();
+        DbgLog.msg("Angle to target: " + angleToTarget);
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
             drivetrain.setLeftPower(POWER_ROTATE_TO_TARGET);
             drivetrain.setRightPower(-POWER_ROTATE_TO_TARGET);
             rotateToTargetInProgress = true;
+            DbgLog.msg("rotating...");
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
             drivetrain.setLeftPower(-POWER_ROTATE_TO_TARGET);
             drivetrain.setRightPower(POWER_ROTATE_TO_TARGET);
             rotateToTargetInProgress = true;
+            DbgLog.msg("rotating...");
         }
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
             rotateToTargetInProgress = false;
+            DbgLog.msg("rotation complete");
         }
+        DbgLog.msg("rotateToTarget complete");
     }
 
     public void rotateToVortex(Position vortexPos)
     {
+        DbgLog.msg("Starting rotateToVortex");
         Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
-        DbgLog.msg("VectorToTarget:", vectorToTarget.toString());
-
+        DbgLog.msg("VectorToTarget x, y, z:" + vectorToTarget.getX() + " " + vectorToTarget.getY() + " " + vectorToTarget.getZ());
         vectorToTarget = field2body(vectorToTarget); //body frame
 
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
-        DbgLog.msg("distance: ", distanceToTarget);
+        DbgLog.msg("distanceToTarget: " + distanceToTarget);
 
         //TODO: Confirm logic for this
-        double degreesToRotate = Math.atan2(vortexPos.getY(), vortexPos.getX()); //from -pi to pi rad
-        degreesToRotate = degreesToRotate * 180 / Math.PI;
+        double degreesToRotate = Math.atan2(vortexPos.getY() - currentCoord.getY(), vortexPos.getX() - currentCoord.getX()); //from -pi to pi rad
+        degreesToRotate = degreesToRotate * 180 / Math.PI - imu.getHeading();
         double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
-        DbgLog.msg("targetHeading: ", targetHeading);
+        DbgLog.msg("targetHeading: " + targetHeading);
         rotateToTarget(targetHeading);
+        DbgLog.msg("rotateToVortex finished");
     }
 
     public void estimatePosition()
     {
+        DbgLog.msg("estimating position...");
         Coordinate vuforiaCoord = null;
         for(int i = 0; i < 100; i++){
             if(vuforia.vuforiaIsValid()){
@@ -160,27 +168,34 @@ public class WHSRobot
         }
         if(vuforiaCoord != null)
         {
+            DbgLog.msg("Vuforia is valid");
             //vuforiaCoord = coordinate of camera in field frame
             vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
             Position currentPos = vuforiaCoord.getPos(); //field frame
+            DbgLog.msg("Current position:", currentPos.toString());
             currentCoord.setPos(currentPos); //field frame
+            DbgLog.msg("Robot has set current position");
         }
         else
         {
+            DbgLog.msg("Vuforia is invalid");
             //using encoders to estimate position from original location
             double[] encoderValues = drivetrain.getEncoderDistance();
             double encoderPosL = encoderValues[0];
             double encoderPosR = encoderValues[1];
             double deltaPosX;
             double deltaPosY;
+            DbgLog.msg("Left and right encoders:",  encoderPosL + " ", encoderPosR);
 
             if(drivetrain.isLeftRightEqual(encoderPosL, encoderPosR))
             {
+                DbgLog.msg("Left and right are equal");
                 deltaPosX = 0.5 * (encoderPosL + encoderPosR);
                 deltaPosY = 0;
             }
             else
             {
+                DbgLog.msg("Left and right are unequal");
                 double turnRadiusL = (2 * RADIUS_TO_DRIVETRAIN * encoderPosL) / (encoderPosR - encoderPosL);
                 double turnAngle = (encoderPosR - encoderPosL) / (2 * RADIUS_TO_DRIVETRAIN);
 
@@ -190,34 +205,43 @@ public class WHSRobot
 
             double x = currentCoord.getX() + deltaPosX;//encoder values in the right movement
             double y = currentCoord.getY() + deltaPosY;
+            DbgLog.msg("Change in position (x,y): ", x, y);
 
             Position deltaPos = new Position(x, y, 0); //body frame
             deltaPos = body2field(deltaPos); //field frame
 
             currentCoord.setX(deltaPos.getX()); //field frame
             currentCoord.setY(deltaPos.getY()); //field frame
+            DbgLog.msg("DeltaPos x and y:", deltaPos.getX(), deltaPos.getY());
         }
-
+        DbgLog.msg("estimatePosition complete");
     }
 
     public void estimateHeading()
     {
+        DbgLog.msg("starting estimateHeading");
         double currentHeading;
 
         if(vuforia.vuforiaIsValid()){
+            DbgLog.msg("Vuforia is valid, getting heading");
             currentHeading=vuforia.getHeadingAndLocation().getHeading();
+            DbgLog.msg("Current heading: ", currentHeading);
             imu.setImuBias(currentHeading);
             currentCoord.setHeading(currentHeading);
         }
         else {
+            DbgLog.msg("Vuforia is invalid, getting heading from IMU");
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
+            DbgLog.msg("Current heading: ", currentHeading);
             currentCoord.setHeading(currentHeading);
         }
+        DbgLog.msg("estimateHeading complete");
     }
 
     public void setInitialCoordinate(Coordinate initCoord)
     {
         currentCoord = initCoord;
+        DbgLog.msg("Initial coordinate set", currentCoord.toString());
     }
 
     public String getTeleOpBeaconChoice(boolean dpadUp, boolean dpadDown)
