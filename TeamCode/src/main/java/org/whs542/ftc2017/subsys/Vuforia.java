@@ -27,7 +27,7 @@ import java.util.List;
  * Vuforia Class
  */
 
-public class Vuforia {
+public class Vuforia{
 
     public static final String TAG = "Vuforia AutoOp";
 
