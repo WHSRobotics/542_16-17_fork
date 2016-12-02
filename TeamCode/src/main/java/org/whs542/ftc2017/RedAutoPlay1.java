@@ -33,7 +33,7 @@ public class RedAutoPlay1 extends OpMode {
 
 
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED, startingPosition);
+        robot = new WHSRobot(hardwareMap, Alliance.RED);
         state = 0;
         //waitForIntake = 1000;
         loop = 1;

@@ -1,5 +1,6 @@
 package org.whs542.ftc2017.subsys;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.whs542.lib.Alliance;
@@ -134,14 +135,18 @@ public class WHSRobot
     public void rotateToVortex(Position vortexPos)
     {
         Position vectorToTarget = Functions.subtractPositions(vortexPos, currentCoord.getPos()); //field frame
+        DbgLog.msg("VectorToTarget:", vectorToTarget.toString());
+
         vectorToTarget = field2body(vectorToTarget); //body frame
 
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+        DbgLog.msg("distance: ", distanceToTarget);
 
         //TODO: Confirm logic for this
         double degreesToRotate = Math.atan2(vortexPos.getY(), vortexPos.getX()); //from -pi to pi rad
         degreesToRotate = degreesToRotate * 180 / Math.PI;
         double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+        DbgLog.msg("targetHeading: ", targetHeading);
         rotateToTarget(targetHeading);
     }
 

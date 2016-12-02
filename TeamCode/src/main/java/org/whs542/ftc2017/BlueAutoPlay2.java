@@ -26,6 +26,7 @@ public class BlueAutoPlay2 extends OpMode {
     int wait;
 
     String stateInfo;
+    String debug = "";
     double time1;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
@@ -47,7 +48,7 @@ public class BlueAutoPlay2 extends OpMode {
     }
     @Override
     public void loop() {
-        DbgLog.msg("before switch");
+        DbgLog.msg("before switch" + debug);
         switch (state){
             case -1:
                 DbgLog.msg("case -1 before Vuforia");
@@ -56,6 +57,10 @@ public class BlueAutoPlay2 extends OpMode {
 
                 robot.imu.initalize();
                 DbgLog.msg("after IMU");
+                robot.setInitialCoordinate(startingPositions[1]);
+                state = 0;
+                debug = "a";
+                break;
             case 0:
                 stateInfo = "turning to blue vortex";
                 DbgLog.msg("before rotate");
@@ -67,11 +72,12 @@ public class BlueAutoPlay2 extends OpMode {
                     e.printStackTrace();
                 }
                 DbgLog.msg("end of case 0");
-                state++;
+                state = 2;
                 /*if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 */
+                debug = "b";
                 break;
             case 1:
                 stateInfo = "Shooting particles";
@@ -93,6 +99,7 @@ public class BlueAutoPlay2 extends OpMode {
                         state++;
                         loop = 1;
                     }
+                    debug = "c";
 
                 }
                 break;
@@ -102,6 +109,8 @@ public class BlueAutoPlay2 extends OpMode {
                 if(!robot.driveToTargetInProgress){
                     state++;
                 }
+                debug = "d";
+                break;
             case 3:
                 stateInfo = "driving to beacon 1";
                 robot.driveToTarget(beaconPositions[0]);
