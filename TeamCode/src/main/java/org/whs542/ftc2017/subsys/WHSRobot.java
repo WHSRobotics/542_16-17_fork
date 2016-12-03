@@ -49,7 +49,7 @@ public class WHSRobot
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
         vuforia = new Vuforia();
-        imu = new IMU(robotMap);
+        imu = new IMU(robotMap, 0);
     }
 
     public WHSRobot(HardwareMap robotMap)

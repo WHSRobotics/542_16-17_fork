@@ -17,27 +17,33 @@ public class WHSBlueTeleOp extends OpMode
 
     public void init()
     {
-        robot = new WHSRobot(hardwareMap, Alliance.BLUE);
+        try {
+            robot = new WHSRobot(hardwareMap, Alliance.BLUE);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void loop()
     {
         //Gamepad 1 Controls
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
-        robot.drivetrain.setOrientation(gamepad1.a);
+        robot.drivetrain.setOrientation(gamepad1.a); //TODO: check if this actually works and fix if not -.-
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
         robot.pusher.extendPusher(gamepad1.left_bumper);
         robot.autoMoveToBeacon(gamepad1.b);
         robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down);
 
         //Gamepad 2 Controls
-        robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel.rampFlywheel(gamepad2.right_bumper);
-        robot.flywheel.operateGate(gamepad2.right_trigger);
+        //robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
+        //robot.flywheel.rampFlywheel(gamepad2.left_bumper);
+        //robot.flywheel.operateGate(gamepad2.left_trigger);
         //robot.capball.liftCB(gamepad2.dpad_up);
         //robot.capball.dropCB(gamepad2.dpad_down);
         //robot.capball.changeServo(gamepad2.right_bumper);
-        //robot.capball.changeRatchet(gamepad2.left_trigger);
+        //robot.capball.changeRatchet(gamepad2.right_trigger); //TODO: CHECK THIS METHOD YAS :)
 
         //Telemetry
         telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
