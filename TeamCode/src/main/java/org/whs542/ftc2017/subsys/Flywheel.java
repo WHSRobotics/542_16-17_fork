@@ -58,9 +58,9 @@ public class Flywheel
     }
 
     //Spins flywheels if right bumper is pressed, stops spinning if pressed again.
-    public void rampFlywheel(boolean rBumper)
+    public void rampFlywheel(boolean lBumper)
     {
-        flyToggler.changeState(rBumper);
+        flyToggler.changeState(lBumper);
         switch (flyToggler.currentState()) {
             case 0:
                 flywheel.setPower(flywheelPower);

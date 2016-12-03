@@ -48,6 +48,7 @@ public class WHSRobot
         flywheel = new Flywheel(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
+
         imu = new IMU(robotMap);
 
         vuforia = new Vuforia();
