@@ -13,7 +13,7 @@ import org.whs542.lib.Position;
  *
  */
 
-@Autonomous(name = "AutoOpTest3", group = "Autonomous")
+@Autonomous(name = "BlueAutoOp3", group = "Autonomous")
 //@Disabled
 public class BlueAutoPlay3 extends OpMode
 {
@@ -25,9 +25,9 @@ public class BlueAutoPlay3 extends OpMode
     final long particleDelay = 300;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     double redBeaconWall = Functions.normalizeAngle(90);

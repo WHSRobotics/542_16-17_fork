@@ -101,8 +101,8 @@ public class Drivetrain {
     //A set power method using the cubic function
     public void setLRScaledPower(double leftPower, double rightPower)
     {
-        double rightScaledPower = Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower,3) : 0.0;
-        double leftScaledPower = Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower,3) : 0.0;
+        double rightScaledPower = Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower, 3) : 0.0;
+        double leftScaledPower = Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower, 3) : 0.0;
 
         switch(orientationSwitch.currentState())
         {

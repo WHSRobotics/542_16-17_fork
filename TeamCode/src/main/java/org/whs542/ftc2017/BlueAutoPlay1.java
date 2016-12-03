@@ -18,18 +18,20 @@ public class BlueAutoPlay1 extends OpMode {
     WHSRobot robot;
 
     int state;
-    int loop;
-    int wait;
+    boolean firstLoop;
+    int test;
 
+    long particleDelay;
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
 
     //Blue: Wheels, Legos
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+
     Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
 
@@ -37,8 +39,8 @@ public class BlueAutoPlay1 extends OpMode {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(startingPositions[1]);
         state = 0;
-        wait = 1000;
-        loop = 1;
+        test = 100;
+        firstLoop = true;
     }
 
     public void loop()
@@ -47,15 +49,20 @@ public class BlueAutoPlay1 extends OpMode {
         {
             case 0:
                 stateInfo = "Turning to vortex";
-                if(robot.rotateToTargetInProgress || loop == 1)
+                /*if(test > 0) {
+                    robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //TODO: change location for this so that it starts a little later
+                    test--;
+                }*/
+                if(firstLoop || robot.rotateToTargetInProgress)
                 {
-                    robot.rotateToVortex(vortexPositions[0]);
-                    loop = 2;
+                    robot.rotateToTarget(30);
+                    firstLoop = false;
                 }
                 else {
-                    loop = 1;
-                    state++;
+                    firstLoop = true;
+                    //state++;
                 }
+                telemetry.addData("Loop:", firstLoop);
                 break;
             case 1:
                 stateInfo = "Shooting particles";
@@ -64,9 +71,9 @@ public class BlueAutoPlay1 extends OpMode {
                 {
                     robot.flywheel.operateGateNoToggle(true);
                     robot.intake.runIntake(1.0);
-                    if(wait > 0)
+                    if(test > 0)
                     {
-                        wait--;
+                        test--;
                     }
                     state++;
                     robot.intake.runIntake(0.0);
@@ -76,27 +83,27 @@ public class BlueAutoPlay1 extends OpMode {
                 break;
             case 2:
                 stateInfo = "Driving to target position 1";
-                if(robot.driveToTargetInProgress || loop == 1)
+                if(firstLoop || robot.driveToTargetInProgress)
                 {
                     robot.driveToTarget(bluePositions[0]);
-                    loop = 2;
+                    firstLoop = false;
                 }
                 else
                 {
-                    loop = 1;
+                    firstLoop = true;
                     state++;
                 }
                 break;
             case 3:
                 stateInfo = "Driving to beacon 1";
-                if(robot.driveToTargetInProgress || loop == 1)
+                if(firstLoop || robot.driveToTargetInProgress)
                 {
                     robot.driveToTarget(beaconPositions[1]);
-                    loop = 2;
+                    firstLoop = false;
                 }
                 else
                 {
-                    loop = 1;
+                    firstLoop = true;
                     state++;
                 }
                 break;
@@ -110,14 +117,14 @@ public class BlueAutoPlay1 extends OpMode {
                 break;
             case 5:
                 stateInfo = "Driving to beacon 2";
-                if(robot.driveToTargetInProgress || loop == 1)
+                if(firstLoop || robot.driveToTargetInProgress)
                 {
                     robot.driveToTarget(beaconPositions[0]);
-                    loop = 2;
+                    firstLoop = false;
                 }
                 else
                 {
-                    loop = 1;
+                    firstLoop = true;
                     state++;
                 }
                 break;
@@ -131,22 +138,22 @@ public class BlueAutoPlay1 extends OpMode {
                 break;
             case 7:
                 stateInfo = "Driving to position 2";
-                    if(robot.driveToTargetInProgress || loop == 1){
-                        robot.driveToTarget(beaconPositions[1]);
-                        loop = 2;
-                    }
-                    else{
-                        loop = 1;
-                        state++;
-                    }
+                if(firstLoop || robot.driveToTargetInProgress){
+                    robot.driveToTarget(beaconPositions[1]);
+                    firstLoop = false;
+                }
+                else{
+                    firstLoop = true;
+                    state++;
+                }
 
 
             case 8:
                 stateInfo = "Driving to center vortex";
-                if(robot.driveToTargetInProgress || loop == 1)
+                if(firstLoop || robot.driveToTargetInProgress)
                 {
                     robot.driveToTarget(bluePositions[2]);
-                    loop = 2;
+                    firstLoop = false;
                 }
                 else
                 {
@@ -155,6 +162,8 @@ public class BlueAutoPlay1 extends OpMode {
                 break;
         }
 
-        telemetry.addData("State Number: ", stateInfo);
+        telemetry.addData("State Number", stateInfo);
+        telemetry.addData("Robot Position", "(" + robot.currentCoord.getX() + "," + robot.currentCoord.getY() + ")") ;
+        telemetry.addData("Robot Heading", robot.currentCoord.getHeading());
     }
 }

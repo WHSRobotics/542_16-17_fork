@@ -1,6 +1,7 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -14,7 +15,8 @@ public class Intake {
     private String intakeState;
     private double defaultPower = 1.0;
 
-    public Intake(HardwareMap intakeMap){
+    public Intake(HardwareMap intakeMap)
+    {
         intakeMotor = intakeMap.dcMotor.get("intake");
     }
 
@@ -28,12 +30,12 @@ public class Intake {
         if(rTrigger > 0.05)
         {
             intakeState = "Intake";
-            intakeMotor.setPower(defaultPower);
+            intakeMotor.setPower(-defaultPower);
         }
         else if(lTrigger > 0.05)
         {
             intakeState = "Outtake";
-            intakeMotor.setPower(-defaultPower);
+            intakeMotor.setPower(defaultPower);
         }
         else
         {

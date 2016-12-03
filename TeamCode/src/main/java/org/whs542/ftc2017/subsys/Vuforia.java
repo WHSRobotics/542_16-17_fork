@@ -29,7 +29,7 @@ import java.util.List;
 
 public class Vuforia extends Thread{
 
-    public static final String TAG = "Vuforia AutoOp";
+    public static final String TAG = "Vuforia";
 
     private Coordinate validVuforiaCoord;
 

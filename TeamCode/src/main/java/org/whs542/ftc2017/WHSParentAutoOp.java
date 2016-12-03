@@ -20,9 +20,9 @@ public abstract class WHSParentAutoOp extends OpMode {
 
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
 
     @Override

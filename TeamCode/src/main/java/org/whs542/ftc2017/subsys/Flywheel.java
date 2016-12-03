@@ -22,7 +22,7 @@ public class Flywheel
     private boolean isFlywheelAtSpeed;
     private boolean isGateOpen;
 
-    private final double[] teleflywheelPowers = {0.5, 0.7, 1.0}; //3 different mat location types
+    private final double[] teleflywheelPowers = {0.4, 0.7, 1.0}; //3 different mat location types
     public final double[] autoFlywheelPowers = {}; //TODO: test for these
     private double flywheelPower;
     private final int MAX_SPEED = 2100; //ticks per sec
@@ -48,9 +48,10 @@ public class Flywheel
         flywheelGate = map.servo.get("flywheelGate");
 
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         flywheel.setMaxSpeed(MAX_SPEED);
 
-        flywheelPower = 1.0; //Default flywheelPower
+        flywheelPower = 0.0; //Default flywheelPower
 
         isFlywheelRunning = false;
         isGateOpen = false;
@@ -127,13 +128,25 @@ public class Flywheel
         gateToggler.changeState(triggerPressed);
         switch (gateToggler.currentState()) {
             case 0:
-                flywheelGate.setPosition(1.0);
+                flywheelGate.setPosition(0.5);
                 isGateOpen = true;
                 break;
-            case 2:
+            case 1:
                 flywheelGate.setPosition(0.0);
                 isGateOpen = false;
                 break;
+        }
+    }
+
+    public void operateGate(boolean bumper)
+    {
+        if(bumper)
+        {
+            flywheelGate.setPosition(0.0);
+        }
+        else
+        {
+            flywheelGate.setPosition(1.0);
         }
     }
 

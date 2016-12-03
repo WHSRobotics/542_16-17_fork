@@ -26,7 +26,6 @@ public class VuforiaTest2 extends OpMode{
     public void loop(){
         coordinate = vuforia.getHeadingAndLocation();
 
-
         double xPos = coordinate.getX();
         double yPos = coordinate.getY();
         double zPos = coordinate.getZ();
