@@ -1,9 +1,7 @@
 package org.whs542.ftc2017;
 
-/**
- * Red Play 4 NOT NEED TO FIX, PROBABLY - JASON
- */
-import com.qualcomm.robotcore.eventloop.opmode.*;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
@@ -13,20 +11,25 @@ import org.whs542.lib.Position;
 
 import java.util.Objects;
 
+/**
+ * Created by jian on 12/2/2016.
+ */
+
 //Play 4
-@Autonomous(name = "RedAutoPlay4", group = "AutoOp")
+@Autonomous(name = "BlueAutoPlay4", group = "AutoOp")
 //@Disabled
-public class RedAutoPlay4 extends OpMode{
+public class BlueAutoPlay4 extends OpMode {
+
     WHSRobot robot;
     int state;
     String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
     final long particleDelay = 300; //in milliseconds
-    Alliance side = Alliance.RED;
+    Alliance side = Alliance.BLUE;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    
+
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
     //first: get close to beacons, second: get in front / within pushing range of beacon, third: center vortex, fourth: if the beacon color doesn't match
@@ -43,7 +46,7 @@ public class RedAutoPlay4 extends OpMode{
     Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
     public void init() {
-        robot = new WHSRobot(hardwareMap, Alliance.RED);
+        robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         state = 0;
     }
 
@@ -75,21 +78,21 @@ public class RedAutoPlay4 extends OpMode{
                 break;
             case 2:
                 stateInfo = "Driving to target position 1";
-                robot.driveToTarget(redPositions[0]);
+                robot.driveToTarget(bluePositions[0]);
                 if(!robot.driveToTargetInProgress) {
                     state++;
                 }
                 break;
             case 3:
                 stateInfo = "Driving closer to beacon";
-                robot.driveToTarget(redPositions[1]);
+                robot.driveToTarget(bluePositions[1]);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
             case 4:
                 stateInfo = "Turning to parallel wall";
-                robot.rotateToTarget(redBeaconWall);
+                robot.rotateToTarget(blueBeaconWall);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
@@ -112,7 +115,7 @@ public class RedAutoPlay4 extends OpMode{
                 break;
             case 7:
                 stateInfo = "Driving to center vortex";
-                robot.driveToTarget(redPositions[2]);
+                robot.driveToTarget(bluePositions[2]);
                 if(!robot.driveToTargetInProgress) {
                     stateInfo = "AutoOp done :) (if you made it this far, congratz)";
                     state++;
@@ -120,7 +123,7 @@ public class RedAutoPlay4 extends OpMode{
                 break;
             case 100: /*This case will only run if the beacon does not match*/
                 stateInfo = "Beacon did not match, moving forwards";
-                robot.driveToTarget(redPositions[3]);
+                robot.driveToTarget(bluePositions[3]);
                 if (!robot.driveToTargetInProgress){
                     state = 5;
                 }
@@ -132,5 +135,3 @@ public class RedAutoPlay4 extends OpMode{
         telemetry.addData("State Number", state);
     }
 }
-
-
