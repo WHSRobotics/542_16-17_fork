@@ -17,6 +17,7 @@ public class VuforiaTest2 extends OpMode{
     @Override
     public void init(){
         vuforia = new Vuforia();
+        vuforia.start();
         telemetry.addData("init", "");
         telemetry.update();
     }

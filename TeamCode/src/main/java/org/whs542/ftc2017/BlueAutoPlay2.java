@@ -45,7 +45,7 @@ public class BlueAutoPlay2 extends OpMode {
         //robot.setInitialCoordinate(startingPositions[0]);
         state = -1;
         wait = 1000;
-        loop = 1;
+        loop = 0;
         DbgLog.msg("Init complete");
     }
     @Override
@@ -54,10 +54,10 @@ public class BlueAutoPlay2 extends OpMode {
         switch (state){
             case -1:
                 DbgLog.msg("Starting case -1");
-                robot.vuforia.initializeVuforia();
+                //robot.vuforia.initializeVuforia();
                 DbgLog.msg("Vuforia initialized");
 
-                robot.imu.initalize();
+                //robot.imu.initalize();
                 DbgLog.msg("IMU initialized");
                 robot.setInitialCoordinate(startingPositions[1]);
                 state = 1;

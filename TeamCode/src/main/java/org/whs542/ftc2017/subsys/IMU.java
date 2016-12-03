@@ -11,16 +11,18 @@ import org.whs542.lib.Functions;
  * IMU Class
  */
 
-public class IMU {
+public class IMU extends Thread{
 
     private double imuBias = 0;
     private double calibration = 0;
+    private double initialHeading = 0;
 
     BNO055IMU imu;
     BNO055IMU.Parameters parameters;
 
-    public IMU(HardwareMap theMap, double initialHeading){
+    public IMU(HardwareMap theMap, double initialH){
         imu = theMap.get(BNO055IMU.class, "imu");
+        /*
         parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -34,12 +36,16 @@ public class IMU {
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu.initialize(parameters);
-        this.setHeading(initialHeading);
+        imu.initialize(parameters);*/
+        initialHeading = initialH;
     }
 
-    public IMU(HardwareMap theMap){
+    public IMU(HardwareMap theMap) {
         imu = theMap.get(BNO055IMU.class, "imu");
+    }
+
+    @Override
+    public void run(){
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -53,12 +59,10 @@ public class IMU {
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-
-    }
-
-    public void initalize(){
         imu.initialize(parameters);
+        setHeading(initialHeading);
     }
+
 
     public double getHeading(){
         double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle - calibration;
