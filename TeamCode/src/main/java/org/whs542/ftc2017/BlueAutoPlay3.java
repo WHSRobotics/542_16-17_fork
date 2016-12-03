@@ -10,12 +10,12 @@ import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 
 /**
- * Red Play 3 Fixed, hopefully - Amar
+ *
  */
 
 @Autonomous(name = "AutoOpTest3", group = "Autonomous")
 //@Disabled
-public class RedAutoPlay3 extends OpMode
+public class BlueAutoPlay3 extends OpMode
 {
     WHSRobot robot;
     int state;
@@ -25,8 +25,8 @@ public class RedAutoPlay3 extends OpMode
     final long particleDelay = 300;
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    //first: go to near beacons, second: get in pushing range of beacons / turn to parallel wall, third: center vortex, fourth: move forward if beacon doesn't match
-    Position[] redPositions = {new Position(-1500,0,150), new Position(-1500,-300,150), new Position(0,0,150), new Position(-1500, -400, 150)};
+    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
     //first: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
