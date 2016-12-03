@@ -70,23 +70,23 @@ public class RedAutoPlay3 extends OpMode
                     state++;
                 }
                 break;
-            case 4:
+            case 3:
                 stateInfo = "Driving closer to beacon";
                 robot.driveToTarget(redPositions[1]);
                 if (!robot.driveToTargetInProgress) {
                     state++;
                 }
                 break;
-            case 5:
+            case 4:
                 stateInfo = "Checking beacon status";
                 if (robot.pusher.isBeaconPushed()) {          //Beacon color matches
                     state++;
                 } else {
-                    state = 100;                             //Beacon color does not match
+                    state = 6;                             //Beacon color does not match
                 }
                 state++;
                 break;
-            case 6:
+            case 5:
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(redPositions[2]);
                 if (!robot.driveToTargetInProgress) {
@@ -94,11 +94,11 @@ public class RedAutoPlay3 extends OpMode
                     state++;
                 }
                 break;
-            case 100: //This case will only run if the beacon does not match
+            case 6: //This case will only run if the beacon does not match
                 stateInfo = "Beacon did not match, moving forwards";
                 robot.driveToTarget(redPositions[3]);
                 if (!robot.driveToTargetInProgress) {
-                    state = 5;
+                    state = 4;
                 }
                 break;
             default: break;

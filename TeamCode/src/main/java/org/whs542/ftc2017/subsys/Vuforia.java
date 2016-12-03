@@ -27,7 +27,7 @@ import java.util.List;
  * Vuforia Class
  */
 
-public class Vuforia {
+public class Vuforia extends Thread{
 
     public static final String TAG = "Vuforia AutoOp";
 
@@ -52,13 +52,8 @@ public class Vuforia {
      */
     public Vuforia(){
 
-        parameters = new VuforiaLocalizer.Parameters(com.qualcomm.ftcrobotcontroller.R.id.cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AcHvLjn/////AAAAGXiaYd8sQUWoodQdUe6EkVh5In4npcgPENX3TMz43hlk9g7Xe4JzvNU8g9W4esItJjBtwkoCJVn1vT28VzK1SEd96YjzpbBgL3zubmG9pCqnxMawGUdiIP19mwl4cWACtqAPH5lV2cccLUmFou4RsBDdhwajo1imLuLphy4auD0IwyV+Pcp7+gAg0LCnZ2A3UX9nsPjGWKEs8REy0pCw37Nl1K3t670ivSSxkfo/iF71IxhUkE+W+GaJZ/JFw1WL6m8i0qgrWWSJg3zfwx9jSRZRAXYdM9crg+edoin2Wmkaw69PTiD7pJDiWfjjb+1z1rewEZGxf1i8WTLWskvO76xZ0coIFlbVSwl8YMNaiPrh";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
-        /*
-        ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
+        /*ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
         VuforiaTrackable wheels = ftcTargets.get(0);
         wheels.setName("Wheels");
 
@@ -109,11 +104,12 @@ public class Vuforia {
 
 
 
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(0,0,0/*164, 148, 265*//*)                /*
+        /*OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
+                .translation(164, 148, 265)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90*/ /*));          /*
+                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90));
+        phoneLocationOnRobot.setLocation(phoneLocationOnRobot);
         RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
 
         ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
@@ -121,12 +117,17 @@ public class Vuforia {
         ((VuforiaTrackableDefaultListener)tools.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)legos.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
-        ftcTargets.activate();
-        */
-    }
+        ftcTargets.activate();*/
 
-    public void initializeVuforia()
+    }
+    @Override
+    public void run() throws NullPointerException
     {
+        parameters = new VuforiaLocalizer.Parameters(com.qualcomm.ftcrobotcontroller.R.id.cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AcHvLjn/////AAAAGXiaYd8sQUWoodQdUe6EkVh5In4npcgPENX3TMz43hlk9g7Xe4JzvNU8g9W4esItJjBtwkoCJVn1vT28VzK1SEd96YjzpbBgL3zubmG9pCqnxMawGUdiIP19mwl4cWACtqAPH5lV2cccLUmFou4RsBDdhwajo1imLuLphy4auD0IwyV+Pcp7+gAg0LCnZ2A3UX9nsPjGWKEs8REy0pCw37Nl1K3t670ivSSxkfo/iF71IxhUkE+W+GaJZ/JFw1WL6m8i0qgrWWSJg3zfwx9jSRZRAXYdM9crg+edoin2Wmkaw69PTiD7pJDiWfjjb+1z1rewEZGxf1i8WTLWskvO76xZ0coIFlbVSwl8YMNaiPrh";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
         ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
         VuforiaTrackable wheels = ftcTargets.get(0);
         wheels.setName("Wheels");
