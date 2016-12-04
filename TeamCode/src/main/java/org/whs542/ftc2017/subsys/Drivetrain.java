@@ -37,7 +37,7 @@ public class Drivetrain {
     private final double MIN_POWER_VALUE = 0.15;
     private final double MM_PER_MAT = 594;
 
-    private final double DEADBAND_MOVE_DISTANCE_MILLI = 30;
+    private final double DEADBAND_MOVE_DISTANCE_MILLI = 30*ENCODER_TICKS_PER_MM;
 
 
     public Drivetrain (HardwareMap driveMap)
@@ -194,8 +194,17 @@ public class Drivetrain {
         this.setMaxSpeed(2100);
         this.setTargetPosition(targetPosition);
 
-        //imu.zeroHeading();
+        if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI){
 
+            setLRPower(1.0, 1.0);
+
+        }
+        else {
+            setLRPower(0.0, 0.0);
+        }
+
+        //imu.zeroHeading();
+        /*
         if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
             double distanceToGo = Math.abs(distanceMM) - Math.abs(getDistanceToGo(getEncoderPosition()));
@@ -220,7 +229,8 @@ public class Drivetrain {
             else if(distanceToGo < DEADBAND_MOVE_DISTANCE_MILLI){
                 this.setLRPower(0, 0);
             }
-
+         }
+         */
             /*switch (stage) {
                 case 0:
                     while (distanceToGo > 1220) {
@@ -256,7 +266,7 @@ public class Drivetrain {
                 this.setLRPower(0, 0);
             }
             */
-        }
+
     }
 
 
