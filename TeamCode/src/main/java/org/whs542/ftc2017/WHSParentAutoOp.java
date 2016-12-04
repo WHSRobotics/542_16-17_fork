@@ -21,7 +21,6 @@ public abstract class WHSParentAutoOp extends OpMode {
     boolean firstLoop;
     int test;
 
-
     long particleDelay;
     String stateInfo;
     double[] powers = {0.7, 0.8};
@@ -30,10 +29,11 @@ public abstract class WHSParentAutoOp extends OpMode {
     String initialConfig; //initial
 
     //Wheels, Legos, Tools, Gears
-    Position[] vortexPositions = {new Position(-300, -300, 150), new Position(300, 300, 150)};
+    Position vortexPosition;
+    //Position[] vortexPositions = {new Position(-300, -300, 150), new Position(300, 300, 150)};
     Position centerVortex = new Position(0, 0, 150);
 
-    Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
+    //Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position beacon1a;
     Position beacon1b;
     Position beacon2a;
@@ -64,22 +64,25 @@ public abstract class WHSParentAutoOp extends OpMode {
                 initialConfig = "Blue off vortex";
                 startingCoord = new Coordinate(1575, -300, 150, 180);
             }
+            vortexPosition = new Position(-300, -300, 150);
 
             beacon1a = new Position(580, 1500, 150);
             beacon1b = new Position(573, 1500, 150);
             beacon2a = new Position(-620, 1500, 150);
             beacon2b = new Position(-627, 1500, 150);
         }
-        else if(allianceColor == Alliance.RED)
-        {
+        else if(allianceColor == Alliance.RED) {
             //TODO: add red coordinates into both pleasee
-            if(startingPosition == 1) {
+            if (startingPosition == 1) {
                 initialConfig = "Red on vortex";
                 startingCoord = new Coordinate(-300, -1575, 150, 90);
             }
             else if (startingPosition == 2) {
-                initialConfig = "Red off vortex";}
+                initialConfig = "Red off vortex";
                 startingCoord = new Coordinate(300, -1575, 150, 90);
+            }
+            vortexPosition = new Position(300, 300, 150);
+
 
             beacon1a = new Position(-1500, -580, 150);
             beacon1b = new Position(-1500, -573, 150);
@@ -111,10 +114,7 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 1:
                 stateInfo = "Turning to vortex";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //TODO: change location for this so that it starts a little later
-                if(allianceColor == Alliance.RED)
-                    robot.rotateToVortex(vortexPositions[0]);
-                else
-                    robot.rotateToVortex(vortexPositions[1]);
+                robot.rotateToVortex(vortexPosition);
                 if (!robot.rotateToTargetInProgress) {
                     state++;
                 }

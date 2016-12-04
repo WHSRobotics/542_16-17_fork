@@ -37,6 +37,8 @@ public class Drivetrain {
     private final double MIN_POWER_VALUE = 0.15;
     private final double MM_PER_MAT = 594;
 
+    private final double DEADBAND_MOVE_DISTANCE_MILLI = 30;
+
 
     public Drivetrain (HardwareMap driveMap)
     {
@@ -210,12 +212,12 @@ public class Drivetrain {
             }
             else if (distanceToGo <= MM_PER_MAT * 2 & distanceToGo > MM_PER_MAT){
                 double powerScale2 = 0.4 * (distanceToGo - MM_PER_MAT ) / MM_PER_MAT;
-                this.setLRPower(0.1 + powerScale2, 0.1 + powerScale2);
+                this.setLRPower(0.3 + powerScale2, 0.3 + powerScale2);
             }
-            else if (distanceToGo <= MM_PER_MAT & distanceToGo > 0){
-                this.setLRPower(0.1, 0.1);
+            else if (distanceToGo <= MM_PER_MAT & distanceToGo > DEADBAND_MOVE_DISTANCE_MILLI){
+                this.setLRPower(0.3, 0.3);
             }
-            else{
+            else if(distanceToGo < DEADBAND_MOVE_DISTANCE_MILLI){
                 this.setLRPower(0, 0);
             }
 
