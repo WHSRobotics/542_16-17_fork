@@ -27,6 +27,9 @@ public abstract class WHSParentAutoOp extends OpMode {
     String initialConfig; //initial
 
     //Wheels, Legos, Tools, Gears
+    Position[] vortexPositions = {new Position(-300, -300, 150), new Position(300, 300, 150)};
+    Position centerVortex = new Position(0, 0, 150);
+
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position beacon1a;
     Position beacon1b;
@@ -105,7 +108,10 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 1:
                 stateInfo = "Turning to vortex";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //TODO: change location for this so that it starts a little later
-                robot.rotateToVortex(vortexPositions[1]);
+                if(allianceColor == Alliance.RED)
+                    robot.rotateToVortex(vortexPositions[0]);
+                else
+                    robot.rotateToVortex(vortexPositions[1]);
                 if (!robot.rotateToTargetInProgress) {
                     state++;
                 }
@@ -127,7 +133,10 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 3:
                 stateInfo = "Driving to target position 1";
                 if (firstLoop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(bluePositions[0]);
+                    if(allianceColor == Alliance.RED)
+                        robot.driveToTarget(targetPositionsRed[0]);
+                    else
+                        robot.driveToTarget(targetPositionsBlue[0]);
                     firstLoop = false;
                 } else {
                     firstLoop = true;
@@ -137,7 +146,7 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 4:
                 stateInfo = "Driving to beacon 1"; //beacon 1a
                 if (firstLoop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(beaconPositions[1]); //beacon 1b
+                    robot.driveToTarget(beacon1a); //beacon 1b
                     firstLoop = false;
                 } else {
                     firstLoop = true;
@@ -147,16 +156,14 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 5:
                 stateInfo = "Checking beacon status";
                 if (!robot.pusher.isBeaconPushed()) //TODO: change this soon
-                {
-                    robot.driveToTarget(new Position(-890, 1800, 150));
-                } else {
+                    robot.driveToTarget(beacon1b);
+                 else
                     state++;
-                }
                 break;
             case 6:
                 stateInfo = "Driving to beacon 2";
                 if (firstLoop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(beaconPositions[0]);
+                    robot.driveToTarget(beacon2a);
                     firstLoop = false;
                 } else {
                     firstLoop = true;
@@ -166,7 +173,7 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 7:
                 stateInfo = "Checking second beacon status";
                 if (!robot.pusher.isBeaconPushed()) {
-                    robot.driveToTarget(new Position(310, 1800, 150));
+                    robot.driveToTarget(beacon2b);
                 } else {
                     state++;
                 }
@@ -174,7 +181,10 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 8:
                 stateInfo = "Driving to position 2";
                 if (firstLoop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(beaconPositions[1]);
+                    if(allianceColor == Alliance.RED)
+                        robot.driveToTarget(targetPositionsRed[1]);
+                    else
+                        robot.driveToTarget(targetPositionsBlue[1]);
                     firstLoop = false;
                 } else {
                     firstLoop = true;
@@ -183,7 +193,7 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 9:
                 stateInfo = "Driving to center vortex";
                 if (firstLoop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(bluePositions[2]);
+                    robot.driveToTarget(centerVortex);
                     firstLoop = false;
                 } else {
                     stateInfo = "AutoOp done :)";
