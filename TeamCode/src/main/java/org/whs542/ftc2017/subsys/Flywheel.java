@@ -167,6 +167,10 @@ public class Flywheel
         //https://ftc-tricks.com/dc-motors/
     }
 
+    public void operateFlywheelNoToggle(double power){
+        flywheel.setPower(power);
+    }
+
     /*
     public void shoot(boolean b1, boolean b2, double joystick){
         if (b1)
