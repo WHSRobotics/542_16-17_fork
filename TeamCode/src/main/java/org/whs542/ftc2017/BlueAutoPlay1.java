@@ -40,7 +40,7 @@ public class BlueAutoPlay1 extends OpMode {
     public void init() {
         robot = new WHSRobot(hardwareMap, side);
         robot.setInitialCoordinate(startingPositions[1]);
-        state = 1;
+        state = 0;
         test = 100;
         firstLoop = true;
     }
@@ -54,7 +54,7 @@ public class BlueAutoPlay1 extends OpMode {
         {
             case 0:
                 stateInfo = "Moving forward";
-                robot.driveToTarget(new Position(startingPositions[1].getX() - 100, startingPositions[1].getY(), 150));
+                robot.driveToTarget(new Position(startingPositions[1].getX() - 500 , startingPositions[1].getY(), 150));
                 if(!robot.driveToTargetInProgress){
                     state++;
                 }
@@ -179,5 +179,7 @@ public class BlueAutoPlay1 extends OpMode {
         telemetry.addData("State Number", stateInfo);
         telemetry.addData("Robot Position", "(" + robot.currentCoord.getX() + "," + robot.currentCoord.getY() + ")") ;
         telemetry.addData("Robot Heading", robot.currentCoord.getHeading());
+        telemetry.addData("Rotate to target in progress?", robot.rotateToTargetInProgress);
+        telemetry.addData("Drive to target in progress?", robot.driveToTargetInProgress);
     }
 }

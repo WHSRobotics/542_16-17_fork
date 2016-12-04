@@ -1,5 +1,6 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -11,6 +12,8 @@ import org.whs542.lib.Position;
  * Parent AutoOp Class
  */
 
+@Autonomous(name = "WHSParentAuto", group = "Auto")
+//@Override
 public abstract class WHSParentAutoOp extends OpMode {
     WHSRobot robot;
 
