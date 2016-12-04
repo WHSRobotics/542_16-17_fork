@@ -181,22 +181,23 @@ public class Drivetrain {
 
     }
 
+    //setRunMode MUST be run before this
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli2(double distanceMM, IMU imu)
+    public void moveDistanceMilli2(double distanceMM /*,IMU imu*/)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
 
-        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
+        //this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);
         this.setMaxSpeed(2100);
         this.setTargetPosition(targetPosition);
 
-        imu.zeroHeading();
+        //imu.zeroHeading();
 
-        while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
+        if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
             double distanceToGo = Math.abs(distanceMM) - Math.abs(getDistanceToGo(getEncoderPosition()));
-            double headingError = imu.getHeading();
+            //double headingError = imu.getHeading();
 
             DbgLog.msg("Distance to go in mm:" + Double.toString(distanceToGo));
             DbgLog.msg("FrontRight encoder:" + Double.toString(frontRight.getCurrentPosition()));
@@ -216,7 +217,6 @@ public class Drivetrain {
             }
             else{
                 this.setLRPower(0, 0);
-                break;
             }
 
             /*switch (stage) {
@@ -242,7 +242,7 @@ public class Drivetrain {
                     this.setLRPower(0.0, 0.0);
 
             }*/
-
+            /*
             //Stop and turn
             if(Math.abs(headingError) > 1){
                 this.setLRPower(0, 0);
@@ -253,6 +253,7 @@ public class Drivetrain {
             if(imu.getAccelerationMag() > 10.0){
                 this.setLRPower(0, 0);
             }
+            */
         }
     }
 
