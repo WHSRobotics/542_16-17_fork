@@ -14,13 +14,17 @@ public class VuforiaTest2 extends OpMode{
     Vuforia vuforia;
     String lastLocation;
 
-    @Override
-    public void init(){
+
+
+
+        @Override
+        public void init() throws NullPointerException {
         vuforia = new Vuforia();
         vuforia.start();
         telemetry.addData("init", "");
         telemetry.update();
     }
+
 
     @Override
     public void loop(){

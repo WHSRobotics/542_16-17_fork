@@ -11,7 +11,7 @@ import org.whs542.lib.Functions;
  * IMU Class
  */
 
-public class IMU extends Thread{
+public class IMU {
 
     private double imuBias = 0;
     private double calibration = 0;
@@ -22,7 +22,7 @@ public class IMU extends Thread{
 
     public IMU(HardwareMap theMap, double initialH){
         imu = theMap.get(BNO055IMU.class, "imu");
-        /*
+
         parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -36,22 +36,25 @@ public class IMU extends Thread{
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu.initialize(parameters);*/
-        initialHeading = initialH;
+        imu.initialize(parameters);
+        //initialHeading = initialH;
+        //setHeading(initialHeading);
     }
 
     public IMU(HardwareMap theMap) {
-        imu = theMap.get(BNO055IMU.class, "imu");
-    }
-
-    @Override
-    public void run(){
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
+
+        imu = theMap.get(BNO055IMU.class, "imu");
+    }
+
+    //@Override
+    public void run(){
+
         //File file = AppUtil.getInstance().getSettingsFile("AdafruitIMUCalibration.json");
         //parameters.calibrationDataFile = ReadWriteFile.readFile(file);
         //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
@@ -60,21 +63,33 @@ public class IMU extends Thread{
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         imu.initialize(parameters);
-        setHeading(initialHeading);
     }
 
+    public double[] getThreeHeading()
+    {
+        double xheading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle;// - calibration;
+        double yheading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).secondAngle;// - calibration;
+        double zheading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle; //- calibration;
+
+        //xheading = Functions.normalizeAngle(xheading);
+        //yheading = Functions.normalizeAngle(yheading);
+        //zheading = Functions.normalizeAngle(zheading);
+
+        double[] threeHeading = {xheading,yheading,zheading};
+        return threeHeading;//-180 to 180 deg
+    }
 
     public double getHeading(){
-        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle - calibration;
+        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle;// - calibration;
         return Functions.normalizeAngle(heading); //-180 to 180 deg
     }
     public void zeroHeading(){
-        calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle;
+        calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle ;
     }
 
-    public void setHeading(double setValue){
-         calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle - setValue;
-    }
+    /*public void setHeading(double setValue){
+         calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle - setValue;
+    }*/
 
 
     //Returns the magnitude of the acceleration, not the direction.

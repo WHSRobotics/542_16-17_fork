@@ -43,7 +43,7 @@ public class BlueAutoPlay2 extends OpMode {
     public void init() {
         DbgLog.msg("Starting init");
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
-        //robot.setInitialCoordinate(startingPositions[0]);
+        //robot.setInitialCoordinate(startingCoord[0]);
         state = -1;
         wait = 1000;
         loop = 0;

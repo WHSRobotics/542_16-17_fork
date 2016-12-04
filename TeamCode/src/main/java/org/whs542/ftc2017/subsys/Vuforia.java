@@ -229,7 +229,7 @@ public class Vuforia extends Thread{
     public boolean vuforiaIsValid()
     {
         Coordinate currentCoord = getHeadingAndLocation();
-        if(currentCoord.getX() == INVALID_VUFORIA_VALUE || currentCoord.getX() == validVuforiaCoord.getX())
+        if(currentCoord.getX() == INVALID_VUFORIA_VALUE)
         {
             return false;
         }
@@ -242,15 +242,13 @@ public class Vuforia extends Thread{
 
 
     //Converts vuforia angle to absolute angle value. Vuforia gives values from -180 to 180; this method
-    //Converts it to 0 to 360. 0 = +x
+    //Converts it to -180 to 180 = +x
     public static double vuforiaAngleConverter( double degrees ){
 
-        if(degrees < 0 && degrees >= -180){
-            degrees = degrees + 360;
-        }
         degrees = degrees + 90;
-        if(degrees >= 360)
+        if(degrees >= 180)
             degrees = degrees - 360;
+
         return degrees;
     }
     /**

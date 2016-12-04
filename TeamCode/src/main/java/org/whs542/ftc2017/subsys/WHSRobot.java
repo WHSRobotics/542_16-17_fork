@@ -32,8 +32,12 @@ public class WHSRobot
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.125, 0.25, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double POWER_ROTATE_TO_TARGET = 0.4;
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.2, 0.4, 0.4};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
+    private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 60};
+
+    //17.85 /2 is center of robot, at 15 for y
+    //16.5 / 2 is center of robot, at 15.75 for x
 
     static final double CAMERA_TO_BODY_X = 0; //body frame
     static final double CAMERA_TO_BODY_Y = -RADIUS_TO_DRIVETRAIN; //body frame
@@ -50,14 +54,14 @@ public class WHSRobot
         pusher = new BeaconPusher(robotMap, side);
 
         imu = new IMU(robotMap);
-        try {
+        /*try {
             imu.start();
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-
+*/
         vuforia = new Vuforia();
         try {
             vuforia.start();
@@ -65,6 +69,8 @@ public class WHSRobot
         catch(Exception e){
             e.printStackTrace();
         }
+        rotateToTargetInProgress = false;
+        driveToTargetInProgress = false;
     }
 
     public WHSRobot(HardwareMap robotMap)
@@ -139,16 +145,42 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
-            drivetrain.setLeftPower(POWER_ROTATE_TO_TARGET);
-            drivetrain.setRightPower(-POWER_ROTATE_TO_TARGET);
-            rotateToTargetInProgress = true;
+            if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[2]){
+                drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);
+                drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
+                rotateToTargetInProgress = true;
+            }
+            else if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[1]){
+                drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[1]);
+                drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[1]);
+                rotateToTargetInProgress = true;
+            }
+            else if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[0]){
+                drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[0]);
+                drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[0]);
+                rotateToTargetInProgress = true;
+            }
+
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
-            drivetrain.setLeftPower(-POWER_ROTATE_TO_TARGET);
-            drivetrain.setRightPower(POWER_ROTATE_TO_TARGET);
-            rotateToTargetInProgress = true;
+            if(angleToTarget > ROTATE_TO_TARGET_THRESHOLD[2]){
+                drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
+                drivetrain.setRightPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);
+                rotateToTargetInProgress = true;
+            }
+            else if (angleToTarget > ROTATE_TO_TARGET_THRESHOLD[1]){
+                drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[1]);
+                drivetrain.setRightPower(ROTATE_TO_TARGET_POWER_LEVEL[1]);
+                rotateToTargetInProgress = true;
+            }
+            else if (angleToTarget > ROTATE_TO_TARGET_THRESHOLD[0]){
+                drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[0]);
+                drivetrain.setRightPower(ROTATE_TO_TARGET_POWER_LEVEL[0]);
+                rotateToTargetInProgress = true;
+            }
         }
+
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
@@ -174,18 +206,21 @@ public class WHSRobot
 
     public Position estimatePosition()
     {
-        Coordinate vuforiaCoord = null;
+        //Coordinate vuforiaCoord;
+        /* Commented out Jiangda's changes
         for(int i = 0; i < 100; i++){
             if(vuforia.vuforiaIsValid()){
                 vuforiaCoord = vuforia.getHeadingAndLocation();
             }
         }
+        */
 
         Position estimatedPos;
 
-        if(vuforiaCoord != null)
+        if(vuforia.vuforiaIsValid())
         {
             //vuforiaCoord = coordinate of camera in field frame
+            Coordinate vuforiaCoord = vuforia.getHeadingAndLocation();
             vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
             Position currentPos = vuforiaCoord.getPos(); //field frame
             estimatedPos = currentPos;
@@ -250,6 +285,7 @@ public class WHSRobot
     public void setInitialCoordinate(Coordinate initCoord)
     {
         currentCoord = initCoord;
+        imu.setImuBias(currentCoord.getHeading());
         DbgLog.msg("Initial coordinate set", currentCoord.toString());
     }
 
