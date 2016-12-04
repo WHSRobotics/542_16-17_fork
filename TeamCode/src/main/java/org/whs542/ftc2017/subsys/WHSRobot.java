@@ -32,7 +32,7 @@ public class WHSRobot
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.125, 0.25, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.2, 0.4, 0.4};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.2, 0.25, 0.3};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 60};
 
@@ -110,6 +110,11 @@ public class WHSRobot
             //if rotating, do nothing
         }
         else {
+            if(driveToTargetInProgress == false)
+            {
+                drivetrain.setLRPower(0.8, 0.8);
+            }
+
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
@@ -145,6 +150,11 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
+            if(rotateToTargetInProgress == false) {
+                drivetrain.setLeftPower(0.8);
+                drivetrain.setRightPower(-0.8);
+            }
+
             if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[2]){
                 drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);
                 drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
@@ -164,6 +174,11 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
+            if(rotateToTargetInProgress == false) {
+                drivetrain.setLeftPower(-0.8);
+                drivetrain.setRightPower(0.8);
+            }
+
             if(angleToTarget > ROTATE_TO_TARGET_THRESHOLD[2]){
                 drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
                 drivetrain.setRightPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);

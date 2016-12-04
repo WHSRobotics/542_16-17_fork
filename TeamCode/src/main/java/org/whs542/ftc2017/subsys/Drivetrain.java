@@ -37,7 +37,7 @@ public class Drivetrain {
     private final double MIN_POWER_VALUE = 0.15;
     private final double MM_PER_MAT = 594;
 
-    private final double DEADBAND_MOVE_DISTANCE_MILLI = 30*ENCODER_TICKS_PER_MM;
+    private final double DEADBAND_MOVE_DISTANCE_MILLI = 40*ENCODER_TICKS_PER_MM;
 
 
     public Drivetrain (HardwareMap driveMap)
@@ -195,13 +195,12 @@ public class Drivetrain {
         this.setTargetPosition(targetPosition);
 
         if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI){
-
-            setLRPower(1.0, 1.0);
-
+            setLRPower(0.5, 0.5);
         }
         else {
             setLRPower(0.0, 0.0);
         }
+
 
         //imu.zeroHeading();
         /*

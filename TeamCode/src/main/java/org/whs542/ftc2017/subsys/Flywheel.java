@@ -23,7 +23,7 @@ public class Flywheel
     private boolean isFlywheelAtSpeed;
     private boolean isGateOpen;
 
-    private final double[] teleflywheelPowers = {0.2, 0.25, 0.30}; //3 different mat location types
+    private final double[] teleflywheelPowers = {0.15, 0.17, 0.19}; //3 different mat location types
     public final double[] autoFlywheelPowers = {}; //TODO: test for these
     private double flywheelPower;
     private final int MAX_SPEED = 2100; //ticks per sec
@@ -130,19 +130,19 @@ public class Flywheel
         gateToggler.changeState(triggerPressed);
         switch (gateToggler.currentState()) {
             case 0:
-                flywheelGate.setPosition(0.0);
-                isGateOpen = false;
-                break;
-            case 1:
                 flywheelGate.setPosition(0.5);
                 isGateOpen = true;
+                break;
+            case 1:
+                flywheelGate.setPosition(0.0);
+                isGateOpen = false;
                 break;
         }
     }
 
     public void operateGateNoToggle(boolean button){
         if(button){
-            flywheelGate.setPosition(1.0);
+            flywheelGate.setPosition(0.5);
         }
         else{
             flywheelGate.setPosition(0.0);

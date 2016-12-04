@@ -33,11 +33,11 @@ public class TimeAutoOpPlay5 extends OpMode{
                 break;
             case 1:
                 robot.drivetrain.moveDistanceMilli2(1300);
-                state = 2;
                 break;
             default: break;
         }
         telemetry.addData("We are screwed (state num)", state);
+        telemetry.addData("EncTicks", robot.drivetrain.getEncoderPosition());
 
     }
 }
