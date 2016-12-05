@@ -13,7 +13,7 @@ import org.whs542.lib.Position;
  * Red Play 3 Fixed, hopefully - Amar
  */
 
-@Autonomous(name = "AutoOpTest3", group = "Autonomous")
+@Autonomous(name = "RedAutoOp3", group = "Autonomous")
 //@Disabled
 public class RedAutoPlay3 extends OpMode
 {
