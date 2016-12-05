@@ -37,6 +37,8 @@ public class Drivetrain {
     private final double MIN_POWER_VALUE = 0.15;
     private final double MM_PER_MAT = 594;
 
+    private final double DEADBAND_MOVE_DISTANCE_MILLI = 40*ENCODER_TICKS_PER_MM;
+
 
     public Drivetrain (HardwareMap driveMap)
     {
@@ -101,8 +103,8 @@ public class Drivetrain {
     //A set power method using the cubic function
     public void setLRScaledPower(double leftPower, double rightPower)
     {
-        double rightScaledPower = Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower,3) : 0.0;
-        double leftScaledPower = Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower,3) : 0.0;
+        double rightScaledPower = Math.abs(rightPower) > JOY_THRESHOLD ? Math.pow(rightPower, 3) : 0.0;
+        double leftScaledPower = Math.abs(leftPower) > JOY_THRESHOLD ? Math.pow(leftPower, 3) : 0.0;
 
         switch(orientationSwitch.currentState())
         {
@@ -181,22 +183,31 @@ public class Drivetrain {
 
     }
 
+    //setRunMode MUST be run before this
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli2(double distanceMM, IMU imu)
+    public void moveDistanceMilli2(double distanceMM /*,IMU imu*/)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
 
-        this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
+        //this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);
         this.setMaxSpeed(2100);
         this.setTargetPosition(targetPosition);
 
-        imu.zeroHeading();
+        if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI){
+            setLRPower(0.5, 0.5);
+        }
+        else {
+            setLRPower(0.0, 0.0);
+        }
 
-        while(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
+
+        //imu.zeroHeading();
+        /*
+        if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)
         {
             double distanceToGo = Math.abs(distanceMM) - Math.abs(getDistanceToGo(getEncoderPosition()));
-            double headingError = imu.getHeading();
+            //double headingError = imu.getHeading();
 
             DbgLog.msg("Distance to go in mm:" + Double.toString(distanceToGo));
             DbgLog.msg("FrontRight encoder:" + Double.toString(frontRight.getCurrentPosition()));
@@ -209,16 +220,16 @@ public class Drivetrain {
             }
             else if (distanceToGo <= MM_PER_MAT * 2 & distanceToGo > MM_PER_MAT){
                 double powerScale2 = 0.4 * (distanceToGo - MM_PER_MAT ) / MM_PER_MAT;
-                this.setLRPower(0.1 + powerScale2, 0.1 + powerScale2);
+                this.setLRPower(0.3 + powerScale2, 0.3 + powerScale2);
             }
-            else if (distanceToGo <= MM_PER_MAT & distanceToGo > 0){
-                this.setLRPower(0.1, 0.1);
+            else if (distanceToGo <= MM_PER_MAT & distanceToGo > DEADBAND_MOVE_DISTANCE_MILLI){
+                this.setLRPower(0.3, 0.3);
             }
-            else{
+            else if(distanceToGo < DEADBAND_MOVE_DISTANCE_MILLI){
                 this.setLRPower(0, 0);
-                break;
             }
-
+         }
+         */
             /*switch (stage) {
                 case 0:
                     while (distanceToGo > 1220) {
@@ -242,7 +253,7 @@ public class Drivetrain {
                     this.setLRPower(0.0, 0.0);
 
             }*/
-
+            /*
             //Stop and turn
             if(Math.abs(headingError) > 1){
                 this.setLRPower(0, 0);
@@ -253,7 +264,8 @@ public class Drivetrain {
             if(imu.getAccelerationMag() > 10.0){
                 this.setLRPower(0, 0);
             }
-        }
+            */
+
     }
 
 

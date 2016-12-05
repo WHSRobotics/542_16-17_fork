@@ -12,18 +12,33 @@ import org.whs542.ftc2017.subsys.IMU;
  */
 @Autonomous(name = "IMUHeadingTest", group = "Sensor")
 //@Disabled
-public class IMUHeadingTest extends OpMode{
+
+public class IMUHeadingTest extends OpMode
+{
+
     IMU imu;
 
     @Override
     public void init(){
+
         imu = new IMU(hardwareMap);
-        imu.start();
+
+        /*try {
+            imu.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }*/
     }
+
     @Override
     public void loop(){
 
         double heading = imu.getHeading();
+
+        double[] threeHeading = imu.getThreeHeading();
+
         double accel = imu.getAccelerationMag();
 
         String headingValue = String.valueOf(heading);
@@ -35,6 +50,10 @@ public class IMUHeadingTest extends OpMode{
         if(gamepad1.x){
             //imu.calibrateHeading();
         }
+
+        telemetry.addData("x", threeHeading[0]);
+        telemetry.addData("y", threeHeading[1]);
+        telemetry.addData("z", threeHeading[2]);
     }
 
 }

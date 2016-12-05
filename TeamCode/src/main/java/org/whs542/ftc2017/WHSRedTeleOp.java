@@ -22,28 +22,31 @@ public class WHSRedTeleOp extends OpMode
 
     public void loop()
     {
-        //Gamepad 1 Controls
-        robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
-        robot.drivetrain.setOrientation(gamepad1.a);
-        robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-        robot.pusher.extendPusher(gamepad1.left_bumper);
-        robot.autoMoveToBeacon(gamepad1.b);
-        robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down);
+        try {
+            //Gamepad 1 Controls
+            robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
+            robot.drivetrain.setOrientation(gamepad1.a); //TODO: check if this actually works and fix if not -.-
+            robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
+            robot.pusher.extendPusher(gamepad1.left_bumper);
 
-        //Gamepad 2 Controls
-        robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel.rampFlywheel(gamepad2.right_bumper);
-        robot.flywheel.operateGate(gamepad2.right_trigger);
-        //robot.capball.liftCB(gamepad2.dpad_up);
-        //robot.capball.dropCB(gamepad2.dpad_down);
-        //robot.capball.changeServo(gamepad2.right_bumper);
-        //robot.capball.changeRatchet(gamepad2.left_trigger);
+            //Gamepad 2 Controls
+            robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
+            robot.flywheel.rampFlywheel(gamepad2.left_bumper);
+            robot.flywheel.operateGate(gamepad2.left_trigger);
+            //robot.capball.liftCB(gamepad2.dpad_up);
+            //robot.capball.dropCB(gamepad2.dpad_down);
+            //robot.capball.changeServo(gamepad2.right_bumper);
+            //robot.capball.changeRatchet(gamepad2.right_trigger); //TODO: CHECK THIS METHOD YAS :)
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
         //Telemetry
         telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
         telemetry.addData("Flywheel Status: ", robot.flywheel.getFlywheelStatus());
         telemetry.addData("Flywheel Gate Status: ", robot.flywheel.getGateStatus());
-        //flywheel speed check to close gate and check if particle is launched
 
         telemetry.addData("Auto Beacon Choice: ", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
 
@@ -52,8 +55,6 @@ public class WHSRedTeleOp extends OpMode
         telemetry.addData("Orientation: ", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake: ", robot.intake.getIntakeState());
-
-	    //telemetry.addData("Capball:", robot.capball.getCBState());
     }
 
 }

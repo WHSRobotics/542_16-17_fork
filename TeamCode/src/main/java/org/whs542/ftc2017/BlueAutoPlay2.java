@@ -13,7 +13,7 @@ import org.whs542.lib.Coordinate;
 import org.whs542.lib.Position;
 
 /**
- * Created by Jiangda on 11/26/2016.
+ * Blue Auto Play 2
  */
 
 @Autonomous(name = "BlueAutoPlay2", group = "AutoOp")
@@ -33,16 +33,17 @@ public class BlueAutoPlay2 extends OpMode {
 
     //Blue: Wheels, Legos
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150)};
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+
     Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
     @Override
     public void init() {
         DbgLog.msg("Starting init");
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
-        //robot.setInitialCoordinate(startingPositions[0]);
+        //robot.setInitialCoordinate(startingCoord[0]);
         state = -1;
         wait = 1000;
         loop = 0;
@@ -50,7 +51,7 @@ public class BlueAutoPlay2 extends OpMode {
     }
     @Override
     public void loop() {
-        DbgLog.msg("Start of loop " + debug);
+        DbgLog.msg("Start of firstLoop " + debug);
         switch (state){
             case -1:
                 DbgLog.msg("Starting case -1");
@@ -127,7 +128,7 @@ public class BlueAutoPlay2 extends OpMode {
                 }
                 break;
             case 4:
-                stateInfo = "determining / pressing first beacon";
+                stateInfo = "determining / pressing firstLoop beacon";
                 if(!robot.pusher.isBeaconPushed()){
                     robot.driveToTarget(new Position(-890,1800,150));
                 }

@@ -10,22 +10,26 @@ import org.whs542.lib.Coordinate;
 import org.whs542.lib.Position;
 
 /**
- * Created by Jiangda on 11/25/2016.
+ * Red Auto Play 5
  */
 @Autonomous(name = "RedAutoPlay5", group = "Autonomous  ")
 //@Disabled
-public class RedAutoPlay5 extends OpMode {
-
+public class RedAutoPlay5 extends OpMode
+{
     WHSRobot robot;
+
     int state;
     String stateInfo;
+
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
     long particleDelay = 300;
+
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150), new Position(-1800, 1000, 150) };
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
+
     //First coordinate: closest to red ramp, touching wall; Second: in the middle of red wall; Third: farthest from red ramp
     Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
 
@@ -38,11 +42,11 @@ public class RedAutoPlay5 extends OpMode {
     }
 
     @Override
-    public void loop() {
-
+    public void loop()
+    {
         switch(state){
             case 0:
-                stateInfo = "moving forward";
+                stateInfo = "Moving forward";
                 robot.driveToTarget(new Position(0, -1400, 150));
                 if(!robot.driveToTargetInProgress)
                     state++;

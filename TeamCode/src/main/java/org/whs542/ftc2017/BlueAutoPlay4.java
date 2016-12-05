@@ -30,12 +30,12 @@ public class BlueAutoPlay4 extends OpMode {
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
 
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)};
-    //first: get close to beacons, second: get in front / within pushing range of beacon, third: center vortex, fourth: if the beacon color doesn't match
+    //firstLoop: get close to beacons, second: get in front / within pushing range of beacon, third: center vortex, fourth: if the beacon color doesn't match
     Position[] redPositions = {new Position(-1200, 900, 150), new Position(-1300, 900, 150), new Position(0, 0, 150), new Position(-1300, 800, 150)};
 
-    //first: align to parallel beacons, second: end of beacons, third: center vortex
+    //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
     //Blue Vortex, Red Vortex
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};

@@ -58,7 +58,7 @@ public class MoveTestAutoOp extends LinearOpMode {
 
 
     /*@Override
-    public void loop(){
+    public void firstLoop(){
         while (caseNumber == 0) {
 
             caseNumber = 1;
