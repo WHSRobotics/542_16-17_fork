@@ -33,13 +33,13 @@ public class TimeAutoOpPlay5 extends OpMode{
 
         switch (state){
             case 0:
-                robot.flywheel.operateGateNoToggle(false);
+                //robot.flywheel.operateGateNoToggle(false);
                 robot.flywheel.setFlywheelPower(FLYWHEEL_POWER);
                 state++;
                 break;
             case 1:
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

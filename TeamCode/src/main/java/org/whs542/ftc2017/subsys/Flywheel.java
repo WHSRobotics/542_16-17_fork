@@ -23,7 +23,7 @@ public class Flywheel
     private boolean isFlywheelAtSpeed;
     private boolean isGateOpen;
 
-    private final double[] teleflywheelPowers = {0.15, 0.17, 0.19}; //3 different mat location types
+    private final double[] teleflywheelPowers = {0.16, 0.17, 0.19, 0.21}; //3 different mat location types
     public final double[] autoFlywheelPowers = {}; //TODO: test for these
     private double flywheelPower;
     private final int MAX_SPEED = 2100; //ticks per sec
@@ -84,16 +84,20 @@ public class Flywheel
         switch(flyModeToggler.currentState())
         {
             case 0:
-                flywheelMode = "approx. 1 tiles";
+                flywheelMode = "approx. 1 tiles" + flywheel.getPower();
                 flywheelPower = teleflywheelPowers[0];
                 break;
             case 1:
-                flywheelMode = "approx. 2 tiles";
+                flywheelMode = "approx. 2 tiles" + flywheel.getPower();
                 flywheelPower = teleflywheelPowers[1];
                 break;
             case 2:
-                flywheelMode = "approx. 3 tiles";
+                flywheelMode = "approx. 3 tiles" + flywheel.getPower();
                 flywheelPower = teleflywheelPowers[2];
+                break;
+            case 3:
+                flywheelMode = "approx. 4 tiles" + flywheel.getPower();
+                flywheelPower = teleflywheelPowers[3];
                 break;
         }
         return flywheelMode;
@@ -130,12 +134,12 @@ public class Flywheel
         gateToggler.changeState(triggerPressed);
         switch (gateToggler.currentState()) {
             case 0:
-                flywheelGate.setPosition(0.5);
-                isGateOpen = true;
-                break;
-            case 1:
                 flywheelGate.setPosition(0.0);
                 isGateOpen = false;
+                break;
+            case 1:
+                flywheelGate.setPosition(0.5);
+                isGateOpen = true;
                 break;
         }
     }
