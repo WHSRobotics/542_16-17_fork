@@ -33,20 +33,20 @@ public class TimeAutoOpPlay5 extends OpMode{
 
         switch (state){
             case 0:
-                robot.flywheel.operateGateNoToggle(false);
+                robot.flywheel.operateGate(false);
                 robot.flywheel.setFlywheelPower(FLYWHEEL_POWER);
                 state++;
                 break;
             case 1:
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 state++;
                 break;
             case 2:
-                robot.flywheel.operateGateNoToggle(true);
+                robot.flywheel.operateGate(true);
                 state++;
                 break;
             case 3:
@@ -80,7 +80,7 @@ public class TimeAutoOpPlay5 extends OpMode{
         /*
         switch (state) {
             case 0:
-                robot.flywheel.operateGateNoToggle(false);
+                robot.flywheel.operateGate(false);
                 robot.flywheel.setFlywheelPower(FLYWHEEL_POWER);
                 state++;
                 break;
@@ -93,7 +93,7 @@ public class TimeAutoOpPlay5 extends OpMode{
                 state++;
                 break;
             case 2:
-                robot.flywheel.operateGateNoToggle(true);
+                robot.flywheel.operateGate(true);
                 state++;
                 break;
             case 3:

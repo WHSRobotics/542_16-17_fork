@@ -24,7 +24,6 @@ public class Flywheel
     private boolean isGateOpen;
 
     private final double[] teleflywheelPowers = {0.15, 0.17, 0.19}; //3 different mat location types
-    public final double[] autoFlywheelPowers = {}; //TODO: test for these
     private double flywheelPower;
     private final int MAX_SPEED = 2100; //ticks per sec
     private final double MIN_SPEED = 1000;
@@ -121,6 +120,7 @@ public class Flywheel
         flywheel.setPower(power);
     }
 
+    /*
     public void operateGate(double trigger)
     {
         boolean triggerPressed;
@@ -139,8 +139,9 @@ public class Flywheel
                 break;
         }
     }
+    */
 
-    public void operateGateNoToggle(boolean button){
+    public void operateGate(boolean button){
         if(button){
             flywheelGate.setPosition(0.5);
         }
