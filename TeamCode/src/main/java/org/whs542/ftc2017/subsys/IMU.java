@@ -1,11 +1,14 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.hardware.adafruit.BNO055IMU;
+import com.qualcomm.hardware.adafruit.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.whs542.lib.Functions;
+
+import java.util.Locale;
 
 /**
  * IMU Class
@@ -48,8 +51,11 @@ public class IMU {
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
 
         imu = theMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
     }
 
     //@Override
@@ -62,7 +68,7 @@ public class IMU {
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu.initialize(parameters);
+
     }
 
     public double[] getThreeHeading()
@@ -80,11 +86,12 @@ public class IMU {
     }
 
     public double getHeading(){
-        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle;// - calibration;
-        return Functions.normalizeAngle(heading); //-180 to 180 deg
+        double heading = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle - calibration;
+        heading = Functions.normalizeAngle(heading); //-180 to 180 deg
+        return heading;
     }
     public void zeroHeading(){
-        calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).firstAngle ;
+        calibration = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.XYZ).thirdAngle ;
     }
 
     /*public void setHeading(double setValue){

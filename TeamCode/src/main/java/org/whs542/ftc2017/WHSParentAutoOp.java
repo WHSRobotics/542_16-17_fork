@@ -6,7 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
+import org.whs542.lib.OpModeTimer;
 import org.whs542.lib.Position;
+
+import java.util.Timer;
 
 /**
  * Parent AutoOp Class
@@ -16,6 +19,7 @@ import org.whs542.lib.Position;
 //@Override
 public abstract class WHSParentAutoOp extends OpMode {
     WHSRobot robot;
+    OpModeTimer timer;
 
     int state;
     boolean firstLoop;
@@ -53,7 +57,10 @@ public abstract class WHSParentAutoOp extends OpMode {
 
     @Override
     public void init(){
+
         robot = new WHSRobot(hardwareMap, allianceColor);
+        timer = new OpModeTimer();
+
         if(allianceColor == Alliance.BLUE)
         {//TODO: Create class timer
             if(startingPosition == 1) {
@@ -94,6 +101,11 @@ public abstract class WHSParentAutoOp extends OpMode {
     }
 
     public void loop() {
+        int i = 1;
+        if(i == 1) {
+            timer.start();
+            i = 2;
+        }
         robot.estimatePosition();
         robot.estimateHeading();
 

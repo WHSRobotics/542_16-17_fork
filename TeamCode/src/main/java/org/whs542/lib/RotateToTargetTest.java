@@ -8,7 +8,7 @@ import org.whs542.ftc2017.subsys.WHSRobot;
 /**
  * Created by Amar2 on 12/2/2016.
  */
-@TeleOp(name = "Rotate to target test", group = "uhawuiwwb%^ujq3gu34hu3iY*Gyuuiuor")
+@TeleOp(name = "Rotate to target test", group = "")
 public class RotateToTargetTest extends OpMode {
 
     WHSRobot robot;
@@ -21,7 +21,7 @@ public class RotateToTargetTest extends OpMode {
 
     @Override
     public void loop() {
-
+        robot.estimateHeading();
         robot.rotateToTarget(150);
         if(!robot.rotateToTargetInProgress){
             requestOpModeStop();
