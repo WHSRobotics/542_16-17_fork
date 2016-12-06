@@ -84,19 +84,19 @@ public class Flywheel
         switch(flyModeToggler.currentState())
         {
             case 0:
-                flywheelMode = "approx. 1 tiles" + flywheel.getPower();
+                flywheelMode = "approx. 1 tiles";
                 flywheelPower = teleflywheelPowers[0];
                 break;
             case 1:
-                flywheelMode = "approx. 2 tiles" + flywheel.getPower();
+                flywheelMode = "approx. 2 tiles";
                 flywheelPower = teleflywheelPowers[1];
                 break;
             case 2:
-                flywheelMode = "approx. 3 tiles" + flywheel.getPower();
+                flywheelMode = "approx. 3 tiles";
                 flywheelPower = teleflywheelPowers[2];
                 break;
             case 3:
-                flywheelMode = "approx. 4 tiles" + flywheel.getPower();
+                flywheelMode = "approx. 4 tiles";
                 flywheelPower = teleflywheelPowers[3];
                 break;
         }
