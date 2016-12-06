@@ -150,10 +150,10 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
-            if(rotateToTargetInProgress == false) {
+            /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(0.8);
                 drivetrain.setRightPower(-0.8);
-            }
+            }*/
 
             if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[2]){
                 drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);
@@ -174,10 +174,10 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
-            if(rotateToTargetInProgress == false) {
+            /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(-0.8);
                 drivetrain.setRightPower(0.8);
-            }
+            }*/
 
             if(angleToTarget > ROTATE_TO_TARGET_THRESHOLD[2]){
                 drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
@@ -294,8 +294,7 @@ public class WHSRobot
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading); //updates global variable
         }
-        return currentHeading;
-    }
+        return currentHeading;    }
 
     public void setInitialCoordinate(Coordinate initCoord)
     {

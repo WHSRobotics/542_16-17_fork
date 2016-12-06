@@ -12,14 +12,17 @@ import org.whs542.ftc2017.subsys.IMU;
  */
 @Autonomous(name = "IMUHeadingTest", group = "Sensor")
 //@Disabled
+
 public class IMUHeadingTest extends OpMode
 {
+
     IMU imu;
 
     @Override
     public void init(){
 
         imu = new IMU(hardwareMap);
+
         /*try {
             imu.start();
         }
@@ -31,6 +34,7 @@ public class IMUHeadingTest extends OpMode
 
     @Override
     public void loop(){
+
         double heading = imu.getHeading();
 
         double[] threeHeading = imu.getThreeHeading();

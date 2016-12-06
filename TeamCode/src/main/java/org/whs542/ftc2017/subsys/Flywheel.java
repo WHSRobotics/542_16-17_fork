@@ -94,6 +94,10 @@ public class Flywheel
                 flywheelMode = "approx. 3 tiles";
                 flywheelPower = teleflywheelPowers[2];
                 break;
+            case 3:
+                flywheelMode = "approx. 4 tiles";
+                flywheelPower = teleflywheelPowers[3];
+                break;
         }
         return flywheelMode;
     }
@@ -130,12 +134,12 @@ public class Flywheel
         gateToggler.changeState(triggerPressed);
         switch (gateToggler.currentState()) {
             case 0:
-                flywheelGate.setPosition(0.5);
-                isGateOpen = true;
-                break;
-            case 1:
                 flywheelGate.setPosition(0.0);
                 isGateOpen = false;
+                break;
+            case 1:
+                flywheelGate.setPosition(0.5);
+                isGateOpen = true;
                 break;
         }
     }
