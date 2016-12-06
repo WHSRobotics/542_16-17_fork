@@ -1,10 +1,7 @@
 package org.whs542.ftc2017;
 
-import android.renderscript.ScriptIntrinsicYuvToRGB;
-
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -90,7 +87,7 @@ public class BlueAutoPlay2 extends OpMode {
                 telemetry.addData("Speed of flywheel ", robot.flywheel.getCurrentSpeed());
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(/*powers[startingPosition - 1]*/1.0)){
                     DbgLog.msg("Flywheel is at correct speed");
-                    robot.flywheel.operateGateNoToggle(true);
+                    robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
                     if(loop == 1){
                         time1 = (double) System.nanoTime() / 10E9;

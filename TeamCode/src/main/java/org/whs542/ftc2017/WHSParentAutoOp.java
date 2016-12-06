@@ -122,14 +122,14 @@ public abstract class WHSParentAutoOp extends OpMode {
             case 2:
                 stateInfo = "Shooting particles";
                 if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
-                    robot.flywheel.operateGateNoToggle(true);
+                    robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
                     if (test > 0) {
                         test--;
                     }
                     robot.intake.runIntake(0.0);
                     robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGateNoToggle(false);
+                    robot.flywheel.operateGate(false);
                     state++;
                 }
                 break;

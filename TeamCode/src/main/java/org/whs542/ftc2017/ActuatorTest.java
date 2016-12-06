@@ -44,8 +44,8 @@ public class ActuatorTest extends OpMode{
             robot.flywheel.rampFlywheel(false);
         }
 
-        if (getRuntime() > 32 && getRuntime() > 36) robot.flywheel.operateGateNoToggle(true);
-        else robot.flywheel.operateGateNoToggle(false);
+        if (getRuntime() > 32 && getRuntime() > 36) robot.flywheel.operateGate(true);
+        else robot.flywheel.operateGate(false);
         
 
     }

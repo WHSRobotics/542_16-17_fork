@@ -1,7 +1,6 @@
 package org.whs542.ftc2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -61,7 +60,7 @@ public class RedAutoPlay5 extends OpMode
                 stateInfo = "Shooting particles";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //need something to check if it's up to speed
                 if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
-                    robot.flywheel.operateGateNoToggle(true);
+                    robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
                     try {
                         Thread.sleep(particleDelay);
@@ -70,7 +69,7 @@ public class RedAutoPlay5 extends OpMode
                     }
                     robot.intake.runIntake(0.0);
                     robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGateNoToggle(false);
+                    robot.flywheel.operateGate(false);
                     state++;
                 }
                 break;

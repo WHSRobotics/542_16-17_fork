@@ -63,7 +63,7 @@ public class RedAutoPlay1 extends OpMode {
                 stateInfo = "Shooting particles";
                 if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
-                    robot.flywheel.operateGateNoToggle(true);
+                    robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
 
                     try {
@@ -82,7 +82,7 @@ public class RedAutoPlay1 extends OpMode {
                     }
 
                     robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGateNoToggle(false);
+                    robot.flywheel.operateGate(false);
                     state++;
                 }
                 break;

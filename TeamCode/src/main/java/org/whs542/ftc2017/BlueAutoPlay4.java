@@ -66,7 +66,7 @@ public class BlueAutoPlay4 extends OpMode {
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1]))
                 {
-                    robot.flywheel.operateGateNoToggle(true);
+                    robot.flywheel.operateGate(true);
                     try {
                         Thread.sleep(particleDelay);                  //Give the particles a little bit of time to reach the flywheel
                     } catch (InterruptedException e) {
