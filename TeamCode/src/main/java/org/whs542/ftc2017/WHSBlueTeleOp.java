@@ -25,7 +25,7 @@ public class WHSBlueTeleOp extends OpMode
         try {
             //Gamepad 1 Controls
             robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
-            robot.drivetrain.setOrientation(gamepad1.a); //TODO: check if this actually works and fix if not -.-
+            robot.drivetrain.setOrientation(gamepad1.a);
             robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
             robot.pusher.extendPusher(gamepad1.left_bumper);
 

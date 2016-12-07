@@ -124,8 +124,8 @@ public class Flywheel
         flywheel.setPower(power);
     }
 
-    /*
-    public void operateGate(double trigger)
+
+    public void operateGate(float trigger)
     {
         boolean triggerPressed;
         if(trigger > 0.05) {triggerPressed = true;}
@@ -143,7 +143,7 @@ public class Flywheel
                 break;
         }
     }
-    */
+
 
     public void operateGate(boolean button){
         if(button){
