@@ -32,7 +32,7 @@ public class WHSRobot
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.125, 0.25, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.2, 0.25, 0.3};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {1.0, 1.0, 1.0};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 60};
 
@@ -284,8 +284,8 @@ public class WHSRobot
     public double estimateHeading()
     {
         double currentHeading;
-
-        if(vuforia.vuforiaIsValid()){
+        int i = 0;
+        if(i == 1/*vuforia.vuforiaIsValid()*/){
             currentHeading = vuforia.getHeadingAndLocation().getHeading();
             imu.setImuBias(currentHeading);
             currentCoord.setHeading(currentHeading); //updates global variable

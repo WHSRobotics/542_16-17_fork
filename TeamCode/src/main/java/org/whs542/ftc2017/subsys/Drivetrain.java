@@ -37,7 +37,7 @@ public class Drivetrain {
     private final double MIN_POWER_VALUE = 0.15;
     private final double MM_PER_MAT = 594;
 
-    private final double DEADBAND_MOVE_DISTANCE_MILLI = 40*ENCODER_TICKS_PER_MM;
+    private final double DEADBAND_MOVE_DISTANCE_MILLI = 40 * ENCODER_TICKS_PER_MM;
 
 
     public Drivetrain (HardwareMap driveMap)
@@ -52,8 +52,8 @@ public class Drivetrain {
         backRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void setRunMode( RunMode theMode )

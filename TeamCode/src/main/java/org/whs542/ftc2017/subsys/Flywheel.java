@@ -139,8 +139,8 @@ public class Flywheel
         return flywheel.getCurrentPosition();
     }
 
-    /*
-    public void operateGate(double trigger)
+
+    public void operateGate(float trigger)
     {
         boolean triggerPressed;
         if(trigger > 0.05) {triggerPressed = true;}
@@ -158,8 +158,8 @@ public class Flywheel
                 break;
         }
     }
-    */
 
+    /*
     public void operateGate(boolean button){
         if(button){
             flywheelGate.setPosition(0.5);
