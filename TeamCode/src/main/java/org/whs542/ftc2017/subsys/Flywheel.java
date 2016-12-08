@@ -25,7 +25,7 @@ public class Flywheel
 
     private final double[] teleflywheelPowers = {0.15, 0.17, 0.19}; //3 different mat location types
     private double flywheelPower;
-    private final int MAX_SPEED = 2100; //ticks per sec
+    private final int MAX_SPEED = 2600; //ticks per sec
     private final double MIN_SPEED = 1000;
 
     private Toggler flyToggler = new Toggler(2);
@@ -33,6 +33,8 @@ public class Flywheel
     private Toggler gateToggler = new Toggler(2);
 
     private String flywheelStatus;
+    private String flywheelMode = "";
+
     /*
     private static double CIRCUMFERENCE = Math.PI  /*insert radius*/; //11.43 is diameter of wheel
     //private double TICKS_PER_SEC;
@@ -75,10 +77,9 @@ public class Flywheel
     }
 
     //use dpad and put linear slides on joysticks
-    public String getFlywheelMode(boolean dpadUp, boolean dpadDown)
+    public void setFlywheelMode(boolean dpadUp, boolean dpadDown)
     {
         flyModeToggler.changeState(dpadUp,dpadDown);
-        String flywheelMode = "";
 
         switch(flyModeToggler.currentState())
         {
@@ -99,6 +100,9 @@ public class Flywheel
                 flywheelPower = teleflywheelPowers[3];
                 break;
         }
+    }
+
+    public String getFlywheelMode(){
         return flywheelMode;
     }
 
@@ -122,6 +126,17 @@ public class Flywheel
     public void setFlywheelPower(double power)
     {
         flywheel.setPower(power);
+    }
+
+
+
+    public void setFlywheelMaxSpeed(int speed /*Enc Ticks/sec*/){
+        flywheel.setMaxSpeed(speed);
+
+    }
+
+    public int getFlywheelEnc(){
+        return flywheel.getCurrentPosition();
     }
 
     /*
@@ -210,6 +225,7 @@ public class Flywheel
         }
     }
 */
+
     public double getCurrentSpeed(){
 
         int encoder1 = flywheel.getCurrentPosition();

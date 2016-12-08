@@ -30,7 +30,7 @@ public class WHSRedTeleOp extends OpMode
             robot.pusher.extendPusher(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
-            robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
+            robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
             robot.flywheel.rampFlywheel(gamepad2.left_bumper);
             robot.flywheel.operateGate(gamepad2.left_trigger);
             //robot.capball.liftCB(gamepad2.dpad_up);
@@ -44,7 +44,7 @@ public class WHSRedTeleOp extends OpMode
         }
 
         //Telemetry
-        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down) + robot.flywheel.flywheel.getPower());
+        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode());
         telemetry.addData("Flywheel Status: ", robot.flywheel.getFlywheelStatus());
         telemetry.addData("Flywheel Gate Status: ", robot.flywheel.getGateStatus());
 

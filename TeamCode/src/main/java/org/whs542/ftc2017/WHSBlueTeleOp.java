@@ -14,6 +14,7 @@ import org.whs542.lib.Alliance;
 public class WHSBlueTeleOp extends OpMode
 {
     WHSRobot robot;
+    int i;
 
     public void init()
     {
@@ -30,7 +31,7 @@ public class WHSBlueTeleOp extends OpMode
             robot.pusher.extendPusher(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
-            robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
+            robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
             robot.flywheel.rampFlywheel(gamepad2.left_bumper);
             robot.flywheel.operateGate(gamepad2.left_trigger);
             //robot.capball.liftCB(gamepad2.dpad_up);
@@ -44,7 +45,7 @@ public class WHSBlueTeleOp extends OpMode
         }
 
         //Telemetry
-        telemetry.addData("Robot Approx. Location", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
+        telemetry.addData("Robot Approx. Location", robot.flywheel.getFlywheelMode());
         telemetry.addData("Flywheel Status", robot.flywheel.getFlywheelStatus());
         telemetry.addData("Flywheel Gate Status", robot.flywheel.getGateStatus());
 
@@ -55,6 +56,9 @@ public class WHSBlueTeleOp extends OpMode
         telemetry.addData("Orientation", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake", robot.intake.getIntakeState());
+
+        telemetry.addData("Flywheel Enc", robot.flywheel.getFlywheelEnc());
+
     }
 
 }
