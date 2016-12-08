@@ -32,7 +32,7 @@ public class TestTeleOp extends OpMode{
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
         //robot.flywheel.testRun(gamepad2.dpad_up, gamepad1.dpad_down);
         robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel.operateGate(gamepad2.right_trigger);
+        //robot.flywheel.operateGate(gamepad2.right_trigger);
 
         //Telemetry
         telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));

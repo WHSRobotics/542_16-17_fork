@@ -32,7 +32,7 @@ public class WHSRedTeleOp extends OpMode
             //Gamepad 2 Controls
             robot.flywheel.getFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
             robot.flywheel.rampFlywheel(gamepad2.left_bumper);
-            robot.flywheel.operateGate(gamepad2.left_trigger);
+            //robot.flywheel.operateGate(gamepad2.left_trigger);
             //robot.capball.liftCB(gamepad2.dpad_up);
             //robot.capball.dropCB(gamepad2.dpad_down);
             //robot.capball.changeServo(gamepad2.right_bumper);
