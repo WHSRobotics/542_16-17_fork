@@ -48,7 +48,7 @@ public class RedAutoPlay2 extends OpMode {
                 stateInfo = "Shooting particles";
                 robot.flywheel.setFlywheelPower(powers[startingPosition - 1]);
                 if(robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])){
-                    robot.flywheel.operateGate(1.0);
+                    robot.flywheel.operateGate(true);
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
