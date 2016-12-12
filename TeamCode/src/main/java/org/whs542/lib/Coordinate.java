@@ -1,7 +1,8 @@
 package org.whs542.lib;
 
 /**
- * Created by Jiangda on 10/22/2016.
+ * Class for carrying coordinate values
+ * @see Position - Alternative class, without heading
  */
 public class Coordinate {
     private double xPos;
