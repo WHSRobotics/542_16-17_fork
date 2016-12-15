@@ -140,9 +140,9 @@ public class Flywheel
     }
 
 
-    public void operateGate(float trigger)
+    public void operateGate(boolean trigger)
     {
-        boolean triggerPressed;
+        /*boolean triggerPressed;
         if(trigger > 0.05) {triggerPressed = true;}
         else {triggerPressed = false;}
 
@@ -155,19 +155,18 @@ public class Flywheel
             case 1:
                 flywheelGate.setPosition(0.5);
                 isGateOpen = true;
-                break;
-        }
-    }
+                break;*/
 
-
-    public void operateGate(boolean button){
-        if(button){
+        if(trigger){
             flywheelGate.setPosition(0.5);
         }
         else{
             flywheelGate.setPosition(0.0);
         }
     }
+
+
+   
 
     public String getGateStatus()
     {
