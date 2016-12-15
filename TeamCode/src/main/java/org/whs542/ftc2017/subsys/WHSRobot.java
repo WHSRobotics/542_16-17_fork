@@ -14,6 +14,7 @@ public class WHSRobot
     public Drivetrain drivetrain;
     public Intake intake;
     public Flywheel flywheel;
+    public Flywheel2 flywheel2;
     //public CapballLift capball;
     public BeaconPusher pusher;
     public Vuforia vuforia;
@@ -50,6 +51,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
+        flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
 
@@ -78,6 +80,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
+        flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
         //pusher = new BeaconPusher(robotMap, side);
         imu = new IMU(robotMap);

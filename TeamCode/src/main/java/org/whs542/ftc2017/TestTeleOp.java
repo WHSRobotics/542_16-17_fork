@@ -25,25 +25,32 @@ public class TestTeleOp extends OpMode{
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
         robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
+        robot.pusher.extendPusher(gamepad1.left_bumper);
+
+        //robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
+        //robot.drivetrain.setOrientation(gamepad1.a);
+        //robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
         //robot.capball.liftCB(gamepad1.dpad_up);
         //robot.capball.dropCB(gamepad1.dpad_down);
 
         //Gamepad 2
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
-        //robot.flywheel.testRun(gamepad2.dpad_up, gamepad1.dpad_down);
-        robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel.operateGate(gamepad2.right_trigger);
+        robot.flywheel2.runFlywheel(gamepad2.left_bumper);
+        robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);
+        robot.flywheel2.setParticleControlState(gamepad2.right_trigger);
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
-        telemetry.addData("FWheelStat:", robot.flywheel.getFlywheelStatus());
-        telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
+        telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelState());
+        //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
 
         telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);
         telemetry.addData("RightStick Y:", gamepad1.right_stick_y);
         telemetry.addData("Orientation:", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake:", robot.intake.getIntakeState());
+
+        telemetry.addData("PC", robot.flywheel2.getParticleControlState());
 
         //telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());
 

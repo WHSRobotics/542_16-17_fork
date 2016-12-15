@@ -47,7 +47,7 @@ public class WHSBlueTeleOp extends OpMode
         //Telemetry
         telemetry.addData("Robot Approx. Location", robot.flywheel.getFlywheelMode());
         telemetry.addData("Flywheel Status", robot.flywheel.getFlywheelStatus());
-        telemetry.addData("Flywheel Gate Status", robot.flywheel.getGateStatus());
+        //telemetry.addData("Flywheel Gate Status", robot.flywheel.getGateStatus());
 
         telemetry.addData("Auto Beacon Choice", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
 
