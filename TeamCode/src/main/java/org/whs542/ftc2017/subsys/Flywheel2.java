@@ -1,6 +1,7 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -16,7 +17,7 @@ public class Flywheel2
     private DcMotor leftFlywheel;
     private Servo particleControl;
 
-    private double[] powers = {0.3, 0.6, 0.9};
+    private double[] powers = {0.1, 0.2, 0.3};
     private double flywheelPower;
 
     private String flywheelMode;
@@ -25,13 +26,20 @@ public class Flywheel2
     private Toggler flywheelToggle = new Toggler(2);
 
     private boolean isFlywheelAtSpeed;
-    private boolean isParticleControlUp;
+    private boolean isParticleControlOpen;
 
     public Flywheel2(HardwareMap map)
     {
         rightFlywheel = map.dcMotor.get("rightFly");
         leftFlywheel = map.dcMotor.get("leftFly");
         particleControl = map.servo.get("particleControl");
+
+        flywheelPower = 0.0; //Default flywheelPower
+
+        rightFlywheel.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        isParticleControlOpen = false;
+        isFlywheelAtSpeed = false;
     }
 
     public void runFlywheel(boolean bumper)
@@ -75,15 +83,17 @@ public class Flywheel2
         return flywheelMode;
     }
 
-    public void setPaticleControlState(double trigger)
+    public void setParticleControlState(double trigger)
     {
         if(trigger > 0.1)
         {
             particleControl.setPosition(0.0);
+            isParticleControlOpen = true;
         }
         else
         {
             particleControl.setPosition(1.0);
+            isParticleControlOpen = false;
         }
     }
 
@@ -91,13 +101,13 @@ public class Flywheel2
     {
         String pcState = "";
 
-        if(isParticleControlUp)
+        if(isParticleControlOpen)
         {
-            pcState = "Up";
+            pcState = "Open";
         }
         else
         {
-            pcState = "Down";
+            pcState = "Closed";
         }
         return pcState;
     }

@@ -14,6 +14,7 @@ public class WHSRobot
     public Drivetrain drivetrain;
     public Intake intake;
     public Flywheel flywheel;
+    public Flywheel2 flywheel2;
     //public CapballLift capball;
     public BeaconPusher pusher;
     public Vuforia vuforia;
@@ -50,6 +51,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
+        flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
 
@@ -61,7 +63,7 @@ public class WHSRobot
         {
             e.printStackTrace();
         }
-*/
+    */
         vuforia = new Vuforia();
         try {
             vuforia.start();
@@ -78,6 +80,7 @@ public class WHSRobot
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
         flywheel = new Flywheel(robotMap);
+        flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
         //pusher = new BeaconPusher(robotMap, side);
         imu = new IMU(robotMap);
@@ -110,10 +113,10 @@ public class WHSRobot
             //if rotating, do nothing
         }
         else {
-            if(driveToTargetInProgress == false)
+            /*if(driveToTargetInProgress == false)
             {
                 drivetrain.setLRPower(0.8, 0.8);
-            }
+            }*/
 
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
@@ -284,8 +287,7 @@ public class WHSRobot
     public double estimateHeading()
     {
         double currentHeading;
-        int i = 0;
-        if(i == 1/*vuforia.vuforiaIsValid()*/){
+        if(vuforia.vuforiaIsValid()){
             currentHeading = vuforia.getHeadingAndLocation().getHeading();
             imu.setImuBias(currentHeading);
             currentCoord.setHeading(currentHeading); //updates global variable
@@ -294,7 +296,8 @@ public class WHSRobot
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading); //updates global variable
         }
-        return currentHeading;    }
+        return currentHeading;
+    }
 
     public void setInitialCoordinate(Coordinate initCoord)
     {
