@@ -29,10 +29,10 @@ public class WHSRobot
     private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.125, 0.25, 0.5, 1.0};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.25, 0.4, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {1.0, 1.0, 1.0};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.4, 0.8};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 60};
 

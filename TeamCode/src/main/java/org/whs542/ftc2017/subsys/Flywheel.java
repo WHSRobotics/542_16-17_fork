@@ -159,7 +159,7 @@ public class Flywheel
         }
     }
 
-    /*
+
     public void operateGate(boolean button){
         if(button){
             flywheelGate.setPosition(0.5);
