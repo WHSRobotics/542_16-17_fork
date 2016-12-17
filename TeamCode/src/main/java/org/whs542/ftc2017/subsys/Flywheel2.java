@@ -97,7 +97,7 @@ public class Flywheel2
     {
         if(trigger > 0.1)
         {
-            particleControl.setPosition(0.0);
+            particleControl.setPosition(0.5);
             isParticleControlOpen = true;
         }
         else
