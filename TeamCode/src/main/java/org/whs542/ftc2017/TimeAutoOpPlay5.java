@@ -46,7 +46,7 @@ public class TimeAutoOpPlay5 extends OpMode{
                 state++;
                 break;
             case 2:
-                robot.flywhee
+                robot.flywheel2.setParticleControlState(0.2);
                 state++;
                 break;
             case 3:
@@ -58,11 +58,12 @@ public class TimeAutoOpPlay5 extends OpMode{
                 state++;
                 break;
             case 4:
-                robot.flywheel.setFlywheelPower(0.0);
+                robot.flywheel2.setParticleControlState(0.0);
+                robot.flywheel2.runFlywheelNoToggle(0.0);
                 state++;
                 break;
             case 5:
-                if(getRuntime() > 25){
+                if(getRuntime() > 20){
                     state++;
                 }
                 break;
