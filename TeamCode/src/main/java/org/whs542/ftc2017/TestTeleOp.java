@@ -37,7 +37,7 @@ public class TestTeleOp extends OpMode{
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
         robot.flywheel2.runFlywheel(gamepad2.left_bumper);
         robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel2.setParticleControlState(gamepad2.right_trigger);
+        robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));

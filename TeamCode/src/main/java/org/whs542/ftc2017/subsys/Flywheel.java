@@ -166,7 +166,7 @@ public class Flywheel
     }
 
 
-   
+
 
     public String getGateStatus()
     {

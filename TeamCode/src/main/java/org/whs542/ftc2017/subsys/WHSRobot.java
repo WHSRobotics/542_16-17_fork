@@ -79,10 +79,10 @@ public class WHSRobot
     {
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
-        flywheel = new Flywheel(robotMap);
+        //flywheel = new Flywheel(robotMap);
         flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
-        //pusher = new BeaconPusher(robotMap, side);
+        pusher = new BeaconPusher(robotMap, Alliance.BLUE);
         imu = new IMU(robotMap);
 
         vuforia = new Vuforia();
