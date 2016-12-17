@@ -47,6 +47,11 @@ public class Flywheel2
         isFlywheelAtSpeed = false;
     }
 
+    public void runFlywheelNoToggle(double power){
+        leftFlywheel.setPower(1.0);
+        rightFlywheel.setPower(1.0);
+    }
+
     public void runFlywheel(boolean bumper)
     {
         flywheelToggle.changeState(bumper);
