@@ -17,7 +17,7 @@ public class Flywheel2
     private DcMotor leftFlywheel;
     private Servo particleControl;
 
-    private double[] powers = {0.1, 0.2, 0.3};
+    private double[] powers = {0.4, 0.5, 0.6};
     private double flywheelPower;
 
     private String flywheelMode;
@@ -37,6 +37,11 @@ public class Flywheel2
         flywheelPower = 0.0; //Default flywheelPower
 
         rightFlywheel.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        rightFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFlywheel.setMaxSpeed(1000);
+        leftFlywheel.setMaxSpeed(1000);
 
         isParticleControlOpen = false;
         isFlywheelAtSpeed = false;
