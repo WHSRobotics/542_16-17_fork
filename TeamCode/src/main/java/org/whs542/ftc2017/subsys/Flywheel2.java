@@ -17,12 +17,12 @@ public class Flywheel2
     private DcMotor leftFlywheel;
     private Servo particleControl;
 
-    private double[] powers = {0.4, 0.5, 0.6};
+    private double[] powers = {0.3, 0.4, 0.5, 0.6};
     private double flywheelPower;
 
     private String flywheelMode;
 
-    private Toggler flywheelPowerToggle = new Toggler(3);
+    private Toggler flywheelPowerToggle = new Toggler(4);
     private Toggler flywheelToggle = new Toggler(2);
 
     private boolean isFlywheelAtSpeed;
@@ -48,8 +48,8 @@ public class Flywheel2
     }
 
     public void runFlywheelNoToggle(double power){
-        leftFlywheel.setPower(1.0);
-        rightFlywheel.setPower(1.0);
+        leftFlywheel.setPower(power);
+        rightFlywheel.setPower(power);
     }
 
     public void runFlywheel(boolean bumper)
@@ -85,6 +85,10 @@ public class Flywheel2
                 flywheelMode = "approx. 3 tiles";
                 flywheelPower = powers[2];
                 break;
+            case 3:
+                flywheelMode = "approx. 4 tiles";
+                flywheelPower = powers[3];
+                break;
         }
     }
 
@@ -97,7 +101,7 @@ public class Flywheel2
     {
         if(trigger > 0.1)
         {
-            particleControl.setPosition(0.5);
+            particleControl.setPosition(0.0);
             isParticleControlOpen = true;
         }
         else

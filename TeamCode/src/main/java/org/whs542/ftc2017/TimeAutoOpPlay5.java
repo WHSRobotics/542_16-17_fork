@@ -34,7 +34,7 @@ public class TimeAutoOpPlay5 extends OpMode{
         switch (state){
             case 0:
                 //robot.flywheel.operateGateNoToggle(false);
-                robot.flywheel.setFlywheelPower(FLYWHEEL_POWER);
+                robot.flywheel2.runFlywheelNoToggle(FLYWHEEL_POWER);
                 state++;
                 break;
             case 1:
@@ -46,7 +46,7 @@ public class TimeAutoOpPlay5 extends OpMode{
                 state++;
                 break;
             case 2:
-                robot.flywheel.operateGate(true);
+                robot.flywhee
                 state++;
                 break;
             case 3:
