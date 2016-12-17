@@ -24,6 +24,7 @@ public class FlywheelSpeedTest extends OpMode{
 
     @Override
     public void loop() {
+        tog.changeState(gamepad1.dpad_up, gamepad1.dpad_down);
         flywheel.runFlywheelNoToggle(tog.currentState()*0.05);
         telemetry.addData("Flywheel Power", tog.currentState()*0.05);
     }
