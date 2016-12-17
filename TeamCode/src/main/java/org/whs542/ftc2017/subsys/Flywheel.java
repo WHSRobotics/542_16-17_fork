@@ -107,23 +107,6 @@ public class Flywheel
         return flywheelMode;
     }
 
-    //Might change these to state and cases. Not necessary for now
-    /*
-    public void run(boolean b1, double powerIn)
-    {
-        flyModeToggler.changeState(b1);
-        if(flyModeToggler.currentState() == 1)
-        {
-            isFlywheelRunning = true;
-            flywheel.setPower(powerIn);
-        }
-        else
-        {
-            isFlywheelRunning = false;
-            flywheel.setPower(0);
-        }
-    }
-*/
     public void setFlywheelPower(double power)
     {
         flywheel.setPower(power);

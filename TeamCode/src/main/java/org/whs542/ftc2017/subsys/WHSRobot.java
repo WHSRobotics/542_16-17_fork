@@ -50,7 +50,7 @@ public class WHSRobot
     public WHSRobot(HardwareMap robotMap, Alliance side){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
-        flywheel = new Flywheel(robotMap);
+        //flywheel = new Flywheel(robotMap);
         flywheel2 = new Flywheel2(robotMap);
         //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);

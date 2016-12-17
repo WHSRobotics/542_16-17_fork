@@ -1,5 +1,6 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,7 +11,9 @@ import org.whs542.lib.Alliance;
  * Created by Lucy on 11/19/2016.
  */
 
-@TeleOp(name = "WHSBlueTeleop", group = "TeleOp")
+@TeleOp(name = "WHSBlueTeleop", group = "WHSTeleOp")
+@Disabled
+
 public class WHSBlueTeleOp extends OpMode
 {
     WHSRobot robot;

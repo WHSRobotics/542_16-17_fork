@@ -1,5 +1,6 @@
 package org.whs542.lib.hwtest;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  */
 
 @TeleOp(name = "CubicTeleOpTest", group = "HwTest")
-
+@Disabled
 
 public class CubicTeleOpTest extends OpMode{
 

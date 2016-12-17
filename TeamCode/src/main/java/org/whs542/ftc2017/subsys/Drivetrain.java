@@ -135,10 +135,10 @@ public class Drivetrain {
         switch(orientationSwitch.currentState())
         {
             case 0:
-                orientation = "Normal";
+                orientation = "Front = Flywheel";
                 break;
             case 1:
-                orientation = "Reverse";
+                orientation = "Front = Intake";
                 break;
         }
         return orientation;
@@ -201,9 +201,10 @@ public class Drivetrain {
 
     //setRunMode MUST be run before this
     //Moves a certain distance forwards or backwards using encoders. Includes IMU as check. Negative = backwards.
-    public void moveDistanceMilli2(double distanceMM /*,IMU imu*/)
+    public boolean moveDistanceMilli2(double distanceMM /*,IMU imu*/)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
+        boolean hasTargetHit = false;
 
         //this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);
@@ -212,12 +213,14 @@ public class Drivetrain {
 
         if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > DEADBAND_MOVE_DISTANCE_MILLI){
             setLRPower(0.5, 0.5);
+            hasTargetHit = false;
         }
         else {
             setLRPower(0.0, 0.0);
+            hasTargetHit= true;
         }
 
-
+        return hasTargetHit;
         //imu.zeroHeading();
         /*
         if(Math.abs(targetPosition) - Math.abs(getRightEncoderPosition()) > 50 | Math.abs(targetPosition) - Math.abs(getLeftEncoderPosition()) > 50)

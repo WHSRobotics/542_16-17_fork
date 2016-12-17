@@ -20,6 +20,7 @@ import org.whs542.lib.hwtest.TestDrivetrain;
 
 @Autonomous( name = "MoveTestAutoOp", group = "test" )
 @Disabled
+
 public class MoveTestAutoOp extends LinearOpMode {
 
     //Vuforia vuforia;

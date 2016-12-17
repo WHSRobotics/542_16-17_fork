@@ -1,6 +1,7 @@
 package org.whs542.lib.hwtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,6 +12,8 @@ import org.whs542.lib.Toggler;
  * Created by Amar2 on 11/19/2016.
  */
 @Autonomous(name = "RunModeTest", group = "Tests")
+@Disabled
+
 public class DcMotorRunModeTest extends OpMode{
 
     DcMotor a;

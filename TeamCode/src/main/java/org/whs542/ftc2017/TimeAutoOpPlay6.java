@@ -11,20 +11,17 @@ import org.whs542.lib.Alliance;
  * A purely time and encoder based Auto
  */
 
-@Autonomous(name = "TimeBlueAutoPlay5", group = "Auto")
-public class TimeAutoOpPlay5 extends OpMode{
+@Autonomous(name = "TimeBlueAutoPlay6", group = "Auto")
+public class TimeAutoOpPlay6 extends OpMode{
 
     WHSRobot robot;
     int state;
-    int loop;
-    boolean hasTargetHit;
-    final static double FLYWHEEL_POWER = 0.4;
+    final static double FLYWHEEL_POWER = 0.35;
 
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         state = 0;
-        loop = 1000;
     }
 
     public void start(){
@@ -50,17 +47,11 @@ public class TimeAutoOpPlay5 extends OpMode{
                 break;
             case 2:
                 robot.flywheel2.setParticleControlState(0.2);
-                if(loop > 0)
-                {
-                    loop = loop - 1;
-                }
-                else {
-                    state++;
-                }
+                state++;
                 break;
             case 3:
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -76,71 +67,13 @@ public class TimeAutoOpPlay5 extends OpMode{
                     state++;
                 }
                 break;
+
             case 6:
                 robot.drivetrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 state++;
                 break;
             case 7:
                 robot.drivetrain.moveDistanceMilli2(-1300);
-                state++;
-                break;
-            case 8:
-                robot.drivetrain.moveDistanceMilli2(300);
-                break;
-            default: break;
-        }
-
-        /*
-        switch (state){
-            case 0:
-                //robot.flywheel.operateGateNoToggle(false);
-                robot.flywheel2.runFlywheelNoToggle(FLYWHEEL_POWER);
-                state++;
-                break;
-            case 1:
-                try {
-                    Thread.sleep(4000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                state++;
-                break;
-            case 2:
-                robot.flywheel2.setParticleControlState(0.2);
-                if(loop > 0)
-                {
-                    loop = loop - 1;
-                }
-                else {
-                    state++;
-                }
-                break;
-            case 3:
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                state++;
-                break;
-            case 4:
-                robot.flywheel2.setParticleControlState(0.0);
-                robot.flywheel2.runFlywheelNoToggle(0.0);
-                state++;
-                break;
-            case 5:
-                robot.drivetrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                state++;
-                break;
-            case 6:
-                hasTargetHit = robot.drivetrain.moveDistanceMilli2(-1300);
-                if(hasTargetHit)
-                {
-                    state++;
-                }
-                break;
-            case 7:
-                robot.drivetrain.moveDistanceMilli2(300);
                 break;
             default: break;
         }

@@ -1,6 +1,6 @@
 package org.whs542.ftc2017;
 
-import com.qualcomm.ftccommon.DbgLog;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +10,8 @@ import org.whs542.ftc2017.subsys.WHSRobot;
  * Created by Amar2 on 10/22/2016.
  */
 @TeleOp(name = "TeleOpTest", group = "WHSBlueTeleOp")
+//@Disabled
+
 public class TestTeleOp extends OpMode{
 
     WHSRobot robot;
@@ -43,7 +45,7 @@ public class TestTeleOp extends OpMode{
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
-        telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelState());
+        telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelMode());
         //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
         telemetry.addData("Flywheel power (for calib)", power);
 

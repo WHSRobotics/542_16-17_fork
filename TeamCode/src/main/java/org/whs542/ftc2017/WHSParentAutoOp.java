@@ -1,6 +1,7 @@
 package org.whs542.ftc2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -16,7 +17,8 @@ import java.util.Timer;
  */
 
 @Autonomous(name = "WHSParentAuto", group = "Auto")
-//@Override
+//@Disabled
+
 public abstract class WHSParentAutoOp extends OpMode {
     WHSRobot robot;
     OpModeTimer timer;

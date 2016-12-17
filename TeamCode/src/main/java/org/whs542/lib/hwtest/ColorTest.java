@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 @Autonomous(name = "ColorTest.java", group = "hwtest")
 @Disabled
+
 public class ColorTest extends OpMode {
     ColorSensor color1;    // Hardware Device Object
 

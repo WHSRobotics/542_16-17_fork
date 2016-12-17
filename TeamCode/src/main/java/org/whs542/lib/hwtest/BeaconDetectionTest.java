@@ -1,5 +1,6 @@
 package org.whs542.lib.hwtest;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,8 @@ import org.whs542.lib.Alliance;
  * Created by Amar2 on 11/24/2016.
  */
 @TeleOp(name = "Color Test", group = "Tests")
+//@Disabled
+
 public class BeaconDetectionTest extends OpMode{
 
     BeaconPusher pusher;

@@ -15,7 +15,8 @@ import java.util.Objects;
 
 //Play 4
 @Autonomous(name = "RedAutoPlay4", group = "AutoOp")
-//@Disabled
+@Disabled
+
 public class RedAutoPlay4 extends OpMode{
     WHSRobot robot;
     int state;

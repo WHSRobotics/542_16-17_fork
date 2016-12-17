@@ -17,19 +17,19 @@ public class Flywheel2
     private DcMotor leftFlywheel;
     private Servo particleControl;
 
-    private double[] powers = {0.33, 0.36, 0.41, 0.43};
+    private double[] powers = {0.38, 0.41, 0.45, 0.48};
     private double flywheelPower;
 
     private String flywheelMode;
 
     private Toggler flywheelPowerToggle = new Toggler(4);
-    private Toggler flywheelExperimental = new Toggler(101);
+    private Toggler flywheelExperimental = new Toggler(26);
     private Toggler flywheelToggle = new Toggler(2);
 
     private boolean isFlywheelAtSpeed;
-    private boolean isParticleControlOpen;
+    private boolean isParticleControlUp;
 
-    public Flywheel2(HardwareMap map)
+    public  Flywheel2(HardwareMap map)
     {
         rightFlywheel = map.dcMotor.get("rightFly");
         leftFlywheel = map.dcMotor.get("leftFly");
@@ -47,7 +47,7 @@ public class Flywheel2
         rightFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        isParticleControlOpen = false;
+        isParticleControlUp = false;
         isFlywheelAtSpeed = false;
     }
 
@@ -78,19 +78,19 @@ public class Flywheel2
         switch(flywheelPowerToggle.currentState())
         {
             case 0:
-                flywheelMode = "approx. 1 tiles";
+                flywheelMode = "Approx. 2 - 0.38";
                 flywheelPower = powers[0];
                 break;
             case 1:
-                flywheelMode = "approx. 2 tiles";
+                flywheelMode = "Diag. 2 - 0.41";
                 flywheelPower = powers[1];
                 break;
             case 2:
-                flywheelMode = "approx. 3 tiles";
+                flywheelMode = "Approx. 3 - 0.45";
                 flywheelPower = powers[2];
                 break;
             case 3:
-                flywheelMode = "approx. 4 tiles";
+                flywheelMode = "Diag. 3 - 0.48";
                 flywheelPower = powers[3];
                 break;
         }
@@ -104,16 +104,10 @@ public class Flywheel2
             flywheelPower = 0;
         else
         {
-            power = power / 100;
+            power = (power + 34) / 100;
             flywheelPower = power;
         }
         return power;
-    }
-
-
-    public String getFlywheelState()
-    {
-        return flywheelMode;
     }
 
     public void setParticleControlState(double trigger)
@@ -121,26 +115,32 @@ public class Flywheel2
         if(trigger > 0.1)
         {
             particleControl.setPosition(0.0);
-            isParticleControlOpen = true;
+            isParticleControlUp = true;
         }
         else
         {
             particleControl.setPosition(1.0);
-            isParticleControlOpen = false;
+            isParticleControlUp = false;
         }
+    }
+
+
+    public String getFlywheelMode()
+    {
+        return flywheelMode;
     }
 
     public String getParticleControlState()
     {
         String pcState = "";
 
-        if(isParticleControlOpen)
+        if(isParticleControlUp)
         {
-            pcState = "Open";
+            pcState = "Up";
         }
         else
         {
-            pcState = "Closed";
+            pcState = "Down";
         }
         return pcState;
     }

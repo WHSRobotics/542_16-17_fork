@@ -1,6 +1,8 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
@@ -8,6 +10,10 @@ import org.whs542.lib.Alliance;
 /**
  * Created by Amar2 on 12/3/2016.
  */
+
+@Autonomous(name = "Actuator Test", group = "Test")
+//@Disabled
+
 public class ActuatorTest extends OpMode{
 
     WHSRobot robot;
@@ -38,7 +44,7 @@ public class ActuatorTest extends OpMode{
         else if (getRuntime() > 24 && getRuntime() < 28) robot.intake.runIntake(-1.0);
         else robot.intake.runIntake(0.0);
 
-        if (getRuntime() > 28 && getRuntime() < 32) robot.flywheel.rampFlywheel(true);
+        /*if (getRuntime() > 28 && getRuntime() < 32) robot.flywheel.rampFlywheel(true);
         else {
             robot.flywheel.rampFlywheel(true);
             robot.flywheel.rampFlywheel(false);
@@ -46,7 +52,7 @@ public class ActuatorTest extends OpMode{
 
         if (getRuntime() > 32 && getRuntime() > 36) robot.flywheel.operateGate(true);
         else robot.flywheel.operateGate(false);
-        
+        */
 
     }
 }
