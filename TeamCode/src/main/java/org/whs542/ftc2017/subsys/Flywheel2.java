@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Lucy on 12/5/2016.
+ * Flywheel subsystem class, for newer 2-wheel flywheel design
  */
 
 public class Flywheel2

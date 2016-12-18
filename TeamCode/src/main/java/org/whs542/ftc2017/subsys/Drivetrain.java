@@ -144,6 +144,22 @@ public class Drivetrain {
         return orientation;
     }
 
+    public double getFRPower() {
+        return frontRight.getPower();
+    }
+
+    public double getFLPower(){
+        return frontLeft.getPower();
+    }
+
+    public double getBRPower(){
+        return backRight.getPower();
+    }
+
+    public double getBLPower(){
+        return backLeft.getPower();
+    }
+
     //Runs all four motors to a certain encoder position; holds all motors actively thereat
     public void setTargetPosition(int position)
     {

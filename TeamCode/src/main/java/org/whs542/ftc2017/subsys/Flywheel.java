@@ -11,7 +11,8 @@ import org.whs542.lib.Toggler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Flywheel Subsystem Class
+ * Flywheel Subsystem Class, for old one wheel Flywheel design
+ * @see Flywheel2 for newer 2-wheel flywheel
  */
 
 public class Flywheel
