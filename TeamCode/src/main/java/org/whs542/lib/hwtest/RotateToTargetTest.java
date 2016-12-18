@@ -1,4 +1,4 @@
-package org.whs542.lib;
+package org.whs542.lib.hwtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
 
 /**
  * Created by Amar2 on 12/2/2016.
