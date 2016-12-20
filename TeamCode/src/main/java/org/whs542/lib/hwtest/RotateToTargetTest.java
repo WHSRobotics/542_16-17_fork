@@ -41,6 +41,12 @@ public class RotateToTargetTest extends OpMode {
 
         telemetry.addData("Hdg:", heading);
 
+    }
+
+    @Override
+    public void stop(){
+        robot.vuforia.interrupt();
 
     }
+
 }
