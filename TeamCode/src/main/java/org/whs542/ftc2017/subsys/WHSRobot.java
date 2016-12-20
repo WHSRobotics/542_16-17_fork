@@ -45,6 +45,8 @@ public class WHSRobot
     static final double CAMERA_TO_BODY_Z = 0; //body frame
     static final double CAMERA_TO_BODY_ANGLE = Math.atan(CAMERA_TO_BODY_X/CAMERA_TO_BODY_Y) + 90; //Measured CCW from x-body axis
 
+    private int consecutive = 0;
+
     public Coordinate currentCoord; //field frame
 
     public WHSRobot(HardwareMap robotMap, Alliance side){
@@ -155,6 +157,7 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
+            consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(0.8);
                 drivetrain.setRightPower(-0.8);
@@ -179,6 +182,7 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
+            consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(-0.8);
                 drivetrain.setRightPower(0.8);
@@ -204,7 +208,14 @@ public class WHSRobot
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
-            rotateToTargetInProgress = false;
+
+            if(consecutive < 3){
+                consecutive++;
+            }
+            else {
+                rotateToTargetInProgress = false;
+                consecutive = 0;
+            }
         }
     }
 
