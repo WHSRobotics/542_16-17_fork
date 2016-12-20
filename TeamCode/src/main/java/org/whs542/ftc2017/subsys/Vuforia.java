@@ -29,6 +29,8 @@ import java.util.List;
 
 public class Vuforia extends Thread{
 
+    public boolean initComplete = false;
+
     public static final String TAG = "Vuforia";
 
     private Coordinate validVuforiaCoord;
@@ -50,76 +52,80 @@ public class Vuforia extends Thread{
     /**
      * Initializes Vuforia, using the phone's front camera and with the four vision targets used in Velocity Vortex.
      */
-    public Vuforia(){
+            public Vuforia(){
+
+                parameters = new VuforiaLocalizer.Parameters(com.qualcomm.ftcrobotcontroller.R.id.cameraMonitorViewId);
+                parameters.vuforiaLicenseKey = "AcHvLjn/////AAAAGXiaYd8sQUWoodQdUe6EkVh5In4npcgPENX3TMz43hlk9g7Xe4JzvNU8g9W4esItJjBtwkoCJVn1vT28VzK1SEd96YjzpbBgL3zubmG9pCqnxMawGUdiIP19mwl4cWACtqAPH5lV2cccLUmFou4RsBDdhwajo1imLuLphy4auD0IwyV+Pcp7+gAg0LCnZ2A3UX9nsPjGWKEs8REy0pCw37Nl1K3t670ivSSxkfo/iF71IxhUkE+W+GaJZ/JFw1WL6m8i0qgrWWSJg3zfwx9jSRZRAXYdM9crg+edoin2Wmkaw69PTiD7pJDiWfjjb+1z1rewEZGxf1i8WTLWskvO76xZ0coIFlbVSwl8YMNaiPrh";
+                parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+                this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+                ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
+                VuforiaTrackable wheels = ftcTargets.get(0);
+                wheels.setName("Wheels");
+
+                VuforiaTrackable tools = ftcTargets.get(1);
+                tools.setName("Tools");
+
+                VuforiaTrackable legos = ftcTargets.get(2);
+                legos.setName("Legos");
+
+                VuforiaTrackable gears = ftcTargets.get(3);
+                gears.setName("Gears");
+
+                // List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+                allTrackables = new ArrayList<VuforiaTrackable>();
+                allTrackables.addAll(ftcTargets);
+
+                OpenGLMatrix wheelsTargetLocationOnField = OpenGLMatrix
+                        .translation(0.5f * tileWidthMM, mmFTCFieldWidth/2, imageHtMM)
+                        .multiplied(Orientation.getRotationMatrix(
+                                AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                                AngleUnit.DEGREES, 90, 0, 0));
+                wheels.setLocation(wheelsTargetLocationOnField);
+                RobotLog.ii(TAG, "Wheels Target=%s", format(wheelsTargetLocationOnField));
+
+                OpenGLMatrix legosTargetLocationOnField = OpenGLMatrix
+                        .translation(-1.5f * tileWidthMM, mmFTCFieldWidth/2, imageHtMM)
+                        .multiplied(Orientation.getRotationMatrix(
+                                AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                                AngleUnit.DEGREES, 90, 0, 0));
+                legos.setLocation(legosTargetLocationOnField);
+                RobotLog.ii(TAG, "Legos Target=%s", format(legosTargetLocationOnField));
+
+                OpenGLMatrix gearsTargetLocationOnField = OpenGLMatrix
+                        .translation(-mmFTCFieldWidth/2, -0.5f * tileWidthMM, imageHtMM)
+                        .multiplied(Orientation.getRotationMatrix(
+                                AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                                AngleUnit.DEGREES,90, 0, 90 ));
+                gears.setLocation(gearsTargetLocationOnField);
+                RobotLog.ii(TAG, "Gears Target=%s", format(gearsTargetLocationOnField));
+
+                OpenGLMatrix toolsTargetLocationOnField = OpenGLMatrix
+                        .translation(-mmFTCFieldWidth/2, 1.5f * tileWidthMM, imageHtMM)
+                        .multiplied(Orientation.getRotationMatrix(
+                                AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                                AngleUnit.DEGREES, 90, 0, 90));
+                tools.setLocation(toolsTargetLocationOnField);
+                RobotLog.ii(TAG, "Tools Target=%s", format(toolsTargetLocationOnField));
 
 
-        /*ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
-        VuforiaTrackable wheels = ftcTargets.get(0);
-        wheels.setName("Wheels");
 
-        VuforiaTrackable tools = ftcTargets.get(1);
-        tools.setName("Tools");
+                OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
+                        .translation(164, 148, 265)
+                        .multiplied(Orientation.getRotationMatrix(
+                                AxesReference.EXTRINSIC, AxesOrder.XYZ,
+                                AngleUnit.DEGREES, 0,0,0a-90, 0, -90));
+                phoneLocationOnRobot.setLocation(phoneLocationOnRobot);
+                RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
 
-        VuforiaTrackable legos = ftcTargets.get(2);
-        legos.setName("Legos");
+                ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+                ((VuforiaTrackableDefaultListener)gears.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+                ((VuforiaTrackableDefaultListener)tools.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+                ((VuforiaTrackableDefaultListener)legos.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
-        VuforiaTrackable gears = ftcTargets.get(3);
-        gears.setName("Gears");
+                ftcTargets.activate();
 
-        // List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(ftcTargets);
-
-        OpenGLMatrix wheelsTargetLocationOnField = OpenGLMatrix
-                .translation(0.5f * tileWidthMM, mmFTCFieldWidth/2, imageHtMM)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, 0));
-        wheels.setLocation(wheelsTargetLocationOnField);
-        RobotLog.ii(TAG, "Wheels Target=%s", format(wheelsTargetLocationOnField));
-
-        OpenGLMatrix legosTargetLocationOnField = OpenGLMatrix
-                .translation(-1.5f * tileWidthMM, mmFTCFieldWidth/2, imageHtMM)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, 0));
-        legos.setLocation(legosTargetLocationOnField);
-        RobotLog.ii(TAG, "Legos Target=%s", format(legosTargetLocationOnField));
-
-        OpenGLMatrix gearsTargetLocationOnField = OpenGLMatrix
-                .translation(-mmFTCFieldWidth/2, -0.5f * tileWidthMM, imageHtMM)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES,90, 0, 90 ));
-        gears.setLocation(gearsTargetLocationOnField);
-        RobotLog.ii(TAG, "Gears Target=%s", format(gearsTargetLocationOnField));
-
-        OpenGLMatrix toolsTargetLocationOnField = OpenGLMatrix
-                .translation(-mmFTCFieldWidth/2, 1.5f * tileWidthMM, imageHtMM)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 90, 0, 90));
-        tools.setLocation(toolsTargetLocationOnField);
-        RobotLog.ii(TAG, "Tools Target=%s", format(toolsTargetLocationOnField));
-
-
-
-        /*OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(164, 148, 265)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90));
-        phoneLocationOnRobot.setLocation(phoneLocationOnRobot);
-        RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
-
-        ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)gears.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)tools.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)legos.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-
-        ftcTargets.activate();*/
-
-    }
+            }
     @Override
     public void run() throws NullPointerException
     {
@@ -190,6 +196,7 @@ public class Vuforia extends Thread{
         ((VuforiaTrackableDefaultListener)legos.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
         ftcTargets.activate();
+        initComplete = true;
     }
 
     /**

@@ -29,13 +29,18 @@ public class RotateToTargetTest extends OpMode {
 
         robot.estimateHeading();
         robot.rotateToTarget(150);
-        if(!robot.rotateToTargetInProgress){
+        if (!robot.rotateToTargetInProgress) {
             requestOpModeStop();
         }
-    robot.drivetrain.setLeftPower(gamepad1.left_stick_y);
-    robot.drivetrain.setRightPower(gamepad1.right_stick_y);
-    telemetry.addData("Left Power: ", gamepad1.left_stick_y);
-    telemetry.addData("Right Power: ", gamepad1.right_stick_y);
-    }
+        robot.drivetrain.setLeftPower(gamepad1.left_stick_y);
+        robot.drivetrain.setRightPower(gamepad1.right_stick_y);
+        telemetry.addData("Left Power: ", gamepad1.left_stick_y);
+        telemetry.addData("Right Power: ", gamepad1.right_stick_y);
 
+        double heading = robot.imu.getHeading();
+
+        telemetry.addData("Hdg:", heading);
+
+
+    }
 }
