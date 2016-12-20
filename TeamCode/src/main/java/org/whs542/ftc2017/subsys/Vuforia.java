@@ -27,7 +27,7 @@ import java.util.List;
  * Vuforia Class
  */
 
-public class Vuforia extends Thread{
+public class Vuforia{
 
     public boolean initComplete = false;
 
@@ -114,8 +114,7 @@ public class Vuforia extends Thread{
                         .translation(164, 148, 265)
                         .multiplied(Orientation.getRotationMatrix(
                                 AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                                AngleUnit.DEGREES, 0,0,0a-90, 0, -90));
-                phoneLocationOnRobot.setLocation(phoneLocationOnRobot);
+                                AngleUnit.DEGREES, -90, 0, -90));
                 RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
 
                 ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
@@ -126,7 +125,7 @@ public class Vuforia extends Thread{
                 ftcTargets.activate();
 
             }
-    @Override
+    /*
     public void run() throws NullPointerException
     {
         parameters = new VuforiaLocalizer.Parameters(com.qualcomm.ftcrobotcontroller.R.id.cameraMonitorViewId);
@@ -184,10 +183,10 @@ public class Vuforia extends Thread{
         RobotLog.ii(TAG, "Tools Target=%s", format(toolsTargetLocationOnField));
 
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(0,0,0/*164, 148, 265*/)
+                .translation(0,0,0/*164, 148, 265)
                 .multiplied(Orientation.getRotationMatrix(
                         AxesReference.EXTRINSIC, AxesOrder.XYZ,
-                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90*/));
+                        AngleUnit.DEGREES, 0,0,0/*-90, 0, -90));
         RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
 
         ((VuforiaTrackableDefaultListener)wheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
@@ -197,7 +196,7 @@ public class Vuforia extends Thread{
 
         ftcTargets.activate();
         initComplete = true;
-    }
+    }*/
 
     /**
      * Returns a Coordinate class containing the positional information of the robot in relation to the field. Coordinate x, y and z values of 0, 0, 0
