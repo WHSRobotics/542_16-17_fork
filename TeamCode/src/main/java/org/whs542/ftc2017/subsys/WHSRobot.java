@@ -65,12 +65,13 @@ public class WHSRobot
         }
     */
         vuforia = new Vuforia();
-        try {
+        try{
             vuforia.start();
         }
         catch(Exception e){
             e.printStackTrace();
         }
+
         rotateToTargetInProgress = false;
         driveToTargetInProgress = false;
     }
@@ -86,12 +87,12 @@ public class WHSRobot
         imu = new IMU(robotMap);
 
         vuforia = new Vuforia();
-        /*try {
+        try {
             vuforia.start();
         }
         catch(NullPointerException e){
             e.printStackTrace();
-        }*/
+        }
     }
 
     public void driveToTarget(Position targetPos /*field frame*/) {
