@@ -1,6 +1,7 @@
 package org.whs542.lib.hwtest;
 
 import com.qualcomm.ftccommon.DbgLog;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
@@ -16,6 +17,7 @@ import org.whs542.lib.Toggler;
 /**
  * Created by Amar2 on 10/22/2016.
  */
+@Deprecated
 public class TestDrivetrain extends OpMode{
 
     public DcMotor frontLeft;

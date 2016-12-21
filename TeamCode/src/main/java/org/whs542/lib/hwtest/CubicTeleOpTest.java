@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "CubicTeleOpTest", group = "HwTest")
 @Disabled
-
 public class CubicTeleOpTest extends OpMode{
 
     DcMotor frontRight;
