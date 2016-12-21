@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 /**
  * Created by Lucy on 10/17/2016.
  */
-
+@Deprecated
 public class MoveTest
 {
     DcMotor rightFront;

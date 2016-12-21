@@ -1,4 +1,4 @@
-package org.whs542.lib.hwtest;
+package org.whs542.lib.subsystest;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

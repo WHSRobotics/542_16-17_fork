@@ -30,12 +30,12 @@ public class WHSRobot
     private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.25, 0.4, 0.5, 1.0};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.4, 0.8};
-    private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
-    private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 60};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.8};
+    private static final double DEADBAND_ROTATE_TO_TARGET = 1.0; //in degrees
+    private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 90};
 
     //17.85 /2 is center of robot, at 15 for y
     //16.5 / 2 is center of robot, at 15.75 for x
@@ -44,6 +44,8 @@ public class WHSRobot
     static final double CAMERA_TO_BODY_Y = -190.5; //body frame
     static final double CAMERA_TO_BODY_Z = 0; //body frame
     static final double CAMERA_TO_BODY_ANGLE = Math.atan(CAMERA_TO_BODY_X/CAMERA_TO_BODY_Y) + 90; //Measured CCW from x-body axis
+
+    private int consecutive = 0;
 
     public Coordinate currentCoord; //field frame
 
@@ -66,7 +68,7 @@ public class WHSRobot
         */
 
         vuforia = new Vuforia();
-        try {
+        try{
             vuforia.start();
         }
         catch(Exception e){
@@ -161,6 +163,7 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
+            consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(0.8);
                 drivetrain.setRightPower(-0.8);
@@ -185,6 +188,7 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
+            consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(-0.8);
                 drivetrain.setRightPower(0.8);
@@ -210,7 +214,14 @@ public class WHSRobot
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
-            rotateToTargetInProgress = false;
+
+            if(consecutive < 3){
+                consecutive++;
+            }
+            else {
+                rotateToTargetInProgress = false;
+                consecutive = 0;
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package org.whs542.ftc2017;
+package org.whs542.lib.subsystest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;

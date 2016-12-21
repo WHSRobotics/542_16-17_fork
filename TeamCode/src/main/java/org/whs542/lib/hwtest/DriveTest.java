@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  */
 
 @TeleOp(name = "DriveTest", group = "HwTest")
+@Deprecated
 public class DriveTest extends OpMode
 {
     private DcMotor rightFrontMotor;

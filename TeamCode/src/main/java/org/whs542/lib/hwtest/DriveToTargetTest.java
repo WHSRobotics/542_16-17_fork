@@ -1,9 +1,12 @@
-package org.whs542.lib;
+package org.whs542.lib.hwtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Alliance;
+import org.whs542.lib.Coordinate;
+import org.whs542.lib.Position;
 
 /**
  * Created by Jason on 12/7/2016.

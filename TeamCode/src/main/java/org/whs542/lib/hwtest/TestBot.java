@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * This class can be extended whenever using the testbot that Moses made
  * It declares the bare-bones of the testbot (4 motors) and adds the total runtime to the telemetry
  * There are also functions for setting the right and left power
+ *
+ * @see TestBotDemo
  */
 
 public abstract class TestBot extends OpMode{

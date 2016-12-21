@@ -1,11 +1,15 @@
 package org.whs542.lib.hwtest;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by Amar2 on 10/22/2016.
  */
+@TeleOp(name = "ServoTest", group = "tests")
+@Disabled
 public class ServoTest extends OpMode{
 
     Servo servo1;

@@ -1,5 +1,8 @@
 package org.whs542.lib.hwtest;
 
+/**
+ * A demo class to accompany {@link TestBot}
+ */
 public class TestBotDemo extends TestBot {
 
     @Override
