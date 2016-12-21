@@ -20,8 +20,8 @@ public class WHSRobot
     public Vuforia vuforia;
     public IMU imu;
 
-    public boolean rotateToTargetInProgress = false;
-    public boolean driveToTargetInProgress = false;
+    public boolean rotateToTargetInProgress;
+    public boolean driveToTargetInProgress;
     boolean drivingInReverse = false;
     public String s = "";
     public String beaconState = "";
@@ -50,10 +50,10 @@ public class WHSRobot
     public WHSRobot(HardwareMap robotMap, Alliance side){
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
-        //flywheel = new Flywheel(robotMap);
         flywheel2 = new Flywheel2(robotMap);
-        //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, side);
+        //flywheel = new Flywheel(robotMap);
+        //capball = new CapballLift(robotMap);
 
         imu = new IMU(robotMap);
         /*try {
@@ -63,7 +63,8 @@ public class WHSRobot
         {
             e.printStackTrace();
         }
-    */
+        */
+
         vuforia = new Vuforia();
         try {
             vuforia.start();
@@ -71,6 +72,7 @@ public class WHSRobot
         catch(Exception e){
             e.printStackTrace();
         }
+
         rotateToTargetInProgress = false;
         driveToTargetInProgress = false;
     }
@@ -79,10 +81,11 @@ public class WHSRobot
     {
         drivetrain = new Drivetrain(robotMap);
         intake = new Intake(robotMap);
-        //flywheel = new Flywheel(robotMap);
         flywheel2 = new Flywheel2(robotMap);
-        //capball = new CapballLift(robotMap);
         pusher = new BeaconPusher(robotMap, Alliance.BLUE);
+        //flywheel = new Flywheel(robotMap);
+        //capball = new CapballLift(robotMap);
+
         imu = new IMU(robotMap);
 
         vuforia = new Vuforia();
@@ -92,9 +95,14 @@ public class WHSRobot
         catch(NullPointerException e){
             e.printStackTrace();
         }
+
+        rotateToTargetInProgress = false;
+        driveToTargetInProgress = false;
     }
 
-    public void driveToTarget(Position targetPos /*field frame*/) {
+    public void driveToTarget(Position targetPos /*field frame*/)
+    {
+        //TODO: check if these are needed
         estimatePosition();
         estimateHeading();
 

@@ -22,11 +22,7 @@ public class Position
         return xPos;
     }
 
-    public double getY()
-    {
-        return yPos;
-
-    }
+    public double getY() {return yPos;}
 
     public double getZ()
     {
