@@ -1,5 +1,6 @@
 package org.whs542.lib.hwtest;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +13,7 @@ import org.whs542.lib.Coordinate;
 /**
  * Created by Amar2 on 12/2/2016.
  */
-@TeleOp(name = "Rotate to target test", group = "")
+@Autonomous(name = "Rotate to target test", group = "")
 //@Disabled
 public class RotateToTargetTest extends OpMode {
 
@@ -21,7 +22,7 @@ public class RotateToTargetTest extends OpMode {
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
-        robot.setInitialCoordinate(new Coordinate(1200, 0 , 150, 180));
+        robot.setInitialCoordinate(new Coordinate(1200, 0 , 150, 89));
     }
 
     @Override

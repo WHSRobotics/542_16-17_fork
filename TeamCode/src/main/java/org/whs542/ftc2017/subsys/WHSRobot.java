@@ -33,9 +33,9 @@ public class WHSRobot
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.5, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.8};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.15, 0.4, 0.6};
     private static final double DEADBAND_ROTATE_TO_TARGET = 1.0; //in degrees
-    private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 30, 90};
+    private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
 
     //17.85 /2 is center of robot, at 15 for y
     //16.5 / 2 is center of robot, at 15.75 for x
@@ -45,7 +45,7 @@ public class WHSRobot
     static final double CAMERA_TO_BODY_Z = 0; //body frame
     static final double CAMERA_TO_BODY_ANGLE = Math.atan(CAMERA_TO_BODY_X/CAMERA_TO_BODY_Y) + 90; //Measured CCW from x-body axis
 
-    private int consecutive = 0;
+    //private int consecutive = 0;
 
     public Coordinate currentCoord; //field frame
 
@@ -104,17 +104,13 @@ public class WHSRobot
 
     public void driveToTarget(Position targetPos /*field frame*/)
     {
-        //TODO: check if these are needed
-        estimatePosition();
-        estimateHeading();
-
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
 
-        //TODO: CHECK LOGIC FOR THIS
-        double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
+        double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
+        //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
         degreesToRotate = degreesToRotate * 180 / Math.PI;
         double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
         rotateToTarget(targetHeading);
@@ -163,7 +159,7 @@ public class WHSRobot
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
-            consecutive = 0;
+            //consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(0.8);
                 drivetrain.setRightPower(-0.8);
@@ -188,7 +184,7 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
-            consecutive = 0;
+            //consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(-0.8);
                 drivetrain.setRightPower(0.8);
@@ -214,14 +210,16 @@ public class WHSRobot
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
+            rotateToTargetInProgress = false;
 
-            if(consecutive < 3){
+            /*if(consecutive < 3){
                 consecutive++;
             }
             else {
                 rotateToTargetInProgress = false;
                 consecutive = 0;
             }
+            */
         }
     }
 
