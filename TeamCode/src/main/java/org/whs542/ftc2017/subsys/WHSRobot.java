@@ -9,6 +9,10 @@ import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 import org.whs542.lib.Toggler;
 
+/**
+ * WHSRobot class - container class for all subsystems (including sensors)
+ * Contains all methods that require more than one subsystem, which consists of most higher-level functions of the robot.
+ */
 public class WHSRobot
 {
     public Drivetrain drivetrain;

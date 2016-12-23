@@ -1,8 +1,5 @@
 package org.whs542.lib.swtest;
 
-/**
- * Created by Jiangda on 9/28/2016.
- */
 /*
 Copyright (c) 2016 Robert Atkinson
 
