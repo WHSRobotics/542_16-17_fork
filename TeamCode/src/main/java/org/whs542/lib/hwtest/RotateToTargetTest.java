@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
+import org.whs542.lib.OpModeTimer;
 
 /**
  * Created by Amar2 on 12/2/2016.

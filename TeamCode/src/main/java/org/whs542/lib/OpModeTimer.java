@@ -15,17 +15,24 @@ public class OpModeTimer {
     public void start()
     {
         startTime = (double) System.nanoTime() / 10E9;
+
     }
 
     public double getTime()
     {
-        time = (double) System.nanoTime() / 10E9 - startTime;
-        return time;
+            time = (double) System.nanoTime() / 10E9 - startTime;
+            return time;
     }
 
-    public void reset()
-    {
-        startTime = (double) System.nanoTime() / 10E9;
+    public void pause(double millisec){
+        OpModeTimer timer = new OpModeTimer();
+        timer.start();
+        while(timer.getTime() * 1000 < millisec){}
     }
+
+
+
+
+
 
 }
