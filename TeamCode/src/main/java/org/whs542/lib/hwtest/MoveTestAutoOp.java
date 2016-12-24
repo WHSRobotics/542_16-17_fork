@@ -16,9 +16,11 @@ import org.whs542.lib.hwtest.TestDrivetrain;
 
 /**
  * Created by Jiangda on 11/4/2016.
+ *
+ * @deprecated Use {@link org.whs542.ftc2017.MoveTest}
  */
 
-@Autonomous( name = "MoveTestAutoOp", group = "test" )
+@Autonomous(name = "MoveTestAutoOp", group = "test")
 @Disabled
 @Deprecated
 public class MoveTestAutoOp extends LinearOpMode {

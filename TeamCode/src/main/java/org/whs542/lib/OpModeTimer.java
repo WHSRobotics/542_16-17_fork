@@ -23,7 +23,7 @@ public class OpModeTimer {
             time = (double) System.nanoTime() / 10E9 - startTime;
             return time;
     }
-
+    //FIXME This doesn't work
     public void pause(double millisec){
         OpModeTimer timer = new OpModeTimer();
         timer.start();

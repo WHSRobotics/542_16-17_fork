@@ -21,9 +21,9 @@ public class Test180Servo extends LinearOpMode{
 
 
         for(int i = 0; i < 3; i++){
-           servo.setPosition(1);
+            servo.setPosition(1);
             Thread.sleep(1000);
-           servo.setPosition(0);
+            servo.setPosition(0);
             Thread.sleep(1000);
         }
     }
