@@ -14,7 +14,7 @@ import org.whs542.lib.Position;
  * Parent AutoOp Class
  */
 
-@Autonomous(name = "WHSParentAuto", group = "Auto")
+//@Autonomous(name = "WHSParentAuto", group = "Auto")
 //@Disabled
 
 public abstract class WHSParentAutoOp extends OpMode {

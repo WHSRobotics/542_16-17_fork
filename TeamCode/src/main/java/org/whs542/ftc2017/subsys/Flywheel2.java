@@ -124,6 +124,20 @@ public class Flywheel2
         }
     }
 
+    public void setParticleControlState(boolean trigger)
+    {
+        if(trigger)
+        {
+            particleControl.setPosition(0.0);
+            isParticleControlUp = true;
+        }
+        else
+        {
+            particleControl.setPosition(1.0);
+            isParticleControlUp = false;
+        }
+    }
+
 
     public String getFlywheelMode()
     {

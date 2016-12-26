@@ -7,16 +7,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
  */
 public abstract class AutoOpSwitchCaseTemplate extends OpMode {
 
-    //Byte for controlling which state the case will be in: init(0), loop(1), or exit(2)
+    //Byte for controlling which state the case will be in: init(0), loop(1-99), or exit(100)
     byte state = 0;
     int i;
-    String s;
+    String action;
 
     @Override
     public void loop() {
 
-        switch (s){
-            case "shoot particles":
+        switch (action){
+            case "action goes here (ex: shoot two particles)":
 
                 if(state == 0){             //Init phase
                     //Code goes here
@@ -33,7 +33,7 @@ public abstract class AutoOpSwitchCaseTemplate extends OpMode {
                 else{                       //Exit phase
                     //exit code goes here
                     state = 0;
-                    s = "next state";       //Advance to the next case
+                    action = "next action";       //Advance to the next case
                 }
 
                 break;
