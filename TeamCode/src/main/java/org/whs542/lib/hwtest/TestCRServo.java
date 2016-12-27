@@ -35,29 +35,34 @@ package org.whs542.lib.hwtest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 /**
  * A simple test of a continuous rotation servo
  */
 @Autonomous(name="Test CR Servo", group ="Tests")
-@Disabled
-public class TestCRServo extends LinearOpMode
-    {
+//@Disabled
+public class TestCRServo extends OpMode
+{
+
+    CRServo servo;
+
     @Override
-    public void runOpMode() throws InterruptedException
-        {
-        CRServo servo = this.hardwareMap.crservo.get("crservo");
+    public void init() {
+        servo = hardwareMap.crservo.get("crservo");
+    }
 
-        waitForStart();
-
-        servo.setPower(1.0);
-        Thread.sleep(4000);
-
-        servo.setPower(0.0);
-        Thread.sleep(1000);
-
-        servo.setPower(-1.0);
-        Thread.sleep(4000);
+    @Override
+    public void loop() {
+        if(gamepad1.a){
+            servo.setPower(1.0);
+        }
+        else if(gamepad1.b){
+            servo.setPower(-1.0);
+        }
+        else {
+            servo.setPower(0.0);
         }
     }
+}
