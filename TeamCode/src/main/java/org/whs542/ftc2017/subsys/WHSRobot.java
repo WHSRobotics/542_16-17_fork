@@ -247,7 +247,8 @@ public class WHSRobot
     {
         //Coordinate vuforiaCoord;
         /* Commented out Jiangda's changes
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 100; i++){+
+
             if(vuforia.vuforiaIsValid()){
                 vuforiaCoord = vuforia.getHeadingAndLocation();
             }
@@ -268,6 +269,7 @@ public class WHSRobot
             currentCoord.setPos(currentPos); //field frame
         }
         else
+
         {
             //using encoders to estimate position from original location
             double[] encoderValues = drivetrain.getEncoderDistance();
