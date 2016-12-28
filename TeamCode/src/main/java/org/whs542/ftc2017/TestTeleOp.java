@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.lib.Coordinate;
 
 /**
  * Created by Amar2 on 10/22/2016.
@@ -19,6 +20,7 @@ public class TestTeleOp extends OpMode{
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap);
+        robot.setInitialCoordinate(new Coordinate(300,300,300,90));
 
     }
 
@@ -45,6 +47,12 @@ public class TestTeleOp extends OpMode{
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
+        telemetry.addData("Rx", robot.estimatePosition().getX());
+        telemetry.addData("Ry", robot.estimatePosition().getY());
+        telemetry.addData("Rh", robot.estimateHeading());
+        telemetry.addData("Encoder L", robot.drivetrain.getLeftEncoderPosition());
+        telemetry.addData("Encoder R", robot.drivetrain.getRightEncoderPosition());
+
         telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelMode());
         //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
         telemetry.addData("Flywheel power (for calib)", power);

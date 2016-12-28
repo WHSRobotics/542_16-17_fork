@@ -17,8 +17,8 @@ public class VuforiaTest2 extends OpMode{
 
 
 
-        @Override
-        public void init() throws NullPointerException {
+    @Override
+    public void init() throws NullPointerException {
         vuforia = new Vuforia();
         vuforia.start();
         telemetry.addData("init", "");
