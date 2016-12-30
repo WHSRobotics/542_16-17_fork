@@ -152,6 +152,7 @@ public class WHSRobot
                 drivetrain.setRightPower(0.0);
                 drivetrain.setLeftPower(0.0);
                 driveToTargetInProgress = false;
+
             }
         }
     }
@@ -235,8 +236,8 @@ public class WHSRobot
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
 
         //TODO: Confirm logic for this
-        double degreesToRotate = Math.atan2(vortexPos.getY() - currentCoord.getY(), vortexPos.getX() - currentCoord.getX()); //from -pi to pi rad
-        degreesToRotate = degreesToRotate * 180 / Math.PI - imu.getHeading();
+        double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
+        degreesToRotate = degreesToRotate * 180 / Math.PI;
         double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
         DbgLog.msg("targetHeading: " + targetHeading);
         rotateToTarget(targetHeading);
@@ -268,42 +269,70 @@ public class WHSRobot
             //Updates global variable
             currentCoord.setPos(currentPos); //field frame
         }
-        else
-
+        else if(driveToTargetInProgress)
         {
-            //using encoders to estimate position from original location
             double[] encoderValues = drivetrain.getEncoderDistance();
             double encoderPosL = encoderValues[0];
             double encoderPosR = encoderValues[1];
-            double deltaPosX;
-            double deltaPosY;
 
-            if(drivetrain.isLeftRightEqual(encoderPosL, encoderPosR))
-            {
-                deltaPosX = 0.5 * (encoderPosL + encoderPosR);
-                deltaPosY = 0;
-            }
-            else
-            {
-                double turnRadiusL = (2 * RADIUS_TO_DRIVETRAIN * encoderPosL) / (encoderPosR - encoderPosL);
-                double turnAngle = (encoderPosR - encoderPosL) / (2 * RADIUS_TO_DRIVETRAIN);
+            double encoderAvg = (encoderPosL + encoderPosR) * 0.5;
 
-                deltaPosX = (turnRadiusL + RADIUS_TO_DRIVETRAIN) * Math.sin(turnAngle);
-                deltaPosY = (turnRadiusL + RADIUS_TO_DRIVETRAIN) * (1 - Math.cos(turnAngle));
-            }
+            double hdg = currentCoord.getHeading();
+            double dist = Functions.encToMM(encoderAvg);
 
-            double x = currentCoord.getX() + deltaPosX;//encoder values in the right movement
-            double y = currentCoord.getY() + deltaPosY;
+            double xPos = currentCoord.getX() + dist * Functions.cosd(hdg);
+            double yPos = currentCoord.getY() + dist * Functions.sind(hdg);
 
-            Position deltaPos = new Position(x, y, 0); //body frame
-            deltaPos = body2field(deltaPos); //field frame
+            estimatedPos = new Position(xPos, yPos, currentCoord.getZ());
 
-            estimatedPos = new Position(deltaPos.getX(), deltaPos.getY(), currentCoord.getZ());
-
-            //Updates global variable
-            currentCoord.setX(deltaPos.getX()); //field frame
-            currentCoord.setY(deltaPos.getY()); //field frame
+            currentCoord.setX(xPos);
+            currentCoord.setY(yPos);
         }
+        else if(rotateToTargetInProgress)
+        {
+            drivetrain.getEncoderDistance();
+            estimatedPos = currentCoord.getPos();
+
+        }
+        else
+        {
+            estimatedPos = currentCoord.getPos();
+        }
+        //using encoders to estimate position from original location
+        /* this is Lucy's code
+        double[] encoderValues = drivetrain.getEncoderDistance();
+        double encoderPosL = encoderValues[0];
+        double encoderPosR = encoderValues[1];
+        double deltaPosX;
+        double deltaPosY;
+
+        if(drivetrain.isLeftRightEqual(encoderPosL, encoderPosR))
+        {
+            deltaPosX = 0.5 * (encoderPosL + encoderPosR);
+            deltaPosY = 0;
+        }
+        else
+        {
+            double turnRadiusL = (2 * RADIUS_TO_DRIVETRAIN * encoderPosL) / (encoderPosR - encoderPosL);
+            double turnAngle = (encoderPosR - encoderPosL) / (2 * RADIUS_TO_DRIVETRAIN);
+
+            deltaPosX = (turnRadiusL + RADIUS_TO_DRIVETRAIN) * Math.sin(turnAngle);
+            deltaPosY = (turnRadiusL + RADIUS_TO_DRIVETRAIN) * (1 - Math.cos(turnAngle));
+        }
+
+        double x = currentCoord.getX() + deltaPosX;//encoder values in the right movement
+        double y = currentCoord.getY() + deltaPosY;
+
+        Position deltaPos = new Position(x, y, 0); //body frame
+        deltaPos = body2field(deltaPos); //field frame
+
+        estimatedPos = new Position(deltaPos.getX(), deltaPos.getY(), currentCoord.getZ());
+
+        //Updates global variable
+        currentCoord.setX(deltaPos.getX()); //field frame
+        currentCoord.setY(deltaPos.getY()); //field frame
+        */
+
         return estimatedPos;
     }
 
