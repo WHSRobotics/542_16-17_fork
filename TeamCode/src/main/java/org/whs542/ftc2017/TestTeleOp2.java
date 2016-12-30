@@ -27,8 +27,8 @@ public class TestTeleOp2 extends OpMode{
         //Gamepad 1
         robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         robot.drivetrain.setOrientation(gamepad1.a);
-        robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-        robot.pusher.extendPusher(gamepad1.left_bumper);
+        //robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
+        //robot.pusher.extendPusher(gamepad1.left_bumper);
 
         //robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
         //robot.drivetrain.setOrientation(gamepad1.a);
@@ -38,16 +38,16 @@ public class TestTeleOp2 extends OpMode{
 
         //Gamepad 2
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
-        robot.flywheel2.runFlywheel(gamepad2.left_bumper);
+        //robot.flywheel2.runFlywheel(gamepad2.left_bumper);
         //robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down); comment in this line when done testing flywheel speeds
-        double power = robot.flywheel2.setFlywheelSpeedExperimental(gamepad2.dpad_up, gamepad2.dpad_down);
-        robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
+        //double power = robot.flywheel2.setFlywheelSpeedExperimental(gamepad2.dpad_up, gamepad2.dpad_down);
+        //robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
         //telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelMode());
         //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
-        telemetry.addData("Flywheel power (for calib)", power);
+        //telemetry.addData("Flywheel power (for calib)", power);
 
         //telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);
         //telemetry.addData("RightStick Y:", gamepad1.right_stick_y);
@@ -55,12 +55,12 @@ public class TestTeleOp2 extends OpMode{
 
         //telemetry.addData("Intake:", robot.intake.getIntakeState());
 
-        telemetry.addData("PC", robot.flywheel2.getParticleControlState());
+        //telemetry.addData("PC", robot.flywheel2.getParticleControlState());
 
-        telemetry.addData("Vuforia Valid?", robot.vuforia.vuforiaIsValid());
-        telemetry.addData("Vx", robot.vuforia.getHeadingAndLocation().getX());
-        telemetry.addData("Vy", robot.vuforia.getHeadingAndLocation().getY());
-        telemetry.addData("Vheading", robot.vuforia.getHeadingAndLocation().getHeading());
+        //telemetry.addData("Vuforia Valid?", robot.vuforia.vuforiaIsValid());
+        //telemetry.addData("Vx", robot.vuforia.getHeadingAndLocation().getX());
+        //telemetry.addData("Vy", robot.vuforia.getHeadingAndLocation().getY());
+        //telemetry.addData("Vheading", robot.vuforia.getHeadingAndLocation().getHeading());
         telemetry.addData("Rx", robot.estimatePosition().getX());
         telemetry.addData("Ry", robot.estimatePosition().getY());
         telemetry.addData("Rh", robot.estimateHeading());
