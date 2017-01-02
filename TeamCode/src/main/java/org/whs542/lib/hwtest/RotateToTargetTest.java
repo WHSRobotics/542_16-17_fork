@@ -23,16 +23,15 @@ public class RotateToTargetTest extends OpMode {
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
-        robot.setInitialCoordinate(new Coordinate(1200, 0 , 150, 89));
+        robot.setInitialCoordinate(new Coordinate(1200, 0 , 150, 0));
     }
 
     @Override
     public void loop() {
 
         robot.estimateHeading();
-        robot.rotateToTarget(0);
+        robot.rotateToTarget(-70);
         if (!robot.rotateToTargetInProgress) {
-            requestOpModeStop();
         }
 
 
