@@ -47,7 +47,6 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     Position beacon2b;
 
     Position[] targetPositionsBlue = {new Position(600, 1500, 150), new Position(-1300, 1500, 150)};
-    Position[] targetPositionsRed = {new Position(-1500, -600, 150), new Position(-1500, 1300, 150)};
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)}; //TODO: separate do the same thing as before
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
@@ -101,6 +100,7 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
                 switch (state) {
                     case 0:
                         robot.rotateToVortex(vortexPosition);
+                        state = 1;
                         break;
                     case 1:
                         if (!robot.rotateToTargetInProgress) {
@@ -170,6 +170,11 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
                 }
             }
 
+            case "claim beacon a":
+                switch (state){
+                    case 0:
+
+                }
         }
 
         telemetry.addData("Action:", action);

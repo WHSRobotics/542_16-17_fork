@@ -8,14 +8,15 @@ public class Timer {
     private long time;                          //The amount of time the timer should last for
     private long startTime;                     //The time at which the timer was started
     private long timeWhenPaused;                //The time when the timer was paused
-    private long timeInPause;                   //The total time that the timer has spent being paused
+    private long timeInPause = 0;               //The total time that the timer has spent being paused
+    private boolean timerPaused = false;
 
     public Timer(double time) {
-        this.time = (long) (time*10E9);
+        this.time = (long) (time*10E8);
     }
 
     public Timer(long time, boolean init) {
-        this.time = (long) (time*10E9);
+        this.time = (long) (time*10E8);
         if (init) init();
     }
 
@@ -33,12 +34,14 @@ public class Timer {
      */
     public void pause() {
         timeWhenPaused = getElapsedTime();
+        timerPaused = true;
     }
 
     /**
      * Starts the timer again after it has been stopped
      */
     public void start() {
+        timerPaused = false;
         timeInPause += getElapsedTime()-timeWhenPaused;
     }
 
@@ -48,7 +51,12 @@ public class Timer {
      * @return The time elapsed, in milli-seconds
      */
     private long getElapsedTime() {
-        return System.nanoTime() - startTime - timeInPause;
+        if (timerPaused) {
+            return timeWhenPaused;
+        }
+        else {
+            return System.nanoTime() - startTime - timeInPause;
+        }
     }
 
     /**
@@ -64,7 +72,15 @@ public class Timer {
      * @return The time until the timer has elapsed, as a double
      */
     public double timeUntilTimerElapsed() {
-        return (getElapsedTime() - time)/10E9;
+        return (time - getElapsedTime())/10E8;
+    }
+
+    /**
+     * Returns whether or not the timer is paused
+     * @return True if the timer is paused, false if the timer is not
+     */
+    public boolean isTimerPaused() {
+        return timerPaused;
     }
 
     /**
