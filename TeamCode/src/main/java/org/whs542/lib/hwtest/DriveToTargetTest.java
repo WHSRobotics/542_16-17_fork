@@ -19,6 +19,7 @@ public class DriveToTargetTest extends OpMode{
 
     @Override
     public void init() {
+
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(new Coordinate(0, 0 , 0, 0));
     }
@@ -29,7 +30,10 @@ public class DriveToTargetTest extends OpMode{
         robot.estimatePosition();
 
 
-        robot.driveToTarget(new Position(0, 600, 0));
+        robot.driveToTarget(new Position(0, 3000, 0));
+        telemetry.addData("Rx:", robot.currentCoord.getX());
+        telemetry.addData("Ry:", robot.currentCoord.getY());
+        telemetry.addData("Hdg:", robot.currentCoord.getHeading());
         /*
         if (!robot.driveToTargetInProgress){
             requestOpModeStop();

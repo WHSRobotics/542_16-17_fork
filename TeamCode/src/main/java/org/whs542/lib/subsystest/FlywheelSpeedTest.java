@@ -26,6 +26,8 @@ public class FlywheelSpeedTest extends OpMode{
     public void loop() {
         tog.changeState(gamepad1.dpad_up, gamepad1.dpad_down);
         flywheel.runFlywheelNoToggle(tog.currentState()*0.05);
+        flywheel.setParticleControlState(gamepad1.left_trigger);
         telemetry.addData("Flywheel Power", tog.currentState()*0.05);
+        telemetry.addData("PC State", flywheel.getParticleControlState());
     }
 }
