@@ -109,32 +109,22 @@ public class WHSRobot
         driveToTargetInProgress = false;
     }
 
-    //driveToTarget with only one rotation
+    //driveToTarget with only no rotation
     public void driveToTarget(Position targetPos /*field frame*/)
     {
-        if(count == 0)
-        {
-            Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
-            vectorToTarget = field2body(vectorToTarget); //body frame
 
-            distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+        Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
+        vectorToTarget = field2body(vectorToTarget); //body frame
 
-            double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
-            //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
-            degreesToRotate = degreesToRotate * 180 / Math.PI;
-            double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
-            rotateToTarget(targetHeading);
-            count = 1;
-        }
-        else if (rotateToTargetInProgress)
+        distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+
+
+        if (rotateToTargetInProgress)
         {
 
         }
         else
         {
-            Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
-            vectorToTarget = field2body(vectorToTarget); //body frame
-            distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
 
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
@@ -487,8 +477,8 @@ public class WHSRobot
         double heading = currentCoord.getHeading();
 
         double[][] C_b2f = {{Functions.cosd(heading),  -Functions.sind(heading),  0},
-                            {Functions.sind(heading),   Functions.cosd(heading),  0},
-                            {0,                         0,                        1}};
+                {Functions.sind(heading),   Functions.cosd(heading),  0},
+                {0,                         0,                        1}};
 
         fieldVector = Functions.transformCoordinates(C_b2f,bodyVector);
         return fieldVector;
@@ -501,8 +491,8 @@ public class WHSRobot
         double heading = currentCoord.getHeading();
 
         double[][] C_f2b = {{ Functions.cosd(heading),   Functions.sind(heading),  0},
-                            {-Functions.sind(heading),   Functions.cosd(heading),  0},
-                            { 0,                         0,                        1}};
+                {-Functions.sind(heading),   Functions.cosd(heading),  0},
+                { 0,                         0,                        1}};
 
         bodyVector = Functions.transformCoordinates(C_f2b,fieldVector);
         return bodyVector;
@@ -515,8 +505,8 @@ public class WHSRobot
         double heading = 180;
 
         double[][] C_f2b = {{ -1,  0, 0},
-                            {  0, -1, 0},
-                            {  0,  0, 1}};
+                {  0, -1, 0},
+                {  0,  0, 1}};
 
         backVector = Functions.transformCoordinates(C_f2b,frontVector);
         return backVector;

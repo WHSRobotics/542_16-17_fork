@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
+import org.whs542.lib.Functions;
 import org.whs542.lib.Position;
 
 /**
@@ -16,12 +17,14 @@ import org.whs542.lib.Position;
 @Autonomous(name = "Drive to Target Test", group = "TeleOp")
 public class DriveToTargetTest extends OpMode{
     WHSRobot robot;
+    int state;
 
     @Override
     public void init() {
 
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(new Coordinate(0, 0 , 0, 0));
+        state = 0;
     }
 
     @Override
@@ -29,11 +32,45 @@ public class DriveToTargetTest extends OpMode{
         robot.estimateHeading();
         robot.estimatePosition();
 
+        switch(state)
+        {
+            case 0:
+                robot.rotateToTargetInProgress = true;
+                state++;
+                break;
+            case 1:
+                Position vectorToTarget = Functions.subtractPositions(new Position(0, 3000, 0), robot.currentCoord.getPos()); //field frame
+                vectorToTarget = robot.field2body(vectorToTarget); //body frame
 
-        robot.driveToTarget(new Position(0, 3000, 0));
+                double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+
+                double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
+                //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
+                degreesToRotate = degreesToRotate * 180 / Math.PI;
+                double targetHeading = Functions.normalizeAngle(robot.currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+                robot.rotateToTarget(targetHeading);
+                if(!robot.rotateToTargetInProgress)
+                {
+                    state++;
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 2:
+                robot.driveToTarget(new Position(0, 3000, 0));
+                break;
+
+
+        }
+
+
         telemetry.addData("Rx:", robot.currentCoord.getX());
         telemetry.addData("Ry:", robot.currentCoord.getY());
         telemetry.addData("Hdg:", robot.currentCoord.getHeading());
+        telemetry.addData("Case:", state);
         /*
         if (!robot.driveToTargetInProgress){
             requestOpModeStop();
