@@ -1,4 +1,4 @@
-package org.whs542.ftc2017;
+package org.whs542.ftc2017.autoOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,6 +12,9 @@ import org.whs542.lib.Alliance;
  */
 
 @Autonomous(name = "TimeBlueAutoPlay6", group = "Auto")
+//@Disabled
+//@Deprecated
+
 public class TimeAutoOpPlay6 extends OpMode{
 
     WHSRobot robot;

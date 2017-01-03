@@ -1,4 +1,4 @@
-package org.whs542.ftc2017;
+package org.whs542.ftc2017.autoOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -19,6 +19,7 @@ import java.util.Objects;
 //Play 4
 @Autonomous(name = "BlueAutoPlay4", group = "AutoOp")
 @Disabled
+@Deprecated
 
 public class BlueAutoPlay4 extends OpMode {
 

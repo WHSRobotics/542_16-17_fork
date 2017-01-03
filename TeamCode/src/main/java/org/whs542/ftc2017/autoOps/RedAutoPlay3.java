@@ -1,4 +1,4 @@
-package org.whs542.ftc2017;
+package org.whs542.ftc2017.autoOps;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -16,6 +16,8 @@ import org.whs542.lib.Position;
 
 @Autonomous(name = "RedAutoOp3", group = "Autonomous")
 @Disabled
+@Deprecated
+
 public class RedAutoPlay3 extends OpMode
 {
     WHSRobot robot;
