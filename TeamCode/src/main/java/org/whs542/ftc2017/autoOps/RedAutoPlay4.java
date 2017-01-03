@@ -1,4 +1,4 @@
-package org.whs542.ftc2017.autoOps;
+package org.whs542.ftc2017.autoops;
 
 /**
  * Red Play 4 NOT NEED TO FIX, PROBABLY - JASON

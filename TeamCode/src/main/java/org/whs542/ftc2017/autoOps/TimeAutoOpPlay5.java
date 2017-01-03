@@ -1,4 +1,4 @@
-package org.whs542.ftc2017.autoOps;
+package org.whs542.ftc2017.autoops;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
