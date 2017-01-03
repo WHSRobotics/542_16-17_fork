@@ -23,7 +23,7 @@ public class Flywheel2
     private String flywheelMode;
 
     private Toggler flywheelPowerToggle = new Toggler(4);
-    private Toggler flywheelExperimental = new Toggler(26);
+    private Toggler flywheelExperimental = new Toggler(101);
     private Toggler flywheelToggle = new Toggler(2);
 
     private boolean isFlywheelAtSpeed;
@@ -49,6 +49,8 @@ public class Flywheel2
 
         isParticleControlUp = false;
         isFlywheelAtSpeed = false;
+
+        flywheelExperimental.setState(40);
     }
 
     public void runFlywheelNoToggle(double power){
@@ -104,7 +106,7 @@ public class Flywheel2
             flywheelPower = 0;
         else
         {
-            power = (power + 34) / 100;
+            power = power / 100;
             flywheelPower = power;
         }
         return power;

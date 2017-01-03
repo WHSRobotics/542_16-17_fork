@@ -37,6 +37,8 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     Position vortexPosition;
     //Position[] vortexPositions = {new Position(-300, -300, 150), new Position(300, 300, 150)};
     Position centerVortex = new Position(0, 0, 150);
+    Position blueVortex = new Position(300, 300, 150);
+    Position redVortex = new Position(-300, -300, 150);
 
     //Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position beacon1a;
@@ -95,7 +97,7 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
 
         switch (action) {
 
-            case "shoot two particles":
+            case "shoot two particles": {
                 switch (state) {
                     case 0:
                         robot.rotateToVortex(vortexPosition);
@@ -153,7 +155,20 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
                         action = "next action";                         //Advance to the next case
                         break;
                 }
-                break;
+
+            }
+            case "drive to cap ball":{
+                switch (state){
+                    case 0:
+                        if(robot.pusher.side.toString().equals("BLUE"))
+                            robot.driveToTarget(blueVortex);
+                        else
+                            robot.driveToTarget(redVortex);
+                        if(!robot.driveToTargetInProgress)
+                            state++;
+                        else{}
+                }
+            }
 
         }
 

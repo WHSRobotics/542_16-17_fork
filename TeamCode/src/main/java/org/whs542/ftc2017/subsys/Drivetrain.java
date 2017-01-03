@@ -54,6 +54,8 @@ public class Drivetrain {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        orientationSwitch.setState(1);
     }
 
     public void setRunMode( RunMode theMode )
@@ -135,10 +137,10 @@ public class Drivetrain {
         switch(orientationSwitch.currentState())
         {
             case 0:
-                orientation = "Front = Flywheel";
+                orientation = "Front = Intake";
                 break;
             case 1:
-                orientation = "Front = Intake";
+                orientation = "Front = Flywheel";
                 break;
         }
         return orientation;

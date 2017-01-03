@@ -12,7 +12,7 @@ import org.whs542.lib.Toggler;
  * Created by Amar2 on 11/19/2016.
  */
 @Autonomous(name = "RunModeTest", group = "Tests")
-@Disabled
+//@Disabled
 
 public class DcMotorRunModeTest extends OpMode{
 
@@ -20,13 +20,13 @@ public class DcMotorRunModeTest extends OpMode{
     //DcMotor b;
     Toggler tog = new Toggler(40);
     Toggler tog2 = new Toggler(2);
-    int power;
+    int target;
 
     @Override
     public void init() {
-        a = hardwareMap.dcMotor.get("a");
+        a = hardwareMap.dcMotor.get("beacon");
         //b = hardwareMap.dcMotor.get("b");
-        a.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        a.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //b.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //a.setTargetPosition(20000);
         //b.setTargetPosition(20000);
@@ -40,8 +40,8 @@ public class DcMotorRunModeTest extends OpMode{
     public void loop() {
         tog2.changeState(gamepad1.x);
         tog.changeState(gamepad1.dpad_up, gamepad1.dpad_down);
-        power = (tog.currentState()+1)*100;
-        a.setMaxSpeed(power);
+        target = (tog.currentState()+1)*100;
+        a.setTargetPosition(target);
         //b.setMaxSpeed(power);
 
 
@@ -50,7 +50,7 @@ public class DcMotorRunModeTest extends OpMode{
             //b.setPower(1.0);
         }
         else if (gamepad1.a || gamepad1.b){
-            if (gamepad1.a) a.setPower(1.0);
+            if (gamepad1.a) a.setPower(0.1);
             //if (gamepad1.b) b.setPower(1.0);
         }
         else {
@@ -67,7 +67,9 @@ public class DcMotorRunModeTest extends OpMode{
 
         telemetry.addData("A Enc Ticks", a.getCurrentPosition());
         //telemetry.addData("B Enc Ticks", b.getCurrentPosition());
-        telemetry.addData("Encoder ticks per sec", power);
+        telemetry.addData("Is busy?", a.isBusy());
+        telemetry.addData("Power:", a.getPower());
+        telemetry.addData("Target position", target);
         telemetry.addData("State", tog2.currentState());
         telemetry.addData("Loop Runtime", getRuntime());
 

@@ -106,4 +106,13 @@ public class Toggler
             pressedInc = false;
         }
     }
+
+    public int setState(int stateL)
+    {
+        if(stateL < numberOfStates & stateL >= 0)
+        {
+            state = stateL;
+        }
+        return state;
+    }
 }

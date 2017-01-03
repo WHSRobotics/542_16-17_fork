@@ -12,7 +12,7 @@ import org.whs542.lib.Alliance;
  */
 
 @TeleOp(name = "BeaconTest", group = "TeleOp")
-@Disabled
+//@Disabled
 public class BeaconTest extends OpMode
 {
     BeaconPusher beaconPusher;
