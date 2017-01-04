@@ -110,7 +110,7 @@ public class Functions
     private static final double CIRC_OF_WHEEL = RADIUS_OF_WHEEL * 2 * Math.PI;
     private static final double ENCODER_TICKS_PER_REV = 1120;
     //private static final double CALIBRATION_FACTOR = 72 / 72.25 * 24 / 24.5 * 0.5;
-    private static final double CALIBRATION_FACTOR = 72 / 72.25 * 24 / 24.5 * 0.8;
+    private static final double CALIBRATION_FACTOR = 72 / 72.25 * 24 / 24.5 * 0.73;
     private static final double ENCODER_TICKS_PER_MM = CALIBRATION_FACTOR * ENCODER_TICKS_PER_REV / CIRC_OF_WHEEL;
 
     public static double encToMM(double encoderTicks)
