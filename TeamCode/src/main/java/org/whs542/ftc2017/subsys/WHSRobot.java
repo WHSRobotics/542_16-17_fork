@@ -1,6 +1,7 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.ftccommon.DbgLog;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.whs542.lib.Alliance;
@@ -38,7 +39,7 @@ public class WHSRobot
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.7, 0.8};
-    private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
+    private static final double DEADBAND_ROTATE_TO_TARGET = 1.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
 
     //17.85 /2 is center of robot, at 15 for y
@@ -232,6 +233,7 @@ public class WHSRobot
             //if rotating, do nothing
         }
         else {
+            drivetrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
             /*if(driveToTargetInProgress == false)
             {
                 drivetrain.setLRPower(0.8, 0.8);
@@ -271,6 +273,8 @@ public class WHSRobot
     {
         double angleToTarget = targetHeading - currentCoord.getHeading(); //TODO: change estimateHeading() back to currentCorrd.getHeading
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
+
+        drivetrain.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
             //consecutive = 0;

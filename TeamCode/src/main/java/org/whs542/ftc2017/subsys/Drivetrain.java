@@ -56,6 +56,7 @@ public class Drivetrain {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         orientationSwitch.setState(1);
+        this.setMaxSpeed(3000);
     }
 
     public void setRunMode( RunMode theMode )
