@@ -25,6 +25,8 @@ public class DriveToTargetTest extends OpMode{
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(new Coordinate(0, 0 , 0, 0));
         state = 0;
+        telemetry.log().add("Wait for vuforia!!!");
+        robot.driveToTargetInProgress = true;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class DriveToTargetTest extends OpMode{
         robot.estimateHeading();
         robot.estimatePosition();
 
-        switch(state)
+
+        if(robot.driveToTargetInProgress)
+            robot.driveToTarget(new Position(0, 3000, 0));
+        /*switch(state)
         {
             case 0:
                 robot.rotateToTargetInProgress = true;
@@ -64,13 +69,15 @@ public class DriveToTargetTest extends OpMode{
                 break;
 
 
-        }
+        }*/
 
 
         telemetry.addData("Rx:", robot.currentCoord.getX());
         telemetry.addData("Ry:", robot.currentCoord.getY());
         telemetry.addData("Hdg:", robot.currentCoord.getHeading());
         telemetry.addData("Case:", state);
+        telemetry.addData("RotateToTargetInProgress?", robot.rotateToTargetInProgress);
+        telemetry.addData("DriveToTargetInProgress?", robot.driveToTargetInProgress);
         /*
         if (!robot.driveToTargetInProgress){
             requestOpModeStop();

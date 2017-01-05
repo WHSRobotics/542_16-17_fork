@@ -39,7 +39,7 @@ public class WHSRobot
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.7, 0.8};
-    private static final double DEADBAND_ROTATE_TO_TARGET = 1.5; //in degrees
+    private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
 
     //17.85 /2 is center of robot, at 15 for y
@@ -220,14 +220,25 @@ public class WHSRobot
         degreesToRotate = degreesToRotate * 180 / Math.PI;
         double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
 
-        if(count % 20 == 0) {
+        if(count == 0) {
             rotateToTarget(targetHeading);
             count++;
         }
-        else
-        {
-            count++;
+        else if(rotateToTargetInProgress) {
+            rotateToTarget(targetHeading);
         }
+        else if(driveToTargetInProgress)
+        {
+            if(count % 30 == 0) {
+                rotateToTarget(targetHeading);
+                count++;
+            }
+            else
+            {
+                count++;
+            }
+        }
+
 
         if (rotateToTargetInProgress) {
             //if rotating, do nothing
@@ -263,7 +274,9 @@ public class WHSRobot
                 drivetrain.setRightPower(0.0);
                 drivetrain.setLeftPower(0.0);
                 driveToTargetInProgress = false;
+                rotateToTargetInProgress = false;
 
+                count = 0;
             }
         }
     }
