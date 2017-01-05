@@ -35,7 +35,7 @@ public class WHSRobot
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.5, 1.0};
-    private static final double DEADBAND_DRIVE_TO_TARGET = 150; //in mm
+    private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.7, 0.8};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
@@ -110,8 +110,8 @@ public class WHSRobot
     }
 
     //driveToTarget with only no rotation
-    public void driveToTarget(Position targetPos /*field frame*/)
-    {
+    //public void driveToTarget(Position targetPos /*field frame*/)
+    /*{
 
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
@@ -154,9 +154,10 @@ public class WHSRobot
 
         }
     }
+    */
 
-    //public void driveToTarget(Position targetPos /*field frame*/)
-    /*{
+    /*public void driveToTarget(Position targetPos *//*field frame*//*)
+    {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
 
@@ -172,11 +173,11 @@ public class WHSRobot
             //if rotating, do nothing
         }
         else {
-            /*if(driveToTargetInProgress == false)
+            *//*if(driveToTargetInProgress == false)
             {
                 drivetrain.setLRPower(0.8, 0.8);
-            }*/
-            /*
+            }*//*
+
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
                 drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
@@ -206,6 +207,65 @@ public class WHSRobot
         }
     }*/
 
+    public void driveToTarget(Position targetPos /*field frame*/)
+    {
+        Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
+        vectorToTarget = field2body(vectorToTarget); //body frame
+
+        double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
+
+        double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
+        //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
+        degreesToRotate = degreesToRotate * 180 / Math.PI;
+        double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+
+        if(count % 20 == 0) {
+            rotateToTarget(targetHeading);
+            count++;
+        }
+        else
+        {
+            count++;
+        }
+
+        if (rotateToTargetInProgress) {
+            //if rotating, do nothing
+        }
+        else {
+            /*if(driveToTargetInProgress == false)
+            {
+                drivetrain.setLRPower(0.8, 0.8);
+            }*/
+
+            if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
+                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
+                driveToTargetInProgress = true;
+            }
+            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[2]) {
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
+                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
+                driveToTargetInProgress = true;
+            }
+            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[1]) {
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
+                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
+                driveToTargetInProgress = true;
+            }
+            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[0]) {
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
+                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
+                driveToTargetInProgress = true;
+            }
+            else {
+                drivetrain.setRightPower(0.0);
+                drivetrain.setLeftPower(0.0);
+                driveToTargetInProgress = false;
+
+            }
+        }
+    }
+
     //When tested, robot kept turning (to 30 deg)
     public void rotateToTarget(double targetHeading /*-180 to 180 deg*/)
     {
@@ -228,8 +288,7 @@ public class WHSRobot
                 drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[1]);
                 drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[1]);
                 rotateToTargetInProgress = true;
-            }
-            else if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[0]){
+            } else if(angleToTarget < -ROTATE_TO_TARGET_THRESHOLD[0]){
                 drivetrain.setLeftPower(ROTATE_TO_TARGET_POWER_LEVEL[0]);
                 drivetrain.setRightPower(-ROTATE_TO_TARGET_POWER_LEVEL[0]);
                 rotateToTargetInProgress = true;
