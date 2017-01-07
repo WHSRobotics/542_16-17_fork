@@ -44,21 +44,29 @@ public class BeaconPusher {
     }
 
 
-    public void extendPusher(boolean lBumper)
+    public void extendPusherAuto(boolean lBumper)
     {
-        beaconToggler.changeState(lBumper);
-        switch(beaconToggler.currentState())
+        if(!lBumper & beaconPusher.getTargetPosition() > 0){
+            beaconToggler.setState(0);
+            beaconPusher.setTargetPosition(0);
+            beaconPusher.setPower(0.3);
+            //A beaconPusher.setPosition(0);
+        }
+        else if(lBumper & beaconPusher.getTargetPosition() < (int) FINAL_POS)
         {
-            case 0:
-                beaconPusher.setTargetPosition(0);
-                beaconPusher.setPower(0.3);
-                //A beaconPusher.setPosition(0);
-                break;
-            case 1:
-                beaconPusher.setTargetPosition((int) FINAL_POS);
-                beaconPusher.setPower(0.3);
-                //A beaconPusher.setPosition(1);
-                break;
+            beaconToggler.setState(1);
+            beaconPusher.setTargetPosition((int) FINAL_POS);
+            beaconPusher.setPower(0.3);
+            //A beaconPusher.setPosition(1);
+
+        }
+        else if(!lBumper & beaconPusher.getTargetPosition() <= 0){
+            beaconToggler.setState(0);
+            beaconPusher.setPower(0.0);
+        }
+        else{
+            beaconToggler.setState(1);
+            beaconPusher.setPower(0.0);
         }
 
        if(touchSensor.isPressed())
@@ -111,7 +119,7 @@ public class BeaconPusher {
 
         if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
             status = "Match";
-            extendPusherNoToggle(true);
+            extendPusherAuto(true);
             isPressed = true;
         }
         else if(color.state.equals("purple")){

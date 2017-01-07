@@ -1,5 +1,6 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
@@ -14,6 +15,8 @@ import org.whs542.lib.Timer;
  * @see WHSParentAutoOp
  * @see AutoOpSwitchCaseTemplate
  */
+@Autonomous(name = "WHSBlueParentAuto", group = "Auto")
+//@Disabled
 public class WHSBlueParentAutoOp extends OpMode {
 
     //Byte for controlling which state the case will be in: init(0), loop/init(1-99), or exit(default)
@@ -26,21 +29,20 @@ public class WHSBlueParentAutoOp extends OpMode {
 
     ////// Carry-over from older parent AutoOp
     boolean firstLoop;
-    int test;
+    //int test;
 
     long particleDelay;
-    String stateInfo;
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
     Alliance allianceColor = Alliance.BLUE;
     String stateInfo; //initial
 
     //Wheels, Legos, Tools, Gears
-    Position vortexPosition;
+    //Position vortexPosition;
     //Position[] vortexPositions = {new Position(-300, -300, 150), new Position(300, 300, 150)};
-    Position centerVortex = new Position(0, 0, 150);
-    Position blueVortex = new Position(300, 300, 150);
-    Position redVortex = new Position(-300, -300, 150);
+    //Position centerVortex = new Position(0, 0, 150);
+    //Position blueVortex = new Position(300, 300, 150);
+    //Position redVortex = new Position(-300, -300, 150);
 
     //Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position beacon1a;
@@ -49,13 +51,13 @@ public class WHSBlueParentAutoOp extends OpMode {
     Position beacon2b;
 
 
-    Position[] targetPositionsBlue = {new Position(600, 1500, 150), new Position(-1300, 1500, 150)};
-    Coordinate[] startingPositions = {new Coordinate(1500, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)}
+    //Position[] targetPositionsBlue = {new Position(600, 1500, 150), new Position(-1300, 1500, 150)};
+    Coordinate[] startingPositions = {new Coordinate(1500, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)}; //TODO: separate do the same thing as before
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
-    //Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
+    Position[] bluePositions = {new Position(600,1500,150), new Position(-1500,1300,150), new Position(0,0,150)};
     //TODO: move into init with red and blue
 
     Coordinate startingCoord;
@@ -63,7 +65,7 @@ public class WHSBlueParentAutoOp extends OpMode {
 
 
     //TODO: Test this
-    double flywheelPower = 0.48;
+    //double flywheelPower = 0.48;
 
 
 
@@ -77,9 +79,9 @@ public class WHSBlueParentAutoOp extends OpMode {
         timer1 = new Timer(5, true);
 
         beacon1a = new Position(580, 1500, 150);
-        beacon1b = new Position(573, 1500, 150);
+        beacon1b = new Position(510, 1500, 150);
         beacon2a = new Position(-620, 1500, 150);
-        beacon2b = new Position(-627, 1500, 150);
+        beacon2b = new Position(-690, 1500, 150);
 
         telemetry.log().add("RBT INIT");
 
@@ -92,9 +94,8 @@ public class WHSBlueParentAutoOp extends OpMode {
 
     @Override
     public void loop() {
-
-
-
+        robot.estimateHeading();
+        robot.estimatePosition();
 
         switch(state){
             case 0:
@@ -154,30 +155,111 @@ public class WHSBlueParentAutoOp extends OpMode {
                 state++;
                 break;
             case 6:
-                if(robot.pusher.side.toString().equals("BLUE"))
-                    robot.driveToTarget(blueVortex);
-                else
-                    robot.driveToTarget(redVortex);
-                if(!robot.driveToTargetInProgress)
+                stateInfo = "Moving to before 1st beacon";
+                robot.driveToTarget(bluePositions[0]);
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
                     state++;
-                else{}
-
-
-
-
+                break;
+            case 7:
+                stateInfo = "Driving to beacon 1a";
+                robot.driveToTarget(beacon1a);
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 8:
+                stateInfo = "Scanning beacon 1a";
+                if(robot.pusher.isBeaconPushed()){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    robot.pusher.extendPusherAuto(false);
+                    state = 11;
+                }
+                else{
+                    state++;
+                }
+                break;
+            case 9:
+                stateInfo = "Driving to beacon 1b";
+                robot.driveToTarget(beacon1b);
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 10:
+                stateInfo = "Scanning beacon 1b";
+                if(robot.pusher.isBeaconPushed()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    robot.pusher.extendPusherAuto(false);
+                    state++;
+                }
+                else{
+                    state++;
+                }
+                break;
+            case 11:
+                stateInfo = "Driving to beacon 2a";
+                robot.driveToTarget(beacon2a);
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
+                    state++;
+                }
+                break;
+            case 12:
+                stateInfo = "Scanning beacon 2a";
+                if(robot.pusher.isBeaconPushed()){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    robot.pusher.extendPusherAuto(false);
+                    state = 15;
+                }
+                else{
+                    state++;
+                }
+                break;
+            case 13:
+                stateInfo = "Driving to beacon 2b";
+                robot.driveToTarget(beacon2b);
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 14:
+                stateInfo = "Scanning beacon 2b";
+                if(robot.pusher.isBeaconPushed){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    robot.pusher.extendPusherAuto(false);
+                    state++;
+                }
+                else{
+                    state++;
+                }
+                break;
+            case 15:
+                stateInfo = "Auto Op Complete!! Victory Dance";
+                robot.drivetrain.setLRPower(-1.0, 1.0);
+                break;
 
 
         }
         telemetry.addData("Robot state:", stateInfo);
+        telemetry.addData("Using Vuforia?", robot.vuforiaTargetDetected );
+        telemetry.addData("Rx", robot.estimatePosition().getX());
+        telemetry.addData("Ry", robot.estimatePosition().getY());
+        telemetry.addData("Rh", robot.estimateHeading());
         telemetry.addData("State:", state);
-
         telemetry.addData("Runtime:", time);
     }
-
-        telemetry.addData("Action:", action);
-        telemetry.addData("State:", state);
-
-        telemetry.addData("Runtime:", time);
 
 }
 

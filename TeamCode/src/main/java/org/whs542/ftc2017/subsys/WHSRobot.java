@@ -27,7 +27,8 @@ public class WHSRobot
 
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
-    boolean drivingInReverse = false;
+    public boolean vuforiaTargetDetected;
+    public boolean drivingInReverse = false;
     public String s = "";
     public String beaconState = "";
 
@@ -85,6 +86,7 @@ public class WHSRobot
 
         rotateToTargetInProgress = false;
         driveToTargetInProgress = false;
+        vuforiaTargetDetected = false;
     }
 
     public WHSRobot(HardwareMap robotMap)
@@ -108,6 +110,7 @@ public class WHSRobot
 
         rotateToTargetInProgress = false;
         driveToTargetInProgress = false;
+        vuforiaTargetDetected = false;
     }
 
     //driveToTarget with only no rotation
@@ -386,6 +389,7 @@ public class WHSRobot
 
         if(vuforia.vuforiaIsValid())
         {
+            vuforiaTargetDetected = true;
             //vuforiaCoord = coordinate of camera in field frame
             Coordinate vuforiaCoord = vuforia.getHeadingAndLocation();
             vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
@@ -397,6 +401,7 @@ public class WHSRobot
         }
         else if(driveToTargetInProgress)
         {
+            vuforiaTargetDetected = false;
             double[] encoderValues = drivetrain.getEncoderDistance();
             double encoderPosL = encoderValues[0];
             double encoderPosR = encoderValues[1];
@@ -466,11 +471,13 @@ public class WHSRobot
     {
         double currentHeading;
         if(vuforia.vuforiaIsValid()){
+            vuforiaTargetDetected = true;
             currentHeading = vuforia.getHeadingAndLocation().getHeading();
             imu.setImuBias(currentHeading);
             currentCoord.setHeading(currentHeading); //updates global variable
         }
         else {
+            vuforiaTargetDetected = false;
             currentHeading = Functions.normalizeAngle(imu.getHeading() + imu.getImuBias()); //-180 to 180 deg
             currentCoord.setHeading(currentHeading); //updates global variable
         }
