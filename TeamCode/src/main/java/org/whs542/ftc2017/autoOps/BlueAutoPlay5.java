@@ -83,7 +83,9 @@ public class BlueAutoPlay5 extends OpMode{
                 break;
 
             case 3:
+
                 stateInfo = "Shooting first particle";
+
                 robot.flywheel2.setParticleControlState(true);
                 try {
                     Thread.sleep(2000);
@@ -94,6 +96,7 @@ public class BlueAutoPlay5 extends OpMode{
                 break;
             case 4:
                 stateInfo = "Lowering particle control";
+
                 robot.flywheel2.setParticleControlState(false);
                 try {
                     Thread.sleep(3500);
