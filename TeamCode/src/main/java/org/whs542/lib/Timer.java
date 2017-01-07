@@ -15,7 +15,7 @@ public class Timer {
         this.time = (long) (time*10E8);
     }
 
-    public Timer(long time, boolean init) {
+    public Timer(double time, boolean init) {
         this.time = (long) (time*10E8);
         if (init) init();
     }
