@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
+import org.whs542.lib.OpModeTimer;
 import org.whs542.lib.Position;
 
 /**
@@ -18,6 +19,7 @@ import org.whs542.lib.Position;
 
 public class BlueAutoPlay5 extends OpMode{
     WHSRobot robot;
+    OpModeTimer timer;
     int state;
     String stateInfo;
     double[] powers = {0.75, 0.8};
@@ -37,6 +39,7 @@ public class BlueAutoPlay5 extends OpMode{
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(startingPositions[0]);
         state = 0;
+        timer = new OpModeTimer();
     }
 
     @Override
@@ -52,28 +55,42 @@ public class BlueAutoPlay5 extends OpMode{
 
             case 1:
                 stateInfo = "Turning to vortex";
-                robot.rotateToVortex(vortexPositions[1]);
+                robot.rotateToVortex(vortexPositions[0]);
                 if (!robot.rotateToTargetInProgress) state++;
                 break;
             case 2:
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
-                if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
-                    robot.flywheel.operateGate(true);
-                    robot.intake.runIntake(1.0);
-                    try {
-                        Thread.sleep(particleDelay);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    robot.intake.runIntake(0.0);
-                    robot.flywheel.setFlywheelPower(0.0);
-                    robot.flywheel.operateGate(false);
-                    state++;
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                robot.flywheel2.setParticleControlState(true);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                robot.flywheel2.setParticleControlState(false);
+                try {
+                    Thread.sleep(900);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                robot.flywheel2.setParticleControlState(true);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                robot.flywheel2.runFlywheelNoToggle(0.0);
+                robot.flywheel.operateGate(false);
+                state++;
+
                 break;
             case 3:
-                robot.driveToTarget(bluePositions[2]);
+                robot.driveToTarget(vortexPositions[0]);
                 if (!robot.driveToTargetInProgress) {
                     stateInfo = "AutoOp Complete. >~<";
                     state++;
