@@ -1,12 +1,9 @@
 package org.whs542.ftc2017;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.ftc2017.subsys.WHSRobotSimple;
-import org.whs542.lib.Alliance;
 
 /**
  * Created by Lucy on 11/19/2016.
@@ -32,7 +29,7 @@ public class WHSTeleop extends OpMode
             robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
             robot.drivetrain.setOrientation(gamepad1.a);
             robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-            robot.pusher.extendPusher(gamepad1.left_bumper);
+            robot.pusher.extendPusherNoToggle(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
             robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);

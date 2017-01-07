@@ -1,6 +1,5 @@
 package org.whs542.lib.subsystest;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -27,7 +26,7 @@ public class BeaconDetectionTest extends OpMode{
     @Override
     public void loop() {
 
-        pusher.extendPusher(gamepad1.a);
+        pusher.extendPusherNoToggle(gamepad1.a);
         telemetry.addData("To Push?", pusher.isBeaconPushed());
         telemetry.addData("Color val", pusher.color.state());
         telemetry.addData("R", pusher.color.getR());

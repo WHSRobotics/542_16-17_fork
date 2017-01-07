@@ -30,7 +30,7 @@ public class WHSRedTeleOp extends OpMode
             robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
             robot.drivetrain.setOrientation(gamepad1.a); //TODO: check if this actually works and fix if not -.-
             robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
-            robot.pusher.extendPusher(gamepad1.left_bumper);
+            robot.pusher.extendPusherNoToggle(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
             robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
