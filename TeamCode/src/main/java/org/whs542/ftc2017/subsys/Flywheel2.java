@@ -17,7 +17,7 @@ public class Flywheel2
     private DcMotor leftFlywheel;
     private Servo particleControl;
 
-    private double[] powers = {0.38, 0.41, 0.45, 0.48};
+    private double[] powers = {0.70, 0.75, 0.80, 0.85};
     private double flywheelPower;
 
     private String flywheelMode;
@@ -80,19 +80,19 @@ public class Flywheel2
         switch(flywheelPowerToggle.currentState())
         {
             case 0:
-                flywheelMode = "Approx. 2 - 0.38";
+                flywheelMode = "Approx. 2 - 0.70";
                 flywheelPower = powers[0];
                 break;
             case 1:
-                flywheelMode = "Diag. 2 - 0.41";
+                flywheelMode = "Diag. 2 - 0.75";
                 flywheelPower = powers[1];
                 break;
             case 2:
-                flywheelMode = "Approx. 3 - 0.45";
+                flywheelMode = "Approx. 3 - 0.80";
                 flywheelPower = powers[2];
                 break;
             case 3:
-                flywheelMode = "Diag. 3 - 0.48";
+                flywheelMode = "Diag. 3 - 0.85";
                 flywheelPower = powers[3];
                 break;
         }

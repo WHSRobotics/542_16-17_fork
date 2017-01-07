@@ -41,8 +41,8 @@ public class TestTeleOp extends OpMode{
         //Gamepad 2
         //TODO: FIX THESE WHENEVER POSSIBLE, add power inc/dec and fix run
         robot.flywheel2.runFlywheel(gamepad2.left_bumper);
-        //robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down); comment in this line when done testing flywheel speeds
-        double power = robot.flywheel2.setFlywheelSpeedExperimental(gamepad2.dpad_up, gamepad2.dpad_down);
+        robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down); //comment in this line when done testing flywheel speeds
+        //double power = robot.flywheel2.setFlywheelSpeedExperimental(gamepad2.dpad_up, gamepad2.dpad_down);
         robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
 
         //Telemetry
@@ -55,7 +55,7 @@ public class TestTeleOp extends OpMode{
 
         telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelMode());
         //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
-        telemetry.addData("Flywheel power (for calib)", power);
+        //telemetry.addData("Flywheel power (for calib)", power);
 
         telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);
         telemetry.addData("RightStick Y:", gamepad1.right_stick_y);

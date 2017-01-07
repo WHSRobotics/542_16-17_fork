@@ -1,13 +1,10 @@
-package org.whs542.ftc2017.autoOps;
+package org.whs542.ftc2017.autoops;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.whs542.ftc2017.subsys.Flywheel2;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
-import org.whs542.lib.Coordinate;
 import org.whs542.lib.Position;
 
 /**

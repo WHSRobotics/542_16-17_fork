@@ -1,4 +1,4 @@
-package org.whs542.ftc2017.autoOps;
+package org.whs542.ftc2017.autoops;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -58,7 +58,7 @@ public class BlueAutoPlay5 extends OpMode{
             case 2:
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
-                if (robot.flywheel2.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
+                if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
                     robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
                     try {
