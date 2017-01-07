@@ -5,23 +5,24 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.ftc2017.subsys.WHSRobotSimple;
 import org.whs542.lib.Alliance;
 
 /**
  * Created by Lucy on 11/19/2016.
  */
 
-@TeleOp(name = "WHSBlueTeleop", group = "WHSTeleOp")
-@Disabled
+@TeleOp(name = "WHSTeleop", group = "WHSTeleOp")
+//@Disabled
 
-public class WHSBlueTeleOp extends OpMode
+public class WHSTeleop extends OpMode
 {
-    WHSRobot robot;
+    WHSRobotSimple robot;
     int i;
 
     public void init()
     {
-            robot = new WHSRobot(hardwareMap, Alliance.BLUE);
+            robot = new WHSRobotSimple(hardwareMap);
     }
 
     public void loop()
@@ -34,13 +35,10 @@ public class WHSBlueTeleOp extends OpMode
             robot.pusher.extendPusher(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
-            robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-            robot.flywheel.rampFlywheel(gamepad2.left_bumper);
-            //robot.flywheel.operateGate(gamepad2.left_trigger);
-            //robot.capball.liftCB(gamepad2.dpad_up);
-            //robot.capball.dropCB(gamepad2.dpad_down);
-            //robot.capball.changeServo(gamepad2.right_bumper);
-            //robot.capball.changeRatchet(gamepad2.right_trigger);
+            robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);
+            robot.flywheel2.runFlywheel(gamepad2.left_bumper);
+            robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
+
         }
         catch(Exception e)
         {
@@ -48,20 +46,15 @@ public class WHSBlueTeleOp extends OpMode
         }
 
         //Telemetry
-        telemetry.addData("Robot Approx. Location", robot.flywheel.getFlywheelMode());
-        telemetry.addData("Flywheel Status", robot.flywheel.getFlywheelStatus());
-        //telemetry.addData("Flywheel Gate Status", robot.flywheel.getGateStatus());
-
-        telemetry.addData("Auto Beacon Choice", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
+        telemetry.addData("Robot Approx. Location", robot.flywheel2.getFlywheelMode());
+        telemetry.addData("Flywheel Status", robot.flywheel2.getFlywheelMode());
+        telemetry.addData("Flywheel Gate Status", robot.flywheel2.getParticleControlState());
 
         telemetry.addData("Left Drivetrain", robot.drivetrain.getScaledPower(gamepad1.left_stick_y));
         telemetry.addData("Right Drivetrain", robot.drivetrain.getScaledPower(gamepad1.right_stick_y));
         telemetry.addData("Orientation", robot.drivetrain.getOrientation());
 
         telemetry.addData("Intake", robot.intake.getIntakeState());
-
-        telemetry.addData("Flywheel Enc", robot.flywheel.getFlywheelEnc());
-
     }
 
 }

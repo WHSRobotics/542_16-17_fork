@@ -76,6 +76,7 @@ public class BlueAutoPlay5 extends OpMode{
                 break;
 
             case 3:
+                stateInfo = "Shooting first particle)";
                 robot.flywheel2.setParticleControlState(true);
                 try {
                     Thread.sleep(3000);
@@ -85,6 +86,7 @@ public class BlueAutoPlay5 extends OpMode{
                 state++;
                 break;
             case 4:
+                stateInfo = "Lower particle control";
                 robot.flywheel2.setParticleControlState(false);
                 try {
                     Thread.sleep(2500);
@@ -94,6 +96,7 @@ public class BlueAutoPlay5 extends OpMode{
                 state++;
                 break;
             case 5:
+                stateInfo = "Shooting second particle";
                 robot.flywheel2.setParticleControlState(true);
                 try {
                     Thread.sleep(3000);
@@ -105,13 +108,11 @@ public class BlueAutoPlay5 extends OpMode{
                 state++;
                 break;
             case 6:
+                stateInfo = "Driving to center vortex";
                 robot.driveToTarget(vortexPositions[0]);
                 if (!robot.driveToTargetInProgress) {
-                    stateInfo = "AutoOp Complete. >~<";
-                    state++;
+                    stateInfo = "AutoOp Complete";
                 }
-                stateInfo = "Driving to center vortex";
-                state++;
                 break;
             default: break;
         }

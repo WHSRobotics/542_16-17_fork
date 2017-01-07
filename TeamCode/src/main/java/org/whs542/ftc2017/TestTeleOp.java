@@ -10,7 +10,7 @@ import org.whs542.lib.Coordinate;
 /**
  * Created by Amar2 on 10/22/2016.
  */
-@TeleOp(name = "TeleOpTest", group = "WHSBlueTeleOp")
+@TeleOp(name = "TeleOpTest", group = "WHSTeleop")
 //@Disabled
 
 public class TestTeleOp extends OpMode{

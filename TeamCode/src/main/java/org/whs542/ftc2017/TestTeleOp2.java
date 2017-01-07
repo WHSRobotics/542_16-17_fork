@@ -9,7 +9,7 @@ import org.whs542.lib.Coordinate;
 /**
  * Created by Amar2 on 10/22/2016.
  */
-@TeleOp(name = "TeleOpTest2", group = "WHSBlueTeleOp")
+@TeleOp(name = "TeleOpTest2", group = "WHSTeleop")
 //@Disabled
 
 public class TestTeleOp2 extends OpMode{
