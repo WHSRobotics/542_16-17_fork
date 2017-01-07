@@ -207,7 +207,7 @@ public class Drivetrain {
     public boolean moveDistanceMilli2(double distanceMM /*,IMU imu*/)
     {
         int targetPosition = (int) (distanceMM * ENCODER_TICKS_PER_MM);
-        boolean hasTargetHit = false;
+        boolean hasTargetHit;
 
         //this.setRunMode( RunMode.STOP_AND_RESET_ENCODER);
         this.setRunMode(RunMode.RUN_TO_POSITION);

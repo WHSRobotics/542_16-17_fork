@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Flywheel Subsystem Class, for old one wheel Flywheel design
- * @see Flywheel2 for newer 2-wheel flywheel
+ * @deprecated see {@link Flywheel2} for newer 2-wheel flywheel
  */
-
+@Deprecated
 public class Flywheel
 {
     public DcMotor flywheel;

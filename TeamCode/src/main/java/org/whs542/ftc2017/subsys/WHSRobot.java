@@ -35,7 +35,7 @@ public class WHSRobot
     private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.4, 0.5, 1.0};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.25, 0.7, 0.8};
@@ -229,7 +229,8 @@ public class WHSRobot
         }
         else if(driveToTargetInProgress)
         {
-            if(count % 30 == 0) {
+            if(count % 30 == 0 & distanceToTarget > 600) {
+
                 rotateToTarget(targetHeading);
                 count++;
             }

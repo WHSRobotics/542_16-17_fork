@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Coordinate;
+import org.whs542.lib.Timer;
 
 /**
  * Created by Amar2 on 10/22/2016.
@@ -16,12 +17,19 @@ import org.whs542.lib.Coordinate;
 public class TestTeleOp extends OpMode{
 
     WHSRobot robot;
+    Timer timer;
 
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap);
         robot.setInitialCoordinate(new Coordinate(300,300,300,90));
+        timer = new Timer(5, true);
 
+    }
+
+    @Override
+    public void init_loop(){
+        telemetry.addData("Time until Vuforia start", timer.timeUntilTimerElapsed());
     }
 
     @Override

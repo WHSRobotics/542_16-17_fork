@@ -14,13 +14,15 @@ import org.whs542.lib.Timer;
  * @see WHSParentAutoOp
  * @see AutoOpSwitchCaseTemplate
  */
-public abstract class WHSBlueParentAutoOp extends OpMode {
+public class WHSBlueParentAutoOp extends OpMode {
 
     //Byte for controlling which state the case will be in: init(0), loop/init(1-99), or exit(default)
-    byte state = 0;
+    int state = 0;
     String action;
 
     WHSRobot robot;
+
+    Timer timer1;
 
     ////// Carry-over from older parent AutoOp
     boolean firstLoop;
@@ -31,7 +33,7 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
     Alliance allianceColor = Alliance.BLUE;
-    String initialConfig; //initial
+    String stateInfo; //initial
 
     //Wheels, Legos, Tools, Gears
     Position vortexPosition;
@@ -46,12 +48,15 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     Position beacon2a;
     Position beacon2b;
 
+
     Position[] targetPositionsBlue = {new Position(600, 1500, 150), new Position(-1300, 1500, 150)};
+    Coordinate[] startingPositions = {new Coordinate(1500, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)}
+    Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)}; //TODO: separate do the same thing as before
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150)};
-    //Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)}; //TODO: move into init with red and blue
+    //TODO: move into init with red and blue
 
     Coordinate startingCoord;
     //{new Coordinate(-300, -1500, 150, 180), new Coordinate(1500, -300, 150, 180), new Coordinate(1500, 300, 150, 180)};
@@ -67,15 +72,9 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     public void init() {
 
         robot = new WHSRobot(hardwareMap, allianceColor);
+        robot.setInitialCoordinate(startingPositions[0]);
 
-        if (startingPosition == 1) {
-            initialConfig = "Blue on vortex";
-            startingCoord = new Coordinate(1575, 300, 150, 180);
-        } else if (startingPosition == 2) {
-            initialConfig = "Blue off vortex";
-            startingCoord = new Coordinate(1575, -300, 150, 180);
-        }
-        vortexPosition = new Position(-300, -300, 150);
+        timer1 = new Timer(5, true);
 
         beacon1a = new Position(580, 1500, 150);
         beacon1b = new Position(573, 1500, 150);
@@ -87,103 +86,101 @@ public abstract class WHSBlueParentAutoOp extends OpMode {
     }
 
     @Override
-    public void start() {
-        resetStartTime();
+    public void init_loop() {
+        telemetry.addData("Time until Vuforia start", timer1.timeUntilTimerElapsed());
     }
 
     @Override
     public void loop() {
 
-        switch (action) {
 
-            case "shoot two particles": {
-                switch (state) {
-                    case 0:
-                        robot.rotateToVortex(vortexPosition);
-                        state = 1;
-                        break;
-                    case 1:
-                        if (!robot.rotateToTargetInProgress) {
-                            state = 2;
-                        } else {
-                            robot.rotateToVortex(vortexPosition);
-                        }
-                        break;
-                    case 2:
-                        robot.flywheel2.runFlywheelNoToggle(flywheelPower);
-                        state = 3;
-                        break;
-                    case 3:
-                        try {
-                            Thread.sleep(3000);                         //Wait for flywheel to spin up
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        robot.flywheel2.setParticleControlState(true);
-                        state = 4;
-                        break;
-                    case 4:
-                        try {
-                            Thread.sleep(1500);                         //Wait for PC to go back up, before pulling down
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        robot.flywheel2.setParticleControlState(false);
-                        state = 5;
-                        break;
 
-                    case 5:
-                        try {
-                            Thread.sleep(2000);                         //Wait for flywheel speed to normalize
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        robot.flywheel2.setParticleControlState(true);
-                        state = 100;
-                        break;
 
-                    default:                                            //Exit phase
-                        try {
-                            Thread.sleep(1500);                         //Wait for PC to go up
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        robot.flywheel2.setParticleControlState(false);
-                        robot.flywheel2.runFlywheel(false);
+        switch(state){
+            case 0:
+                stateInfo = "moving forward";
+                robot.driveToTarget(new Position(1400, 300, 150));
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
 
-                        state = 0;
-                        action = "next action";                         //Advance to the next case
-                        break;
+            case 1:
+                stateInfo = "Turning to vortex";
+                robot.rotateToVortex(vortexPositions[0]);
+                if (!robot.rotateToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 2:
+                stateInfo = "Shooting particles";
+                robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
+                try {
+                    Thread.sleep(4500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                state++;
+                break;
 
-            }
-            case "drive to cap ball":{
-                switch (state){
-                    case 0:
-                        if(robot.pusher.side.toString().equals("BLUE"))
-                            robot.driveToTarget(blueVortex);
-                        else
-                            robot.driveToTarget(redVortex);
-                        if(!robot.driveToTargetInProgress)
-                            state++;
-                        else{}
+            case 3:
+                stateInfo = "Shooting first particle";
+                robot.flywheel2.setParticleControlState(true);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }
-
-            case "claim beacon a":
-                switch (state){
-                    case 0:
-
+                state++;
+                break;
+            case 4:
+                stateInfo = "Lowering particle control";
+                robot.flywheel2.setParticleControlState(false);
+                try {
+                    Thread.sleep(3500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                state++;
+                break;
+            case 5:
+                stateInfo = "Shooting second particle";
+                robot.flywheel2.setParticleControlState(true);
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                robot.flywheel2.runFlywheelNoToggle(0.0);
+                robot.flywheel2.setParticleControlState(false);
+                state++;
+                break;
+            case 6:
+                if(robot.pusher.side.toString().equals("BLUE"))
+                    robot.driveToTarget(blueVortex);
+                else
+                    robot.driveToTarget(redVortex);
+                if(!robot.driveToTargetInProgress)
+                    state++;
+                else{}
+
+
+
+
+
+
         }
+        telemetry.addData("Robot state:", stateInfo);
+        telemetry.addData("State:", state);
+
+        telemetry.addData("Runtime:", time);
+    }
 
         telemetry.addData("Action:", action);
         telemetry.addData("State:", state);
 
         telemetry.addData("Runtime:", time);
 
-    }
-
 }
+
+
 
 
