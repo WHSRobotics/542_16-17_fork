@@ -24,13 +24,13 @@ public class RedAutoPlay5 extends OpMode
     int state;
     String stateInfo;
 
-    double[] powers = {0.7, 0.8};
+    double[] powers = {0.67, 0.8};
     final int startingPosition = 1; //1 or 2
     long particleDelay = 300;
 
     //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
-    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150), new Position(-1800, 1000, 150) };
+    Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150), new Position(-1800, 1000, 150), new Position(-150, 0, 150) };
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
 
     //First coordinate: closest to red ramp, touching wall; Second: in the middle of red wall; Third: farthest from red ramp
@@ -127,14 +127,14 @@ public class RedAutoPlay5 extends OpMode
                 break;
             case 7:
                 stateInfo = "Rotating to knock capball";
-                robot.rotateToTarget(-45);
+                robot.rotateToTarget(-40);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
             case 8:
-                stateInfo = "Driving to center vortex";
-                robot.driveToTarget(redPositions[2]);
+                stateInfo = "Driving to Platform";
+                robot.driveToTarget(new Position(-200, 200, 150));
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
                     stateInfo = "Auto Op Done!! :p :)";
                 }

@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.whs542.lib.Alliance;
 
 /**
- * Created by Lucy on 1/6/2017.
+ * A simpler version of WHSRobot, with less things that can go wrong.
+ * Suitable for TeleOp, where more complex functions are not needed.
  */
 
 public class WHSRobotSimple
