@@ -60,6 +60,7 @@ public class BeaconPusher {
                 //A beaconPusher.setPosition(1);
                 break;
         }
+
        if(touchSensor.isPressed())
         {
             beaconPusher.setPower(0.0);
