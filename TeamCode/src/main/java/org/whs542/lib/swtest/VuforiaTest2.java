@@ -8,6 +8,7 @@ import org.whs542.ftc2017.subsys.Vuforia;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 @Autonomous(name = "VuforiaTest2",group = "Test")
+@Disabled
 public class VuforiaTest2 extends OpMode{
 
     Coordinate coordinate;

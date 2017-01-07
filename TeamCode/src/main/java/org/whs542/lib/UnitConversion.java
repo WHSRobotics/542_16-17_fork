@@ -1,9 +1,9 @@
 package org.whs542.lib;
 
 /**
- * A class for converting units of distance
- * See below for usage examples
- * Based almost entirely on java.util.concurrent.TimeUnit
+ * A class for converting units of distance.
+ * See below for usage examples.
+ * Based almost entirely on {@link java.util.concurrent.TimeUnit}
  */
 
 public enum UnitConversion {

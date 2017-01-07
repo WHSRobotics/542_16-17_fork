@@ -11,8 +11,8 @@ import org.whs542.lib.Position;
  * Created by JK Jewik on 1/6/2017.
  */
 
-@Autonomous
-
+//@Autonomous
+@Deprecated
 public class BlueAutoPlay6 extends OpMode {
     WHSRobot robot;
     int state;

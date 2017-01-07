@@ -43,7 +43,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
  * {JustLoggingAccelerationIntegrator} is an integrator that doesn't actually
  * integrate accelerations, but merely reports them in the logcat log. This is a debugging
  * and demonstration tool, little more.
+ * <p>
+ * This is never used within our code
+ * </p>
  */
+@Deprecated
 public class AccelerationIntegrationAlgorithm implements BNO055IMU.AccelerationIntegrator
 {
     BNO055IMU.Parameters parameters;

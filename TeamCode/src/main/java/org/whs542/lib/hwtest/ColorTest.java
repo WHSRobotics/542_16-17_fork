@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
- * Created by Jason on 11/21/2016.
+ * Simple test of the color sensor
  */
 @Autonomous(name = "ColorTest.java", group = "hwtest")
 @Disabled

@@ -1,7 +1,8 @@
 package org.whs542.lib;
 
 /**
- * Created by Lucy Wang on 11/12/2016.
+ * Class for storing positions on the field
+ * @see Coordinate - Alternative class, with heading
  */
 
 public class Position

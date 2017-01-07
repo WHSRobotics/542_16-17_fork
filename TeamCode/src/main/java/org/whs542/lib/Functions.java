@@ -1,9 +1,8 @@
 package org.whs542.lib;
 
 /**
- * Created by Lucy Wang on 11/11/2016.
+ * General purpose functions class
  */
-
 public class Functions
 {
     public static double calculateDistance(Position current, Position target)

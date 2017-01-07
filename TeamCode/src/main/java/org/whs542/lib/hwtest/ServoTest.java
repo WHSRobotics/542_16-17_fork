@@ -6,7 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * Created by Amar2 on 10/22/2016.
+ * Simple servo test
+ * @see TestCRServo
  */
 @TeleOp(name = "ServoTest", group = "tests")
 @Disabled

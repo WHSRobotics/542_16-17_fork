@@ -24,7 +24,9 @@ public class EstimatePositionTest extends OpMode
     {
         robot.estimatePosition();
 
-        telemetry.addData("Estimated", "(" + robot.estimatePosition().getX() + "," + robot.estimatePosition().getY() + "," + robot.estimatePosition().getZ() + ")");
+        telemetry.addData("Rx:", robot.currentCoord.getX());
+        telemetry.addData("Ry:", robot.currentCoord.getY());
+        telemetry.addData("Hdg:", robot.currentCoord.getHeading());
         telemetry.update();
     }
 }

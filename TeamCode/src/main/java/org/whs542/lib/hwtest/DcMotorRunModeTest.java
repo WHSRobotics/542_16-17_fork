@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Amar2 on 11/19/2016.
+ * DcMotor testing program, primarily used to test different {@link com.qualcomm.robotcore.hardware.DcMotor.RunMode}s that the robot can use
  */
 @Autonomous(name = "RunModeTest", group = "Tests")
 //@Disabled
