@@ -24,6 +24,7 @@ public class BeaconTest extends OpMode
 
     public void loop()
     {
-        beaconPusher.extendPusher(gamepad1.left_bumper);
+        beaconPusher.extendPusherNoToggle(gamepad1.left_bumper);
+        telemetry.addData("Beacon status:", beaconPusher.getBeaconPusherStatus());
     }
 }
