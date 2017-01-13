@@ -28,7 +28,6 @@ public class WHSRobot
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
     public boolean vuforiaTargetDetected;
-    public boolean drivingInReverse = false;
     public String s = "";
     public String beaconState = "";
 
@@ -36,6 +35,7 @@ public class WHSRobot
     private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
+    private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
@@ -232,7 +232,11 @@ public class WHSRobot
         }
         else if(driveToTargetInProgress)
         {
-            if(count % 30 == 0 & distanceToTarget > 600) {
+            if(Math.abs(currentCoord.getHeading() - targetHeading) > DEADBAND_MAX_DRIVE_HEADING_DEVIATION) {
+                rotateToTarget(targetHeading);
+            }
+
+            /*if(count % 30 == 0 & distanceToTarget > 600) {
 
                 rotateToTarget(targetHeading);
                 count++;
@@ -240,7 +244,7 @@ public class WHSRobot
             else
             {
                 count++;
-            }
+            }*/
         }
 
 
