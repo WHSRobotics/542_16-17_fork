@@ -129,6 +129,8 @@ public class Flywheel2
         return power;
     }
 
+
+
     public void setParticleControlState(double trigger)
     {
         if(trigger > 0.1)
@@ -138,6 +140,7 @@ public class Flywheel2
         }
         else
         {
+
             particleControl.setPosition(0.8);
             isParticleControlUp = false;
         }
