@@ -75,9 +75,11 @@ public class DriveToTargetTest extends OpMode{
         telemetry.addData("Rx:", robot.currentCoord.getX());
         telemetry.addData("Ry:", robot.currentCoord.getY());
         telemetry.addData("Hdg:", robot.currentCoord.getHeading());
-        telemetry.addData("Case:", state);
+        telemetry.addData("TargetHdg", robot.targetHeading);
         telemetry.addData("RotateToTargetInProgress?", robot.rotateToTargetInProgress);
         telemetry.addData("DriveToTargetInProgress?", robot.driveToTargetInProgress);
+        telemetry.addData("MsTransInterval", telemetry.getMsTransmissionInterval());
+        telemetry.update();
         /*
         if (!robot.driveToTargetInProgress){
             requestOpModeStop();

@@ -35,7 +35,7 @@ public class WHSRobot
     private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
-    private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
+    private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 7.5; //in degrees
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
@@ -210,7 +210,7 @@ public class WHSRobot
             }
         }
     }*/
-
+    public double targetHeading;
     public void driveToTarget(Position targetPos /*field frame*/)
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
@@ -221,7 +221,7 @@ public class WHSRobot
         double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
         //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
         degreesToRotate = degreesToRotate * 180 / Math.PI;
-        double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+        /*double*/ targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
 
         if(count == 0) {
             rotateToTarget(targetHeading);
