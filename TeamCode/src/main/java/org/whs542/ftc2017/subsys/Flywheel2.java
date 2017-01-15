@@ -64,12 +64,12 @@ public class Flywheel2
         switch(flywheelToggle.currentState())
         {
             case 0:
-                rightFlywheel.setPower(flywheelPower);
-                leftFlywheel.setPower(flywheelPower); //TODO: create a setspeed method based on encoder with feedback loop
-                break;
-            case 1:
                 rightFlywheel.setPower(0.0);
                 leftFlywheel.setPower(0.0);
+                break;
+            case 1:
+                rightFlywheel.setPower(flywheelPower);
+                leftFlywheel.setPower(flywheelPower);
                 break;
         }
     }
@@ -111,8 +111,6 @@ public class Flywheel2
         }
         return power;
     }
-
-}
 
     public void setParticleControlState(double trigger)
     {

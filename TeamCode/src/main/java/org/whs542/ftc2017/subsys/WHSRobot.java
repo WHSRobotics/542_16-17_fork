@@ -36,12 +36,13 @@ public class WHSRobot
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 1.0};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 0.9};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.7, 0.8};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.6, 0.75};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
+    private static final double DRIVE_CORRECTION_GAIN = .02;
 
     //17.85 /2 is center of robot, at 15 for y
     //16.5 / 2 is center of robot, at 15.75 for x
@@ -113,53 +114,6 @@ public class WHSRobot
         vuforiaTargetDetected = false;
     }
 
-    //driveToTarget with only no rotation
-    //public void driveToTarget(Position targetPos /*field frame*/)
-    /*{
-
-        Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
-        vectorToTarget = field2body(vectorToTarget); //body frame
-
-        distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
-
-
-        if (rotateToTargetInProgress)
-        {
-
-        }
-        else
-        {
-
-            if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
-                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
-                driveToTargetInProgress = true;
-            }
-            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[2]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
-                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
-                driveToTargetInProgress = true;
-            }
-            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[1]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
-                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
-                driveToTargetInProgress = true;
-            }
-            else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[0]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
-                drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
-                driveToTargetInProgress = true;
-            }
-            else {
-                drivetrain.setRightPower(0.0);
-                drivetrain.setLeftPower(0.0);
-                driveToTargetInProgress = false;
-            }
-
-        }
-    }
-    */
-
     /*public void driveToTarget(Position targetPos *//*field frame*//*)
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
@@ -215,6 +169,7 @@ public class WHSRobot
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
+        double rightMultiplier = 1.0;
 
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
 
@@ -232,7 +187,16 @@ public class WHSRobot
         }
         else if(driveToTargetInProgress)
         {
-            if(Math.abs(currentCoord.getHeading() - targetHeading) > DEADBAND_MAX_DRIVE_HEADING_DEVIATION) {
+            if(targetHeading - currentCoord.getHeading() > 0)
+            {
+                rightMultiplier = 1.0 + DRIVE_CORRECTION_GAIN;
+            }
+            else
+            {
+                rightMultiplier = 1.0 - DRIVE_CORRECTION_GAIN;
+            }
+
+            if(Math.abs(targetHeading - currentCoord.getHeading()) > DEADBAND_MAX_DRIVE_HEADING_DEVIATION) {
                 rotateToTarget(targetHeading);
             }
 
@@ -253,28 +217,24 @@ public class WHSRobot
         }
         else {
             drivetrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            /*if(driveToTargetInProgress == false)
-            {
-                drivetrain.setLRPower(0.8, 0.8);
-            }*/
 
             if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[3]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[3] * rightMultiplier);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[3]);
                 driveToTargetInProgress = true;
             }
             else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[2]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[2] * rightMultiplier);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[2]);
                 driveToTargetInProgress = true;
             }
             else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[1]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[1] * rightMultiplier);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[1]);
                 driveToTargetInProgress = true;
             }
             else if (distanceToTarget > DRIVE_TO_TARGET_THRESHOLD[0]) {
-                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
+                drivetrain.setRightPower(DRIVE_TO_TARGET_POWER_LEVEL[0] * rightMultiplier);
                 drivetrain.setLeftPower(DRIVE_TO_TARGET_POWER_LEVEL[0]);
                 driveToTargetInProgress = true;
             }
@@ -297,7 +257,8 @@ public class WHSRobot
 
         drivetrain.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
+        if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET)
+        {
             //consecutive = 0;
             /*if(rotateToTargetInProgress == false) {
                 drivetrain.setLeftPower(0.8);
@@ -322,12 +283,6 @@ public class WHSRobot
         }
         else if(angleToTarget>DEADBAND_ROTATE_TO_TARGET)
         {
-            //consecutive = 0;
-            /*if(rotateToTargetInProgress == false) {
-                drivetrain.setLeftPower(-0.8);
-                drivetrain.setRightPower(0.8);
-            }*/
-
             if(angleToTarget > ROTATE_TO_TARGET_THRESHOLD[2]){
                 drivetrain.setLeftPower(-ROTATE_TO_TARGET_POWER_LEVEL[2]);
                 drivetrain.setRightPower(ROTATE_TO_TARGET_POWER_LEVEL[2]);
@@ -344,7 +299,6 @@ public class WHSRobot
                 rotateToTargetInProgress = true;
             }
         }
-
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
