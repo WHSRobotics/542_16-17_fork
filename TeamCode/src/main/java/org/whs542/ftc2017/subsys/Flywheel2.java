@@ -16,6 +16,8 @@ public class Flywheel2
     private DcMotor rightFlywheel;
     private DcMotor leftFlywheel;
     private Servo particleControl;
+    private Servo particleGate;
+    private boolean isParticleGateOpen;
 
     private double[] powers = {0.70, 0.75, 0.80, 0.85};
     private double flywheelPower;
@@ -51,6 +53,21 @@ public class Flywheel2
         isFlywheelAtSpeed = false;
 
         flywheelExperimental.setState(40);
+        particleGate = map.servo.get("particleGate");
+        isParticleGateOpen = false;
+    }
+
+    public void setParticleGate(boolean trigger) {
+        if (trigger) {
+
+            particleGate.setPosition(0.58);
+            isParticleGateOpen = true;
+        }
+        else{
+            particleGate.setPosition(0);
+            isParticleGateOpen = false;
+
+        }
     }
 
     public void runFlywheelNoToggle(double power){
@@ -112,6 +129,7 @@ public class Flywheel2
         return power;
     }
 
+
     public void setParticleControlState(double trigger)
     {
         if(trigger > 0.1)
@@ -121,7 +139,8 @@ public class Flywheel2
         }
         else
         {
-            particleControl.setPosition(0.6);
+
+            particleControl.setPosition(0.8);
             isParticleControlUp = false;
         }
     }

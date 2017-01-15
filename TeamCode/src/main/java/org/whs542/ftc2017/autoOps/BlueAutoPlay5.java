@@ -89,6 +89,7 @@ public class BlueAutoPlay5 extends OpMode{
                 stateInfo = "Shooting first particle";
 
                 robot.flywheel2.setParticleControlState(true);
+                //robot.flywheel2.setParticleGate(true);
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -100,6 +101,7 @@ public class BlueAutoPlay5 extends OpMode{
                 stateInfo = "Lowering particle control";
 
                 robot.flywheel2.setParticleControlState(false);
+                //robot.flywheel2.setParticleGate(false);
                 try {
                     Thread.sleep(3500);
                 } catch (InterruptedException e) {
@@ -110,6 +112,7 @@ public class BlueAutoPlay5 extends OpMode{
             case 5:
                 stateInfo = "Shooting second particle";
                 robot.flywheel2.setParticleControlState(true);
+                //robot.flywheel2.setParticleGate(true);
                 try {
                     Thread.sleep(2000);
                 } catch (Exception e) {
@@ -117,10 +120,17 @@ public class BlueAutoPlay5 extends OpMode{
                 }
                 robot.flywheel2.runFlywheelNoToggle(0.0);
                 robot.flywheel2.setParticleControlState(false);
+                //robot.flywheel2.setParticleGate(false);
                 state++;
                 vortexTimeout.init();
                 break;
             case 6:
+                stateInfo = "Moving forward again";
+                robot.driveToTarget(new Position(900, 300, 150));
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 7:
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(capballPositions[0]);
                 if ((!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) /*|| vortexTimeout.isTimerElapsed()*/) {
@@ -131,12 +141,13 @@ public class BlueAutoPlay5 extends OpMode{
                 }
                 break;
 
-            case 7:
+            case 8:
                 stateInfo = "Driving to target pos";
                 robot.driveToTarget(bluePositions[3]);
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
                     stateInfo = "Auto Op Done!! :p :)";
                 }
+                break;
 
             /*case 7:
                 stateInfo="poop";

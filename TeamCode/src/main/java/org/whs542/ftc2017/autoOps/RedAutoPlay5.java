@@ -118,6 +118,12 @@ public class RedAutoPlay5 extends OpMode
                 state++;
                 break;
             case 6:
+                stateInfo = "Moving forward again";
+                robot.driveToTarget(new Position(-300, -900, 150));
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
+                    state++;
+                break;
+            case 7:
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(capballPositions[1]);
                 if (!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) {
@@ -125,19 +131,20 @@ public class RedAutoPlay5 extends OpMode
                     state++;
                 }
                 break;
-            case 7:
+            case 8:
                 stateInfo = "Rotating to knock capball";
                 robot.rotateToTarget(-40);
                 if(!robot.rotateToTargetInProgress){
                     state++;
                 }
                 break;
-            case 8:
+            case 9:
                 stateInfo = "Driving to Platform";
                 robot.driveToTarget(new Position(-200, 200, 150));
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
                     stateInfo = "Auto Op Done!! :p :)";
                 }
+                break;
 
 
             default: break;

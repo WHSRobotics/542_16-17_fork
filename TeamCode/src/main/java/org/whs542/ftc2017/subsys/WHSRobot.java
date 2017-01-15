@@ -74,8 +74,8 @@ public class WHSRobot
         catch(Exception e)
         {
             e.printStackTrace();
-        }
-        */
+        }*/
+
 
         vuforia = new Vuforia();
         try{
@@ -164,7 +164,7 @@ public class WHSRobot
             }
         }
     }*/
-
+    public double targetHeading;
     public void driveToTarget(Position targetPos /*field frame*/)
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
@@ -176,7 +176,7 @@ public class WHSRobot
         double degreesToRotate = Math.atan2(vectorToTarget.getY(), vectorToTarget.getX()); //from -pi to pi rad
         //double degreesToRotate = Math.atan2(targetPos.getY(), targetPos.getX()); //from -pi to pi rad
         degreesToRotate = degreesToRotate * 180 / Math.PI;
-        double targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
+        /*double*/ targetHeading = Functions.normalizeAngle(currentCoord.getHeading() + degreesToRotate); //-180 to 180 deg
 
         if(count == 0) {
             rotateToTarget(targetHeading);
@@ -255,7 +255,7 @@ public class WHSRobot
         double angleToTarget = targetHeading - currentCoord.getHeading(); //TODO: change estimateHeading() back to currentCorrd.getHeading
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
-        drivetrain.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drivetrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET)
         {
@@ -302,6 +302,7 @@ public class WHSRobot
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
+
             rotateToTargetInProgress = false;
 
             /*if(consecutive < 3){
@@ -357,7 +358,7 @@ public class WHSRobot
             //Updates global variable
             currentCoord.setPos(currentPos); //field frame
         }
-        else if(driveToTargetInProgress)
+        else if(driveToTargetInProgress & !rotateToTargetInProgress)
         {
             vuforiaTargetDetected = false;
             double[] encoderValues = drivetrain.getEncoderDistance();
