@@ -39,7 +39,7 @@ public class WHSRobot
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 1.0};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
-    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.7, 0.8};
+    private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.26, 0.35, 0.75};//Tried and tested values with everything: 0.35, 0.7, 0.8
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
 
@@ -73,8 +73,8 @@ public class WHSRobot
         catch(Exception e)
         {
             e.printStackTrace();
-        }
-        */
+        }*/
+
 
         vuforia = new Vuforia();
         try{
@@ -295,7 +295,7 @@ public class WHSRobot
         double angleToTarget = targetHeading - currentCoord.getHeading(); //TODO: change estimateHeading() back to currentCorrd.getHeading
         angleToTarget=Functions.normalizeAngle(angleToTarget); //-180 to 180 deg
 
-        drivetrain.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drivetrain.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         if(angleToTarget<-DEADBAND_ROTATE_TO_TARGET){
             //consecutive = 0;
@@ -348,6 +348,7 @@ public class WHSRobot
         else{
             drivetrain.setLeftPower(0.0);
             drivetrain.setRightPower(0.0);
+
             rotateToTargetInProgress = false;
 
             /*if(consecutive < 3){
@@ -403,7 +404,7 @@ public class WHSRobot
             //Updates global variable
             currentCoord.setPos(currentPos); //field frame
         }
-        else if(driveToTargetInProgress)
+        else if(driveToTargetInProgress & !rotateToTargetInProgress)
         {
             vuforiaTargetDetected = false;
             double[] encoderValues = drivetrain.getEncoderDistance();

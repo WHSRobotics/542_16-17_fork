@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobot;
+import org.whs542.ftc2017.subsys.WHSRobotSimple;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
@@ -26,7 +27,7 @@ public class DriveToTargetTest extends OpMode{
         robot.setInitialCoordinate(new Coordinate(0, 0 , 0, 0));
         state = 0;
         telemetry.log().add("Wait for vuforia!!!");
-        robot.driveToTargetInProgress = true;
+        //telemetry.setMsTransmissionInterval(100);
     }
 
     @Override
@@ -34,9 +35,29 @@ public class DriveToTargetTest extends OpMode{
         robot.estimateHeading();
         robot.estimatePosition();
 
+        switch(state){
+            case 0:
+                robot.driveToTarget(new Position(0, 1800, 0));
+                if(!robot.driveToTargetInProgress)
+                   state++;
+                break;
+            case 1:
+                robot.driveToTarget(new Position(-1200, 1800, 0));
+                if (!robot.driveToTargetInProgress)
+                    state++;
+                break;
+            case 2:
+                robot.driveToTarget(new Position(-1200, 0, 0));
+                if(!robot.driveToTargetInProgress)
+                    state++;
+                break;
+        }
 
-        if(robot.driveToTargetInProgress)
-            robot.driveToTarget(new Position(0, 3000, 0));
+
+
+
+
+
         /*switch(state)
         {
             case 0:
