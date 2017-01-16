@@ -10,26 +10,27 @@ import com.qualcomm.robotcore.hardware.Servo;
  * @see TestCRServo
  */
 @TeleOp(name = "ServoTest", group = "tests")
-@Disabled
+//@Disabled
 public class ServoTest extends OpMode{
 
     Servo servo1;
 
     @Override
     public void init() {
-        servo1 = hardwareMap.servo.get("1");
+        servo1 = hardwareMap.servo.get("particleControl");
     }
 
     @Override
     public void loop() {
         if(gamepad1.a) {
             servo1.setPosition(1);
+
         }
-        else if(gamepad1.b){
-            servo1.setPosition(-1);
-        }
-        else {
+        else if (gamepad1.b) {
             servo1.setPosition(0);
         }
+
+
+
     }
 }
