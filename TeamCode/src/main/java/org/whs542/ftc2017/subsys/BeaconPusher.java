@@ -78,6 +78,12 @@ public class BeaconPusher {
         }
     }
 
+    public void extendPusherHandAuto(boolean trigger)
+    {
+        if (trigger) beaconPusher2.setPosition(0.3);
+        else beaconPusher2.setPosition(0.0);
+    }
+
     public void extendPusherNoToggle(boolean extend)
     {
         if(beaconPusher.getCurrentPosition() <= 0 & !extend)
@@ -113,9 +119,9 @@ public class BeaconPusher {
 
     }
 
-    public void extendPusherHandNoToggle(double trigger)
+    public void extendPusherHandNoToggle(boolean trigger)
     {
-        if (trigger > 0.1) {
+        if (trigger) {
             beaconPusher2.setPosition(0.3);
         } else {
             beaconPusher2.setPosition(0.0);
@@ -130,6 +136,7 @@ public class BeaconPusher {
         if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
             status = "Match";
             extendPusherAuto(true);
+            extendPusherHandAuto(true);
             isPressed = true;
         }
         else if(color.state.equals("purple")){

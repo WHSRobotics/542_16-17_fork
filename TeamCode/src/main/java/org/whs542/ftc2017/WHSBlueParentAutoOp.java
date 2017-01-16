@@ -175,6 +175,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                         e.printStackTrace();
                     }
                     robot.pusher.extendPusherAuto(false);
+                    robot.pusher.extendPusherHandAuto(false);
                     state = 11;
                 }
                 else{
