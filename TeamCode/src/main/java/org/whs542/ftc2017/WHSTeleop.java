@@ -30,7 +30,7 @@ public class WHSTeleop extends OpMode
             robot.drivetrain.setOrientation(gamepad1.a);
             robot.intake.runIntake(gamepad1.right_trigger, gamepad1.left_trigger);
             robot.pusher.extendPusherNoToggle(gamepad1.left_bumper);
-            robot.pusher.extendPusherHandNoToggle(gamepad1.right_bumper);
+            robot.pusher.extendPusherHand(gamepad1.right_bumper);
 
             //Gamepad 2 Controls
             robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);

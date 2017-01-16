@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.whs542.lib.Alliance;
-import org.whs542.lib.OpModeTimer;
 import org.whs542.lib.Toggler;
 
 /**
@@ -16,7 +15,7 @@ import org.whs542.lib.Toggler;
 
 public class BeaconPusher {
     private DcMotor beaconPusher;
-    private Servo beaconPusher2;
+    private Servo handPusher;
     private TouchSensor touchSensor;
     public Color color;
     public Alliance side;
@@ -26,6 +25,7 @@ public class BeaconPusher {
     public boolean isBeaconPushed;
 
     private Toggler beaconToggler = new Toggler(2);
+    private Toggler handToggler = new Toggler(2);
 
     public BeaconPusher(HardwareMap map, Alliance side)
     {
@@ -33,11 +33,11 @@ public class BeaconPusher {
         this.side = side;
 
         beaconPusher = map.dcMotor.get("beacon");
-        beaconPusher2 = map.servo.get("beacon");
+        handPusher = map.servo.get("hand");
         beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        beaconPusher2.setPosition(0.0);
+        handPusher.setPosition(0.0);
 
         touchSensor = map.touchSensor.get("touch");
 
@@ -45,7 +45,7 @@ public class BeaconPusher {
     }
 
 
-    public void extendPusherAuto(boolean lBumper)
+    public void extendPusher(boolean lBumper)
     {
         if(!lBumper & beaconPusher.getTargetPosition() > 0){
             beaconToggler.setState(0);
@@ -78,55 +78,42 @@ public class BeaconPusher {
         }
     }
 
-    public void extendPusherHandAuto(boolean trigger)
+    public void extendPusherHand(boolean trigger)
     {
-        if (trigger) beaconPusher2.setPosition(0.3);
-        else beaconPusher2.setPosition(0.0);
+        if (trigger) {
+            handPusher.setPosition(0.3);
+            handToggler.setState(1);
+        }
+        else {
+            handPusher.setPosition(0.0);
+            handToggler.setState(0);
+        }
     }
 
-    public void extendPusherNoToggle(boolean extend)
-    {
-        if(beaconPusher.getCurrentPosition() <= 0 & !extend)
-        {
+    public void extendPusherNoToggle(boolean extend) {
+        if (beaconPusher.getCurrentPosition() <= 0 & !extend) {
             beaconPusher.setPower(0.0);
-        }
-        else if((beaconPusher.getCurrentPosition() >= FINAL_POS & extend) | (touchSensor.isPressed() & extend))
-        {
+        } else if ((beaconPusher.getCurrentPosition() >= FINAL_POS & extend) | (touchSensor.isPressed() & extend)) {
             beaconPusher.setPower(0.0);
-        }
-        else if(extend /*& !touchSensor.isPressed()*/ & !touchSensor.isPressed())
-        {
+        } else if (extend /*& !touchSensor.isPressed()*/ & !touchSensor.isPressed()) {
             beaconToggler.setState(1);
             beaconPusher.setTargetPosition((int) FINAL_POS);
             beaconPusher.setPower(0.6);
             //A beaconPusher.setPosition(1);
-        }
-        else if(touchSensor.isPressed())
-        {
+        } else if (touchSensor.isPressed()) {
             beaconToggler.setState(1);
             beaconPusher.setPower(0.0);
             beaconPusher.setTargetPosition(beaconPusher.getCurrentPosition() - 150);
             beaconPusher.setPower(0.6);
-        }
-        else
-        {
+        } else {
             beaconToggler.setState(0);
             beaconPusher.setTargetPosition(0);
             beaconPusher.setPower(0.6);
             //beaconPusher.setPosition(0);
         }
-
-
     }
 
-    public void extendPusherHandNoToggle(boolean trigger)
-    {
-        if (trigger) {
-            beaconPusher2.setPosition(0.3);
-        } else {
-            beaconPusher2.setPosition(0.0);
-        }
-    }
+
 
     public boolean isBeaconPushed()
     {
@@ -135,8 +122,8 @@ public class BeaconPusher {
 
         if((color.state.equals("blue") && side == Alliance.BLUE) || (color.state.equals("red") && side == Alliance.RED)){
             status = "Match";
-            extendPusherAuto(true);
-            extendPusherHandAuto(true);
+            extendPusher(true);
+            extendPusherHand(true);
             isPressed = true;
         }
         else if(color.state.equals("purple")){
@@ -151,22 +138,29 @@ public class BeaconPusher {
     public String getBeaconPusherStatus()
     {
         String state = "";
+        String state2 = "";
+        String state3 = "";
         switch (beaconToggler.currentState())
         {
             case 0:
-                state = "Both not extended";
+                state = "Main arm retracted; ";
                 break;
             case 1:
-                state = "Main arm extended";
-                break;
-            case 2:
-                state = "Servo extended";
-                break;
-            case 3:
-                state = "Both extended";
+                state = "Main arm extended; ";
                 break;
         }
-        return state;
+        switch(handToggler.currentState())
+        {
+            case 0:
+                state2 = "hand retracted";
+                break;
+            case 1:
+                state2 = "hand extended";
+                break;
+        }
+
+        state3 = state + state2;
+        return state3;
     }
 
 

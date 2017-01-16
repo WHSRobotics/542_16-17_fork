@@ -174,8 +174,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    robot.pusher.extendPusherAuto(false);
-                    robot.pusher.extendPusherHandAuto(false);
+                    robot.pusher.extendPusher(false);
                     state = 11;
                 }
                 else{
@@ -196,7 +195,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    robot.pusher.extendPusherAuto(false);
+                    robot.pusher.extendPusher(false);
                     state++;
                 }
                 else{
@@ -218,7 +217,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    robot.pusher.extendPusherAuto(false);
+                    robot.pusher.extendPusher(false);
                     state = 15;
                 }
                 else{
@@ -239,7 +238,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    robot.pusher.extendPusherAuto(false);
+                    robot.pusher.extendPusher(false);
                     state++;
                 }
                 else{
