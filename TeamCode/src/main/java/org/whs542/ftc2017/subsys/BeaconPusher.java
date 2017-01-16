@@ -37,6 +37,7 @@ public class BeaconPusher {
         beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        beaconPusher2.setPosition(0.0);
 
         touchSensor = map.touchSensor.get("touch");
 
@@ -112,7 +113,7 @@ public class BeaconPusher {
 
     }
 
-    public void extendPusherNoToggle(double trigger)
+    public void extendPusherHandNoToggle(double trigger)
     {
         if (trigger > 0.1) {
             beaconPusher2.setPosition(0.3);
