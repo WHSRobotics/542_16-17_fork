@@ -16,7 +16,7 @@ import org.whs542.lib.Toggler;
 
 public class BeaconPusher {
     private DcMotor beaconPusher;
-    //A private Servo beaconPusher;
+    private Servo beaconPusher2;
     private TouchSensor touchSensor;
     public Color color;
     public Alliance side;
@@ -33,7 +33,7 @@ public class BeaconPusher {
         this.side = side;
 
         beaconPusher = map.dcMotor.get("beacon");
-        //A beaconPusher = map.servo.get("beacon");
+        beaconPusher2 = map.servo.get("beacon");
         beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -112,6 +112,15 @@ public class BeaconPusher {
 
     }
 
+    public void extendPusherNoToggle(double trigger)
+    {
+        if (trigger > 0.1) {
+            beaconPusher2.setPosition(0.3);
+        } else {
+            beaconPusher2.setPosition(0.0);
+        }
+    }
+
     public boolean isBeaconPushed()
     {
         String status;
@@ -137,10 +146,16 @@ public class BeaconPusher {
         switch (beaconToggler.currentState())
         {
             case 0:
-                state = "Not extended";
+                state = "Both not extended";
                 break;
             case 1:
-                state = "Extended";
+                state = "Main arm extended";
+                break;
+            case 2:
+                state = "Servo extended";
+                break;
+            case 3:
+                state = "Both extended";
                 break;
         }
         return state;
