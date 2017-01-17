@@ -1,6 +1,7 @@
 package org.whs542.ftc2017.subsys;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -37,6 +38,7 @@ public class BeaconPusher {
         beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        beaconPusher.setDirection(DcMotorSimple.Direction.REVERSE);
         handPusher.setPosition(0.0);
 
         touchSensor = map.touchSensor.get("touch");
