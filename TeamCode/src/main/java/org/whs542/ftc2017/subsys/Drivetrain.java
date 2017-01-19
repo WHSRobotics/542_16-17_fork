@@ -20,6 +20,7 @@ public class Drivetrain {
     private DcMotor backRight;
 
     public double[] encoderValues = {0, 0};
+    public int[] encoderValuesFull = {0, 0, 0, 0};
     public final double DEADBAND_ENCODERS = 5; //TODO: test this value
 
     private Toggler orientationSwitch = new Toggler(2);
@@ -412,5 +413,20 @@ public class Drivetrain {
         return equal;
 
     }
+
+    public int[] markEncoders()
+    {
+        encoderValuesFull = new int [] {frontLeft.getCurrentPosition(), frontRight.getCurrentPosition(), backLeft.getCurrentPosition(), backRight.getCurrentPosition()};
+        return encoderValuesFull;
+    }
+
+    public void setTP(int[] encP)
+    {
+        frontLeft.setTargetPosition(encP[0]);
+        frontRight.setTargetPosition(encP[1]);
+        backLeft.setTargetPosition(encP[2]);
+        frontRight.setTargetPosition(encP[3]);
+    }
+
 }
 

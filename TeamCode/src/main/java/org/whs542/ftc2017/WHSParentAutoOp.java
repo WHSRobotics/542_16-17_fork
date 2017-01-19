@@ -125,7 +125,7 @@ public abstract class WHSParentAutoOp extends OpMode {
                 break;
             case 1:
                 stateInfo = "Turning to vortex";
-                robot.flywheel.setFlywheelPower(powers[startingPosition - 1]); //TODO: change location for this so that it starts a little later
+                robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]);
                 robot.rotateToVortex(vortexPosition);
                 if (!robot.rotateToTargetInProgress) {
                     state++;
@@ -133,7 +133,7 @@ public abstract class WHSParentAutoOp extends OpMode {
                 break;
             case 2:
                 stateInfo = "Shooting particles";
-                if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
+                /* if (robot.flywheel.isFlywheelAtCorrectSpeed(powers[startingPosition - 1])) {
                     robot.flywheel.operateGate(true);
                     robot.intake.runIntake(1.0);
                     if (test > 0) {
@@ -143,7 +143,8 @@ public abstract class WHSParentAutoOp extends OpMode {
                     robot.flywheel.setFlywheelPower(0.0);
                     robot.flywheel.operateGate(false);
                     state++;
-                }
+                }*/
+                state++;
                 break;
             case 3:
                 stateInfo = "Driving to target position 1";

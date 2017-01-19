@@ -36,7 +36,6 @@ public class WHSTeleop extends OpMode
             robot.flywheel2.setFlywheelSpeed(gamepad2.dpad_up, gamepad2.dpad_down);
             robot.flywheel2.runFlywheel(gamepad2.left_bumper);
             robot.flywheel2.setParticleControlState(gamepad2.left_trigger);
-
         }
         catch(Exception e)
         {
@@ -45,7 +44,7 @@ public class WHSTeleop extends OpMode
 
         //Telemetry
         telemetry.addData("Robot Approx. Location", robot.flywheel2.getFlywheelMode());
-        telemetry.addData("Flywheel Status", robot.flywheel2.getFlywheelMode());
+        telemetry.addData("Flywheel Speed", robot.flywheel2.getFlywheelMode());
         telemetry.addData("Particle Control Status", robot.flywheel2.getParticleControlState());
 
         telemetry.addData("Left Drivetrain", robot.drivetrain.getScaledPower(gamepad1.left_stick_y));

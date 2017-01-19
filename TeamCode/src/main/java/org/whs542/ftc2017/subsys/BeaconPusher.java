@@ -16,7 +16,7 @@ import org.whs542.lib.Toggler;
 
 public class BeaconPusher {
     private DcMotor beaconPusher;
-    private Servo handPusher;
+    private Servo beaconHand;
     private TouchSensor touchSensor;
     public Color color;
     public Alliance side;
@@ -34,12 +34,12 @@ public class BeaconPusher {
         this.side = side;
 
         beaconPusher = map.dcMotor.get("beacon");
-        handPusher = map.servo.get("hand");
+        beaconHand = map.servo.get("hand");
         beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         beaconPusher.setDirection(DcMotorSimple.Direction.REVERSE);
-        handPusher.setPosition(0.0);
+        beaconHand.setPosition(0.0);
 
         touchSensor = map.touchSensor.get("touch");
 
@@ -83,11 +83,11 @@ public class BeaconPusher {
     public void extendPusherHand(boolean trigger)
     {
         if (trigger) {
-            handPusher.setPosition(0.3);
+            beaconHand.setPosition(0.3);
             handToggler.setState(1);
         }
         else {
-            handPusher.setPosition(0.0);
+            beaconHand.setPosition(0.0);
             handToggler.setState(0);
         }
     }

@@ -12,6 +12,7 @@ import org.whs542.lib.Alliance;
  */
 
 @TeleOp(name = "WHSRedTeleop", group = "TeleOp")
+@Deprecated
 @Disabled
 
 public class WHSRedTeleOp extends OpMode
@@ -33,8 +34,8 @@ public class WHSRedTeleOp extends OpMode
             robot.pusher.extendPusherNoToggle(gamepad1.left_bumper);
 
             //Gamepad 2 Controls
-            robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
-            robot.flywheel.rampFlywheel(gamepad2.left_bumper);
+            //robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down);
+            //robot.flywheel.rampFlywheel(gamepad2.left_bumper);
             //robot.flywheel.operateGate(gamepad2.left_trigger);
             //robot.capball.liftCB(gamepad2.dpad_up);
             //robot.capball.dropCB(gamepad2.dpad_down);
@@ -47,9 +48,9 @@ public class WHSRedTeleOp extends OpMode
         }
 
         //Telemetry
-        telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode());
-        telemetry.addData("Flywheel Status: ", robot.flywheel.getFlywheelStatus());
-        telemetry.addData("Flywheel Gate Status: ", robot.flywheel.getGateStatus());
+        //telemetry.addData("Robot Approx. Location: ", robot.flywheel.getFlywheelMode());
+        //telemetry.addData("Flywheel Status: ", robot.flywheel.getFlywheelStatus());
+        //telemetry.addData("Flywheel Gate Status: ", robot.flywheel.getGateStatus());
 
         telemetry.addData("Auto Beacon Choice: ", robot.getTeleOpBeaconChoice(gamepad1.dpad_up, gamepad1.dpad_down));
 

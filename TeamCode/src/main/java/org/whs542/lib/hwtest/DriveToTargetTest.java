@@ -38,10 +38,13 @@ public class DriveToTargetTest extends OpMode{
         switch(state){
             case 0:
                 robot.driveToTarget(new Position(0, 1800, 0));
-                if(!robot.driveToTargetInProgress)
+                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
                    state++;
                 break;
             case 1:
+                //do nothing
+                break;
+            /*case 1:
                 robot.driveToTarget(new Position(-1200, 1800, 0));
                 if (!robot.driveToTargetInProgress)
                     state++;
@@ -51,6 +54,7 @@ public class DriveToTargetTest extends OpMode{
                 if(!robot.driveToTargetInProgress)
                     state++;
                 break;
+                */
         }
 
 

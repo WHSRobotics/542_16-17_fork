@@ -10,6 +10,7 @@ import org.whs542.ftc2017.subsys.WHSRobot;
  */
 
 @TeleOp(name = "WHS Teleop 2", group = "WHSTeleOp")
+@Deprecated
 //@Disabled
 
 public class WHSTeleOp2 extends OpMode{

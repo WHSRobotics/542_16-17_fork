@@ -36,6 +36,7 @@ public class Flywheel2
         rightFlywheel = map.dcMotor.get("rightFly");
         leftFlywheel = map.dcMotor.get("leftFly");
         particleControl = map.servo.get("particleControl");
+        //particleGate = map.servo.get("particleGate");
 
         flywheelPower = 0.0; //Default flywheelPower
 
@@ -53,21 +54,7 @@ public class Flywheel2
         isFlywheelAtSpeed = false;
 
         flywheelExperimental.setState(40);
-        particleGate = map.servo.get("particleGate");
         isParticleGateOpen = false;
-    }
-
-    public void setParticleGate(boolean trigger) {
-        if (trigger) {
-
-            particleGate.setPosition(0.58);
-            isParticleGateOpen = true;
-        }
-        else{
-            particleGate.setPosition(0);
-            isParticleGateOpen = false;
-
-        }
     }
 
     public void runFlywheelNoToggle(double power){
@@ -140,7 +127,7 @@ public class Flywheel2
         else
         {
 
-            particleControl.setPosition(0.3);
+            particleControl.setPosition(0.4);
             isParticleControlUp = false;
         }
     }
@@ -178,5 +165,19 @@ public class Flywheel2
             pcState = "Down";
         }
         return pcState;
+    }
+
+
+    public void setParticleGate(boolean trigger) {
+        /*if (trigger) {
+
+            particleGate.setPosition(0.58);
+            isParticleGateOpen = true;
+        }
+        else{
+            particleGate.setPosition(0);
+            isParticleGateOpen = false;
+
+        }*/
     }
 }

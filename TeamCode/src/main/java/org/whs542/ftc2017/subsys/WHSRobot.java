@@ -32,17 +32,20 @@ public class WHSRobot
     public String beaconState = "";
 
     private Toggler beaconToggle = new Toggler(4);
-    private Toggler autoBeaconToggle = new Toggler(2);
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.28, 0.5, 0.6, 0.9};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.33, 0.6, 0.7, 0.9};
     private static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.6, 0.75};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
     private static final double DRIVE_CORRECTION_GAIN = .02;
+
+    int[] encP = {0, 0, 0, 0};
+
+    private static final int ENC_TOLERATION = 30;
 
     //17.85 /2 is center of robot, at 15 for y
     //16.5 / 2 is center of robot, at 15.75 for x
@@ -53,11 +56,10 @@ public class WHSRobot
     static final double CAMERA_TO_BODY_ANGLE = Math.atan(CAMERA_TO_BODY_X/CAMERA_TO_BODY_Y) + 90; //Measured CCW from x-body axis
 
     private int count = 0;
-    private double distanceToTarget = 0;
-
-    //private int consecutive = 0;
+    private int count2 = 0;
 
     public Coordinate currentCoord; //field frame
+    public double targetHeading; //field frame
 
     public WHSRobot(HardwareMap robotMap, Alliance side){
         drivetrain = new Drivetrain(robotMap);
@@ -164,7 +166,7 @@ public class WHSRobot
             }
         }
     }*/
-    public double targetHeading;
+
     public void driveToTarget(Position targetPos /*field frame*/)
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
@@ -300,11 +302,22 @@ public class WHSRobot
             }
         }
         else{
-            drivetrain.setLeftPower(0.0);
-            drivetrain.setRightPower(0.0);
 
-            rotateToTargetInProgress = false;
-
+            int[] encP2;
+            if(count2 == 0) {
+                encP = drivetrain.markEncoders();
+                drivetrain.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drivetrain.setTP(encP);
+                count++;
+            }
+            drivetrain.setLeftPower(0.3);
+            drivetrain.setRightPower(0.3);
+            encP2 = drivetrain.markEncoders();
+            if(encCheck(encP, encP2))
+            {
+                rotateToTargetInProgress = false;
+                count2 = 0;
+            }
             /*if(consecutive < 3){
                 consecutive++;
             }
@@ -314,6 +327,21 @@ public class WHSRobot
             }
             */
         }
+    }
+
+    public boolean encCheck(int[] arr1, int[] arr2)
+    {
+        boolean withinLim = true;
+        int length = arr1.length;
+        for(int i = 0; i < length; i++)
+        {
+            if(Math.abs(arr1[i] - arr2[i]) > ENC_TOLERATION)
+            {
+                withinLim = false;
+            }
+            break;
+        }
+        return withinLim;
     }
 
     public void rotateToVortex(Position vortexPos)
@@ -345,48 +373,48 @@ public class WHSRobot
         */
 
         Position estimatedPos;
-
-        if(vuforia.vuforiaIsValid())
+        if(rotateToTargetInProgress)
         {
-            vuforiaTargetDetected = true;
-            //vuforiaCoord = coordinate of camera in field frame
-            Coordinate vuforiaCoord = vuforia.getHeadingAndLocation();
-            vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
-            Position currentPos = vuforiaCoord.getPos(); //field frame
-            estimatedPos = currentPos;
-
-            //Updates global variable
-            currentCoord.setPos(currentPos); //field frame
-        }
-        else if(driveToTargetInProgress & !rotateToTargetInProgress)
-        {
-            vuforiaTargetDetected = false;
+            //if rotating, do NOT update position and get rid of encoder values as it turns
             double[] encoderValues = drivetrain.getEncoderDistance();
-            double encoderPosL = encoderValues[0];
-            double encoderPosR = encoderValues[1];
-
-            double encoderAvg = (encoderPosL + encoderPosR) * 0.5;
-
-            double hdg = currentCoord.getHeading();
-            double dist = Functions.encToMM(encoderAvg);
-
-            double xPos = currentCoord.getX() + dist * Functions.cosd(hdg);
-            double yPos = currentCoord.getY() + dist * Functions.sind(hdg);
-
-            estimatedPos = new Position(xPos, yPos, currentCoord.getZ());
-
-            currentCoord.setX(xPos);
-            currentCoord.setY(yPos);
-        }
-        else if(rotateToTargetInProgress)
-        {
-            drivetrain.getEncoderDistance();
             estimatedPos = currentCoord.getPos();
-
         }
-        else
-        {
-            estimatedPos = currentCoord.getPos();
+        else {
+            if (vuforia.vuforiaIsValid()) {
+                vuforiaTargetDetected = true;
+                //vuforiaCoord = coordinate of camera in field frame
+                Coordinate vuforiaCoord = vuforia.getHeadingAndLocation();
+                vuforiaCoord = getBodyCoordFromVuforiaCoord(vuforiaCoord); //coordinate of body in field frame
+                Position currentPos = vuforiaCoord.getPos(); //field frame
+                estimatedPos = currentPos;
+
+                //Updates global variable
+                currentCoord.setPos(currentPos); //field frame
+            } else if (driveToTargetInProgress & !rotateToTargetInProgress) {
+                vuforiaTargetDetected = false;
+                double[] encoderValues = drivetrain.getEncoderDistance();
+                double encoderPosL = encoderValues[0];
+                double encoderPosR = encoderValues[1];
+
+                double encoderAvg = (encoderPosL + encoderPosR) * 0.5;
+
+                double hdg = currentCoord.getHeading();
+                double dist = Functions.encToMM(encoderAvg);
+
+                double xPos = currentCoord.getX() + dist * Functions.cosd(hdg);
+                double yPos = currentCoord.getY() + dist * Functions.sind(hdg);
+
+                estimatedPos = new Position(xPos, yPos, currentCoord.getZ());
+
+                currentCoord.setX(xPos);
+                currentCoord.setY(yPos);
+            } else if (rotateToTargetInProgress) {
+                drivetrain.getEncoderDistance();
+                estimatedPos = currentCoord.getPos();
+
+            } else {
+                estimatedPos = currentCoord.getPos();
+            }
         }
         //using encoders to estimate position from original location
         /* this is Lucy's code
