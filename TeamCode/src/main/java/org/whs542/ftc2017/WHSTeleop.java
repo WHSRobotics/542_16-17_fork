@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.whs542.ftc2017.subsys.WHSRobotSimple;
+import org.whs542.lib.Toggler;
 
 /**
  * Created by Lucy on 11/19/2016.
@@ -14,6 +15,8 @@ import org.whs542.ftc2017.subsys.WHSRobotSimple;
 
 public class WHSTeleop extends OpMode
 {
+    //Test Code
+    //End test code
     WHSRobotSimple robot;
     int i;
 
@@ -25,6 +28,9 @@ public class WHSTeleop extends OpMode
     public void loop()
     {
         try {
+            //Test code
+            robot.flywheel2.rightFlywheel.setMaxSpeed(speedToggle.currentState()*100);
+            //End test code
             //Gamepad 1 Controls
             robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
             robot.drivetrain.setOrientation(gamepad1.a);
@@ -41,6 +47,9 @@ public class WHSTeleop extends OpMode
         {
             e.printStackTrace();
         }
+
+        //Test code
+        //Test code
 
         //Telemetry
         telemetry.addData("Robot Approx. Location", robot.flywheel2.getFlywheelMode());

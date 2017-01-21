@@ -24,7 +24,7 @@ public class RedAutoPlay5 extends OpMode
     int state;
     String stateInfo;
 
-    double[] powers = {0.67, 0.8};
+    double[] powers = {0.7, 0.8};
     final int startingPosition = 1; //1 or 2
     long particleDelay = 300;
 
@@ -35,7 +35,7 @@ public class RedAutoPlay5 extends OpMode
 
     //First coordinate: closest to red ramp, touching wall; Second: in the middle of red wall; Third: farthest from red ramp
     Coordinate[] startingPositions = {new Coordinate(-300, -1500, 150, 90), new Coordinate(0, -1500, 150, 90), new Coordinate(300, -1500, 150, 90)};
-    Position[] capballPositions = {new Position(300, 450, 150), new Position(-450, -300, 150)};
+    Position[] capballPositions = {new Position(300, 450, 150), new Position(-450, -450, 150)};
 
     Timer timer;
     boolean loop;
@@ -44,7 +44,7 @@ public class RedAutoPlay5 extends OpMode
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.BLUE);
         robot.setInitialCoordinate(startingPositions[0]);
-        state = 1;
+        state = 2;
         timer = new Timer(5, true);
         loop = true;
     }
@@ -78,7 +78,7 @@ public class RedAutoPlay5 extends OpMode
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
                 try {
-                    Thread.sleep(4500);
+                    Thread.sleep(4100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +99,7 @@ public class RedAutoPlay5 extends OpMode
                 stateInfo = "Lowering particle control";
                 robot.flywheel2.setParticleControlState(false);
                 try {
-                    Thread.sleep(3500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -115,7 +115,7 @@ public class RedAutoPlay5 extends OpMode
                 }
                 robot.flywheel2.runFlywheelNoToggle(0.0);
                 robot.flywheel2.setParticleControlState(false);
-                state++;
+                state = 7;
                 break;
             case 6:
                 stateInfo = "Moving forward again";
@@ -140,7 +140,7 @@ public class RedAutoPlay5 extends OpMode
                 break;
             case 9:
                 stateInfo = "Driving to Platform";
-                robot.driveToTarget(new Position(-200, 200, 150));
+                robot.driveToTarget(new Position(-350, 200, 150));
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
                     stateInfo = "Auto Op Done!! :p :)";
                 }

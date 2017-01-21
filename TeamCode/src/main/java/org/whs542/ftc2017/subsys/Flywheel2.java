@@ -13,8 +13,8 @@ import org.whs542.lib.Toggler;
 
 public class Flywheel2
 {
-    private DcMotor rightFlywheel;
-    private DcMotor leftFlywheel;
+    public DcMotor rightFlywheel;
+    public DcMotor leftFlywheel;
     private Servo particleControl;
     private Servo particleGate;
     private boolean isParticleGateOpen;
@@ -36,6 +36,7 @@ public class Flywheel2
         rightFlywheel = map.dcMotor.get("rightFly");
         leftFlywheel = map.dcMotor.get("leftFly");
         particleControl = map.servo.get("particleControl");
+        this.setParticleControlState(false);
         //particleGate = map.servo.get("particleGate");
 
         flywheelPower = 0.0; //Default flywheelPower
@@ -44,8 +45,8 @@ public class Flywheel2
 
         rightFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFlywheel.setMaxSpeed(1000);
-        leftFlywheel.setMaxSpeed(1000);
+        rightFlywheel.setMaxSpeed(700);
+        leftFlywheel.setMaxSpeed(700);
 
         rightFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -121,12 +122,11 @@ public class Flywheel2
     {
         if(trigger > 0.1)
         {
-            particleControl.setPosition(0.3);
+            particleControl.setPosition(0.33);
             isParticleControlUp = true;
         }
         else
         {
-
             particleControl.setPosition(1.0);
             isParticleControlUp = false;
         }
@@ -136,12 +136,12 @@ public class Flywheel2
     {
         if(trigger)
         {
-            particleControl.setPosition(1.0);
+            particleControl.setPosition(0.33);
             isParticleControlUp = true;
         }
         else
         {
-            particleControl.setPosition(0.3);
+            particleControl.setPosition(0.98);
             isParticleControlUp = false;
         }
     }

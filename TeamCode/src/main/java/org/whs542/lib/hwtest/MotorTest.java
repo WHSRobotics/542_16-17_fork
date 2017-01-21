@@ -12,28 +12,35 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name = "MotorTest", group = "HwTest")
 public class MotorTest extends OpMode {
 
-    DcMotor motor;
+    DcMotor motor1;
+    DcMotor motor2;
     //double power = 0.0;
 
     @Override
     public void init(){
-        motor = hardwareMap.dcMotor.get("motor");
+        motor1 = hardwareMap.dcMotor.get("rightFly");
+        motor2 = hardwareMap.dcMotor.get("leftFly");
+        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
     public void loop(){
         if(gamepad1.a)
         {
-            motor.setPower(0.5);
+            motor1.setPower(1.0);
+            motor2.setPower(1.0);
         }
         else if(Math.abs(gamepad1.left_stick_y) >= 0.05){
-            motor.setPower(gamepad1.left_stick_y);
+
         }
         else{
-            motor.setPower(0.0);
+            motor1.setPower(0);
+            motor2.setPower(0);
         }
 
-        telemetry.addData("Enc Ticks", motor.getCurrentPosition());
+        telemetry.addData("Enc Ticks 1", motor1.getCurrentPosition());
+        telemetry.addData("Enc Ticks 2", motor2.getCurrentPosition());
 
 
         /*

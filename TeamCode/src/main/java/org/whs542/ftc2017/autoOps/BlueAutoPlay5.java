@@ -32,7 +32,7 @@ public class BlueAutoPlay5 extends OpMode{
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     //First coordinate: closest to blue ramp, touching wall; Second: in the middle of blue wall; Third: farthest from blue ramp
     Coordinate[] startingPositions = {new Coordinate(1500, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)};
-    Position[] capballPositions = {new Position(300, 550, 150), new Position(-450, -300, 150)};
+    Position[] capballPositions = {new Position(450, 450, 150), new Position(-450, -300, 150)};
 
     Timer vortexTimeout = new Timer(9);
 
@@ -77,7 +77,7 @@ public class BlueAutoPlay5 extends OpMode{
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
                 try {
-                    Thread.sleep(4500);
+                    Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -103,7 +103,7 @@ public class BlueAutoPlay5 extends OpMode{
                 robot.flywheel2.setParticleControlState(false);
                 //robot.flywheel2.setParticleGate(false);
                 try {
-                    Thread.sleep(3500);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -125,12 +125,6 @@ public class BlueAutoPlay5 extends OpMode{
                 vortexTimeout.init();
                 break;
             case 6:
-                stateInfo = "Moving forward again";
-                robot.driveToTarget(new Position(900, 300, 150));
-                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
-                    state++;
-                break;
-            case 7:
                 stateInfo = "Driving to center vortex";
                 robot.driveToTarget(capballPositions[0]);
                 if ((!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) /*|| vortexTimeout.isTimerElapsed()*/) {
@@ -141,7 +135,7 @@ public class BlueAutoPlay5 extends OpMode{
                 }
                 break;
 
-            case 8:
+            case 7:
                 stateInfo = "Driving to target pos";
                 robot.driveToTarget(bluePositions[3]);
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
