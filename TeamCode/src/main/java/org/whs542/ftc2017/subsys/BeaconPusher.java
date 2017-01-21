@@ -15,14 +15,15 @@ import org.whs542.lib.Toggler;
  */
 
 public class BeaconPusher {
-    private DcMotor beaconPusher;
+    public DcMotor beaconPusher;
     private Servo beaconHand;
     private TouchSensor touchSensor;
     public Color color;
     public Alliance side;
 
     private final double ENC_TICKS_PER_REV = 560;
-    private final double FINAL_POS = ENC_TICKS_PER_REV * 27/8;
+    private final double FINAL_POS = ENC_TICKS_PER_REV * 1.96;
+    private final double ENC_DEADBAND = 30;
     public boolean isBeaconPushed;
 
     private Toggler beaconToggler = new Toggler(2);
@@ -35,10 +36,10 @@ public class BeaconPusher {
 
         beaconPusher = map.dcMotor.get("beacon");
         beaconHand = map.servo.get("hand");
-        beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconPusher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         beaconPusher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         beaconPusher.setDirection(DcMotorSimple.Direction.REVERSE);
+        beaconPusher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         beaconHand.setPosition(0.0);
 
         touchSensor = map.touchSensor.get("touch");
@@ -49,13 +50,13 @@ public class BeaconPusher {
 
     public void extendPusher(boolean lBumper)
     {
-        if(!lBumper & beaconPusher.getTargetPosition() > 0){
+        if(!lBumper & beaconPusher.getCurrentPosition() > 0){
             beaconToggler.setState(0);
             beaconPusher.setTargetPosition(0);
             beaconPusher.setPower(0.3);
             //A beaconPusher.setPosition(0);
         }
-        else if(lBumper & beaconPusher.getTargetPosition() < (int) FINAL_POS)
+        else if(lBumper & beaconPusher.getCurrentPosition() < (int) FINAL_POS)
         {
             beaconToggler.setState(1);
             beaconPusher.setTargetPosition((int) FINAL_POS);
@@ -63,18 +64,19 @@ public class BeaconPusher {
             //A beaconPusher.setPosition(1);
 
         }
-        else if(!lBumper & beaconPusher.getTargetPosition() <= 0){
+        else if(!lBumper & beaconPusher.getCurrentPosition() <= 0){
+
             beaconToggler.setState(0);
-            beaconPusher.setPower(0.0);
+            beaconPusher.setPower(0);
         }
         else{
             beaconToggler.setState(1);
-            beaconPusher.setPower(0.0);
+            beaconPusher.setPower(0);
         }
 
        if(touchSensor.isPressed())
         {
-            beaconPusher.setPower(0.0);
+            beaconPusher.setPower(0);
             beaconPusher.setTargetPosition(beaconPusher.getCurrentPosition() - 150);
             beaconPusher.setPower(0.3);
         }
@@ -93,20 +95,19 @@ public class BeaconPusher {
     }
 
     public void extendPusherNoToggle(boolean extend) {
-        if (beaconPusher.getCurrentPosition() <= 0 & !extend) {
-            beaconPusher.setPower(0.0);
-        } else if ((beaconPusher.getCurrentPosition() >= FINAL_POS & extend) | (touchSensor.isPressed() & extend)) {
-            beaconPusher.setPower(0.0);
-        } else if (extend /*& !touchSensor.isPressed()*/ & !touchSensor.isPressed()) {
+        if (Math.abs(beaconPusher.getCurrentPosition()) < ENC_DEADBAND & !extend) {
+            beaconPusher.setPower(0);
+        } else if (Math.abs(beaconPusher.getCurrentPosition() - FINAL_POS) < ENC_DEADBAND  & extend) {
+            beaconPusher.setPower(0);
+        } else if (/*& !touchSensor.isPressed()*/!touchSensor.isPressed() & extend) {
             beaconToggler.setState(1);
             beaconPusher.setTargetPosition((int) FINAL_POS);
             beaconPusher.setPower(0.6);
             //A beaconPusher.setPosition(1);
-        } else if (touchSensor.isPressed()) {
+        } else if (touchSensor.isPressed() & extend) {
             beaconToggler.setState(1);
-            beaconPusher.setPower(0.0);
-            beaconPusher.setTargetPosition(beaconPusher.getCurrentPosition() - 150);
-            beaconPusher.setPower(0.6);
+            beaconPusher.setPower(0);
+
         } else {
             beaconToggler.setState(0);
             beaconPusher.setTargetPosition(0);
