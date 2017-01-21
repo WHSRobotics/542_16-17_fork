@@ -389,7 +389,7 @@ public class WHSRobot
                 estimatedPos = currentPos;
 
                 //Updates global variable
-                currentCoord.setPos(currentPos); //field frame
+                //currentCoord.setPos(currentPos); //field frame
             } else if (driveToTargetInProgress & !rotateToTargetInProgress) {
                 vuforiaTargetDetected = false;
                 double[] encoderValues = drivetrain.getEncoderDistance();

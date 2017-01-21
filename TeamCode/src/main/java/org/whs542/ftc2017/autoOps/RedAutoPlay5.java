@@ -24,7 +24,7 @@ public class RedAutoPlay5 extends OpMode
     int state;
     String stateInfo;
 
-    double[] powers = {0.7, 0.8};
+    double[] powers = {0.67, 0.8};
     final int startingPosition = 1; //1 or 2
     long particleDelay = 300;
 

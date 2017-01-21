@@ -19,12 +19,12 @@ public class Flywheel2
     private Servo particleGate;
     private boolean isParticleGateOpen;
 
-    private double[] powers = {0.70, 0.75, 0.80, 0.85};
+    private double[] powers = {0.60, 0.65, 0.70, 0.75, 0.80, 0.85};
     private double flywheelPower;
 
     private String flywheelMode;
 
-    private Toggler flywheelPowerToggle = new Toggler(4);
+    private Toggler flywheelPowerToggle = new Toggler(6);
     private Toggler flywheelExperimental = new Toggler(101);
     private Toggler flywheelToggle = new Toggler(2);
 
@@ -85,20 +85,28 @@ public class Flywheel2
         switch(flywheelPowerToggle.currentState())
         {
             case 0:
-                flywheelMode = "Approx. 2 - 0.70";
+                flywheelMode = "0.60";
                 flywheelPower = powers[0];
                 break;
             case 1:
-                flywheelMode = "Diag. 2 - 0.75";
+                flywheelMode = "0.65";
                 flywheelPower = powers[1];
                 break;
             case 2:
-                flywheelMode = "Approx. 3 - 0.80";
+                flywheelMode = "0.70";
                 flywheelPower = powers[2];
                 break;
             case 3:
-                flywheelMode = "Diag. 3 - 0.85";
+                flywheelMode = "0.75";
                 flywheelPower = powers[3];
+                break;
+            case 4:
+                flywheelMode = "0.80";
+                flywheelPower = powers[4];
+                break;
+            case 5:
+                flywheelMode = "0.85";
+                flywheelPower = powers[5];
                 break;
         }
     }
