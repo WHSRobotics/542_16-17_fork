@@ -1,4 +1,7 @@
-# ftc_app
+# 542_16-17_fork
+
+The app for the 16-17 robot. 
+**************************************************************************************
 FTC Android Studio project to create FTC Robot Controller app.
 
 This is the FTC SDK that can be used to create an FTC Robot Controller app, with custom op modes.
