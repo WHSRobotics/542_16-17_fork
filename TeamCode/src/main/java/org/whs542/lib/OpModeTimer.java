@@ -2,7 +2,9 @@ package org.whs542.lib;
 
 /**
  * Created by Jiangda on 12/5/2016.
+ * @deprecated Use {@link Timer} instead
  */
+@Deprecated
 public class OpModeTimer {
     private double time;
     private double startTime;

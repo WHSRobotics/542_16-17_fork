@@ -1,4 +1,4 @@
-package org.whs542.lib.swtest;
+package org.whs542.lib.subsystest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -11,10 +11,10 @@ import org.whs542.ftc2017.subsys.IMU;
  * Created by Jiangda on 11/21/2016.
  */
 
-@Autonomous(name = "IMUHeadingTest", group = "Sensor")
+@Autonomous(name = "IMUTest", group = "Sensor")
 //@Disabled
 
-public class IMUHeadingTest extends OpMode
+public class IMUTest extends OpMode
 {
 
     IMU imu;

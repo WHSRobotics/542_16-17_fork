@@ -3,6 +3,7 @@ package org.whs542.lib.hwtest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.w3c.dom.Document;
@@ -11,7 +12,7 @@ import org.whs542.lib.Toggler;
 /**
  * DcMotor testing program, primarily used to test different {@link com.qualcomm.robotcore.hardware.DcMotor.RunMode}s that the robot can use
  */
-@Autonomous(name = "RunModeTest", group = "Tests")
+@TeleOp(name = "RunModeTest", group = "Tests")
 //@Disabled
 
 public class DcMotorRunModeTest extends OpMode{
