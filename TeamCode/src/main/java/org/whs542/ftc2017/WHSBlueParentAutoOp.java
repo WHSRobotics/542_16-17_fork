@@ -20,7 +20,7 @@ import org.whs542.lib.Timer;
 public class WHSBlueParentAutoOp extends OpMode {
 
     //Byte for controlling which state the case will be in: init(0), loop/init(1-99), or exit(default)
-    int state = 0;
+    int state = 2;
     String action;
 
     WHSRobot robot;
@@ -67,7 +67,7 @@ public class WHSBlueParentAutoOp extends OpMode {
     //TODO: Test this
     //double flywheelPower = 0.48;
 
-
+    int loopCycles = 0;
 
 
     @Override
@@ -80,7 +80,7 @@ public class WHSBlueParentAutoOp extends OpMode {
 
         beacon1a = new Position(580, 1500, 150);
         beacon1b = new Position(510, 1500, 150);
-        beacon2a = new Position(-620, 1500, 150);
+        beacon2a = new Position(-670, 1500, 150);
         beacon2b = new Position(-690, 1500, 150);
 
         telemetry.log().add("RBT INIT");
@@ -96,9 +96,10 @@ public class WHSBlueParentAutoOp extends OpMode {
     public void loop() {
         robot.estimateHeading();
         robot.estimatePosition();
+        loopCycles++;
 
         switch(state){
-            case 0:
+            /*  case 0:
                 stateInfo = "moving forward";
                 robot.driveToTarget(new Position(1400, 300, 150));
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
@@ -110,7 +111,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                 robot.rotateToVortex(vortexPositions[0]);
                 if (!robot.rotateToTargetInProgress & !robot.rotateToTargetInProgress)
                     state++;
-                break;
+                break;*/
             case 2:
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
@@ -232,7 +233,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                 break;
             case 14:
                 stateInfo = "Scanning beacon 2b";
-                if(robot.pusher.isBeaconPushed){
+                if(robot.pusher.isBeaconPushed()){
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -242,12 +243,12 @@ public class WHSBlueParentAutoOp extends OpMode {
                     state++;
                 }
                 else{
-                    state++;
+                    //state++;
                 }
                 break;
             case 15:
                 stateInfo = "Auto Op Complete!! Victory Dance";
-                robot.drivetrain.setLRPower(-1.0, 1.0);
+                //robot.drivetrain.setLRPower(-1.0, 1.0);
                 break;
 
 
@@ -259,6 +260,9 @@ public class WHSBlueParentAutoOp extends OpMode {
         telemetry.addData("Rh", robot.estimateHeading());
         telemetry.addData("State:", state);
         telemetry.addData("Runtime:", time);
+        telemetry.addData("Loop Cycles:", loopCycles);
+        telemetry.addData("Color R:", robot.pusher.color.getR());
+        telemetry.addData("Color B:", robot.pusher.color.getB());
     }
 
 }
