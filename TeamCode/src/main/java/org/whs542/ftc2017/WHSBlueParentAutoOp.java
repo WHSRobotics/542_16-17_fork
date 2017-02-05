@@ -32,7 +32,7 @@ public class WHSBlueParentAutoOp extends OpMode {
     //int test;
 
     long particleDelay;
-    double[] powers = {0.7, 0.8};
+    double[] powers = {0.65, 0.8};
     final int startingPosition = 1; //1 or 2
     Alliance allianceColor = Alliance.BLUE;
     String stateInfo; //initial
