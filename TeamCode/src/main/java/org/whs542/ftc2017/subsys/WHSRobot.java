@@ -377,6 +377,7 @@ public class WHSRobot
         {
             //if rotating, do NOT update position and get rid of encoder values as it turns
             double[] encoderValues = drivetrain.getEncoderDistance();
+
             estimatedPos = currentCoord.getPos();
         }
         else {
@@ -457,7 +458,7 @@ public class WHSRobot
     public double estimateHeading()
     {
         double currentHeading;
-        if(vuforia.vuforiaIsValid()){
+        if(vuforia.vuforiaIsValid() && !rotateToTargetInProgress){
             vuforiaTargetDetected = true;
             currentHeading = vuforia.getHeadingAndLocation().getHeading();
             imu.setImuBias(currentHeading);

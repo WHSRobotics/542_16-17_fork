@@ -1,5 +1,6 @@
 package org.whs542.ftc2017.subsys;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,6 +32,8 @@ public class Flywheel2
     private boolean isFlywheelAtSpeed;
     private boolean isParticleControlUp;
 
+    private int count;
+
     public  Flywheel2(HardwareMap map)
     {
         rightFlywheel = map.dcMotor.get("rightFly");
@@ -47,6 +50,8 @@ public class Flywheel2
         leftFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFlywheel.setMaxSpeed(750);
         leftFlywheel.setMaxSpeed(750);
+
+        count = 0;
 
         rightFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -77,6 +82,11 @@ public class Flywheel2
                 leftFlywheel.setPower(flywheelPower);
                 break;
         }
+        if(count%50 == 0) {
+            DbgLog.msg("WHSr" + rightFlywheel.getCurrentPosition());
+            DbgLog.msg("WHSl" + leftFlywheel.getCurrentPosition());
+        }
+        count++;
     }
 
     public void setFlywheelSpeed(boolean up, boolean down)

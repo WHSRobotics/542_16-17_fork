@@ -78,8 +78,8 @@ public class TestTeleOp2 extends OpMode{
         //telemetry.addData("Vx", robot.vuforia.getHeadingAndLocation().getX());
         //telemetry.addData("Vy", robot.vuforia.getHeadingAndLocation().getY());
         //telemetry.addData("Vheading", robot.vuforia.getHeadingAndLocation().getHeading())
-        telemetry.addData("Rx", robot.estimatePosition().getX());
-        telemetry.addData("Ry", robot.estimatePosition().getY());
+        telemetry.addData("Rx", robot.currentCoord.getX());
+        telemetry.addData("Ry", robot.currentCoord.getY());
         telemetry.addData("Rh", robot.estimateHeading());
 
         //telemetry.addData("Flywheel Speed:", robot.flywheel.getSpeed());

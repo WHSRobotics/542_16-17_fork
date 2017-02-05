@@ -145,8 +145,8 @@ public class RedAutoPlay5_1_7_17 {
                 default: break;
             }
             telemetry.addData("State Info: ", stateInfo);
-            telemetry.addData("Rx", robot.estimatePosition().getX());
-            telemetry.addData("Ry", robot.estimatePosition().getY());
+            telemetry.addData("Rx", robot.currentCoord.getX());
+            telemetry.addData("Ry", robot.currentCoord.getY());
             telemetry.addData("Rh", robot.estimateHeading());
             telemetry.addData("DriveToTargetInProgress:", robot.driveToTargetInProgress);
             telemetry.addData("RotateToTargetInProgress", robot.rotateToTargetInProgress);

@@ -54,8 +54,8 @@ public class TestTeleOp extends OpMode{
 
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
-        telemetry.addData("Rx", robot.estimatePosition().getX());
-        telemetry.addData("Ry", robot.estimatePosition().getY());
+        telemetry.addData("Rx", robot.currentCoord.getX());
+        telemetry.addData("Ry", robot.currentCoord.getY());
         telemetry.addData("Rh", robot.estimateHeading());
         telemetry.addData("Encoder L", robot.drivetrain.getLeftEncoderPosition());
         telemetry.addData("Encoder R", robot.drivetrain.getRightEncoderPosition());

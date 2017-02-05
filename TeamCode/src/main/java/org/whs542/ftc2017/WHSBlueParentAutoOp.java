@@ -69,7 +69,7 @@ public class WHSBlueParentAutoOp extends OpMode {
     //double flywheelPower = 0.48;
 
     int loopCycles = 0;
-
+    double[] encoderValues = {0,0};
 
     @Override
     public void init() {
@@ -79,10 +79,10 @@ public class WHSBlueParentAutoOp extends OpMode {
 
         timer1 = new Timer(5, true);
 
-        beacon1a = new Position(580, 1500, 150);
-        beacon1b = new Position(510, 1500, 150);
-        beacon2a = new Position(-670, 1500, 150);
-        beacon2b = new Position(-690, 1500, 150);
+        beacon1a = new Position(580, 1400, 150);
+        beacon1b = new Position(510, 1400, 150);
+        beacon2a = new Position(-670, 1400, 150);
+        beacon2b = new Position(-710, 1400, 150);
 
         telemetry.log().add("RBT INIT");
 
@@ -96,6 +96,7 @@ public class WHSBlueParentAutoOp extends OpMode {
     @Override
     public void loop() {
         robot.estimateHeading();
+
         robot.estimatePosition();
         loopCycles++;
 
@@ -117,7 +118,7 @@ public class WHSBlueParentAutoOp extends OpMode {
                 stateInfo = "Shooting particles";
                 robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]); //need something to check if it's up to speed
                 try {
-                    Thread.sleep(4500);
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -256,13 +257,15 @@ public class WHSBlueParentAutoOp extends OpMode {
         }
         telemetry.addData("Robot state:", stateInfo);
         telemetry.addData("Using Vuforia?", robot.vuforiaTargetDetected );
-        telemetry.addData("Rx", robot.estimatePosition().getX());
-        telemetry.addData("Ry", robot.estimatePosition().getY());
+        telemetry.addData("Rx", robot.currentCoord.getX());
+        telemetry.addData("Ry", robot.currentCoord.getY());
+        //telemetry.addData("L Encoder", encoderValues[0]);
+        //telemetry.addData("R Encoder", encoderValues[1]);
         telemetry.addData("Rh", robot.estimateHeading());
         telemetry.addData("State:", state);
         telemetry.addData("Runtime:", time);
 
-        DbgLog.msg("WHS: Rx " + robot.estimatePosition().getX() + " Ry " + robot.estimatePosition().getY());
+        DbgLog.msg("WHS: Rx " + robot.currentCoord.getX() + " Ry " + robot.currentCoord.getY());
         telemetry.addData("Loop Cycles:", loopCycles);
         telemetry.addData("Color R:", robot.pusher.color.getR());
         telemetry.addData("Color B:", robot.pusher.color.getB());
