@@ -133,7 +133,14 @@ public class Vuforia extends Thread{
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
+        /**The faulty code:
+         * VuforiaTrackables ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
+         *
+         * New code:
+         */
+
         ftcTargets = this.vuforia.loadTrackablesFromAsset("FTC_2016-17");
+
         VuforiaTrackable wheels = ftcTargets.get(0);
         wheels.setName("Wheels");
 
