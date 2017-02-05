@@ -7,7 +7,7 @@ import org.whs542.ftc2017.subsys.WHSRobotSimple;
 import org.whs542.lib.Toggler;
 
 /**
- * Created by Lucy on 11/19/2016.
+ * Competition TeleOp class
  */
 
 @TeleOp(name = "WHSTeleop", group = "WHSTeleOp")

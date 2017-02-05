@@ -24,7 +24,7 @@ public class BeaconPusher {
     private final double ENC_TICKS_PER_REV = 560;
     private final double FINAL_POS = ENC_TICKS_PER_REV * 1.96;
     private final double ENC_DEADBAND = 30;
-    public boolean isBeaconPushed;
+    private boolean isBeaconPushed;
 
     private Toggler beaconToggler = new Toggler(2);
     private Toggler handToggler = new Toggler(2);

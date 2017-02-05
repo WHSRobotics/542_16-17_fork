@@ -18,7 +18,7 @@ public class TestTeleOp2 extends OpMode{
 
     @Override
     public void init() {
-        //robot = new WHSRobot(hardwareMap);
+        robot = new WHSRobot(hardwareMap);
         robot.setInitialCoordinate(new Coordinate(0, 0, 0, 0));
         telemetry.addData("Reminder: ", "wait for Vuforia to init");
     }
@@ -62,7 +62,7 @@ public class TestTeleOp2 extends OpMode{
         //Telemetry
         //telemetry.addData("Robot Approx. Location: ", robot.flywheel.setFlywheelMode(gamepad2.dpad_up, gamepad2.dpad_down));
         telemetry.addData("FWheelStat:", robot.flywheel2.getFlywheelMode());
-        telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
+        //telemetry.addData("FGateStat:", robot.flywheel.getGateStatus());
         telemetry.addData("Flywheel power (for calib)", power);
 
         telemetry.addData("LeftStick Y:", gamepad1.left_stick_y);

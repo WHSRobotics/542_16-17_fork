@@ -8,8 +8,9 @@ import org.whs542.lib.Toggler;
 
 /**
  * Capball Lift Subsystem Class
+ * @deprecated There are no longer plans to build a CapballLift
  */
-
+@Deprecated
 public class CapballLift
 {
     private DcMotor capballLeft;

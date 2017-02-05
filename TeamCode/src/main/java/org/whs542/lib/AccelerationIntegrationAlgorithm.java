@@ -44,7 +44,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
  * integrate accelerations, but merely reports them in the logcat log. This is a debugging
  * and demonstration tool, little more.
  * <p>
- * This is never used within our code
+ * @deprecated This is never used within our code
  * </p>
  */
 @Deprecated
