@@ -45,8 +45,8 @@ public class Flywheel2
 
         rightFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFlywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFlywheel.setMaxSpeed(700);
-        leftFlywheel.setMaxSpeed(700);
+        rightFlywheel.setMaxSpeed(750);
+        leftFlywheel.setMaxSpeed(750);
 
         rightFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

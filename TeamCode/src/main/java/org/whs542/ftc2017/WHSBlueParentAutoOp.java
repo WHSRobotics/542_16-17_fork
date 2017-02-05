@@ -1,5 +1,6 @@
 package org.whs542.ftc2017;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -32,7 +33,7 @@ public class WHSBlueParentAutoOp extends OpMode {
     //int test;
 
     long particleDelay;
-    double[] powers = {0.7, 0.8};
+    double[] powers = {0.65, 0.8};
     final int startingPosition = 1; //1 or 2
     Alliance allianceColor = Alliance.BLUE;
     String stateInfo; //initial
@@ -259,6 +260,8 @@ public class WHSBlueParentAutoOp extends OpMode {
         telemetry.addData("Rh", robot.estimateHeading());
         telemetry.addData("State:", state);
         telemetry.addData("Runtime:", time);
+
+        DbgLog.msg("WHS: Rx " + robot.estimatePosition().getX() + " Ry " + robot.estimatePosition().getY());
     }
 
 }
