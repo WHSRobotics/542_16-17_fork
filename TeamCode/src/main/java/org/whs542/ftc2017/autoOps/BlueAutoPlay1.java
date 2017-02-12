@@ -77,7 +77,7 @@ public class BlueAutoPlay1 extends OpMode {
                 }
                 else {
                     firstLoop = true;
-                    //state++;
+                    //currentState++;
                 }
                 telemetry.addData("Loop:", firstLoop);
                 break;
