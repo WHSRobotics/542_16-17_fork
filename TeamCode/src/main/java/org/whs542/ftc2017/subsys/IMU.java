@@ -8,8 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.whs542.lib.Functions;
 
-import java.util.Locale;
-
 /**
  * IMU Class
  */
