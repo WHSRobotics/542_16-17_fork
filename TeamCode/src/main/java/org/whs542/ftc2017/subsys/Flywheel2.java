@@ -140,7 +140,7 @@ public class Flywheel2
     {
         if(trigger > 0.1)
         {
-            particleControl.setPosition(0.33);
+            particleControl.setPosition(0.35);
             isParticleControlUp = true;
         }
         else
