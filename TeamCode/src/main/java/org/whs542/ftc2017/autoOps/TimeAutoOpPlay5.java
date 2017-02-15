@@ -94,11 +94,11 @@ public class TimeAutoOpPlay5 extends OpMode{
         }
 
         /*
-        switch (state){
+        switch (currentState){
             case 0:
                 //robot.flywheel.operateGateNoToggle(false);
                 robot.flywheel2.runFlywheelNoToggle(FLYWHEEL_POWER);
-                state++;
+                currentState++;
                 break;
             case 1:
                 try {
@@ -106,7 +106,7 @@ public class TimeAutoOpPlay5 extends OpMode{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                state++;
+                currentState++;
                 break;
             case 2:
                 robot.flywheel2.setParticleControlState(0.2);
@@ -115,7 +115,7 @@ public class TimeAutoOpPlay5 extends OpMode{
                     loop = loop - 1;
                 }
                 else {
-                    state++;
+                    currentState++;
                 }
                 break;
             case 3:
@@ -124,22 +124,22 @@ public class TimeAutoOpPlay5 extends OpMode{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                state++;
+                currentState++;
                 break;
             case 4:
                 robot.flywheel2.setParticleControlState(0.0);
                 robot.flywheel2.runFlywheelNoToggle(0.0);
-                state++;
+                currentState++;
                 break;
             case 5:
                 robot.drivetrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                state++;
+                currentState++;
                 break;
             case 6:
                 hasTargetHit = robot.drivetrain.moveDistanceMilli2(-1300);
                 if(hasTargetHit)
                 {
-                    state++;
+                    currentState++;
                 }
                 break;
             case 7:
@@ -149,11 +149,11 @@ public class TimeAutoOpPlay5 extends OpMode{
         }
 
         /*
-        switch (state) {
+        switch (currentState) {
             case 0:
                 robot.flywheel.operateGate(false);
                 robot.flywheel.setFlywheelPower(FLYWHEEL_POWER);
-                state++;
+                currentState++;
                 break;
             case 1:
                 try {
@@ -161,11 +161,11 @@ public class TimeAutoOpPlay5 extends OpMode{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                state++;
+                currentState++;
                 break;
             case 2:
                 robot.flywheel.operateGate(true);
-                state++;
+                currentState++;
                 break;
             case 3:
                 try {
@@ -173,20 +173,20 @@ public class TimeAutoOpPlay5 extends OpMode{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                state++;
+                currentState++;
                 break;
             case 4:
                 robot.flywheel.setFlywheelPower(0.0);
-                state++;
+                currentState++;
                 break;
             case 5:
                 robot.drivetrain.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                state++;
+                currentState++;
                 break;
             case 6:
                 robot.drivetrain.moveDistanceMilli2(-1300);
                 if (time > 20) {
-                    state++;
+                    currentState++;
                 }
                 break;
 

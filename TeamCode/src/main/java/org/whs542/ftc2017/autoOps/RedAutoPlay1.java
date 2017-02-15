@@ -59,7 +59,7 @@ public class RedAutoPlay1 extends OpMode {
                 }
                 else {
                     firstLoop = true;
-                    //state++;
+                    //currentState++;
                 }
                 break;
             case 1:

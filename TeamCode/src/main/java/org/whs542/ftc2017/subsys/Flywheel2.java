@@ -23,6 +23,9 @@ public class Flywheel2
     private double[] powers = {0.60, 0.65, 0.70, 0.75, 0.80, 0.85};
     private double flywheelPower;
 
+    private static final double UP_POSITION = 0.33;
+    private static final double DOWN_POSITION = 1.0;
+
     private String flywheelMode;
 
     private Toggler flywheelPowerToggle = new Toggler(6);
@@ -140,12 +143,12 @@ public class Flywheel2
     {
         if(trigger > 0.1)
         {
-            particleControl.setPosition(0.35);
+            particleControl.setPosition(UP_POSITION);
             isParticleControlUp = true;
         }
         else
         {
-            particleControl.setPosition(1.0);
+            particleControl.setPosition(DOWN_POSITION);
             isParticleControlUp = false;
         }
     }
@@ -154,12 +157,12 @@ public class Flywheel2
     {
         if(trigger)
         {
-            particleControl.setPosition(0.33);
+            particleControl.setPosition(UP_POSITION);
             isParticleControlUp = true;
         }
         else
         {
-            particleControl.setPosition(0.98);
+            particleControl.setPosition(DOWN_POSITION);
             isParticleControlUp = false;
         }
     }

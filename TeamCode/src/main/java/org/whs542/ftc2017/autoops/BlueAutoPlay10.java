@@ -12,20 +12,20 @@ import org.whs542.lib.Position;
 import org.whs542.lib.Timer;
 
 /**
- * Created by jian on 12/2/2016.
+ * Created by Lucy on 12/2/2016.
  */
-@Autonomous(name = "BlueAutoPlay5", group = "Autonomous")
+@Autonomous(name = "BlueAutoPlay10", group = "Autonomous")
 //@Disabled
 //@Deprecated
 
-public class BlueAutoPlay5 extends OpMode{
+public class BlueAutoPlay10 extends OpMode{
     WHSRobot robot;
     int state;
     String stateInfo;
     double[] powers = {0.60, 0.8};
     final int startingPosition = 1; //1 or 2
     long particleDelay = 300;
-    //Wheels, Legos, Tools, Gears 
+    //Wheels, Legos, Tools, Gears
     Position[] beaconPositions = {new Position(300,1800,150), new Position(-900,1800,150), new Position(-1800,900,150), new Position(-1800,-300,150)};
     Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150), new Position(-1800, 1000, 150) };
     Position[] bluePositions = {new Position(600,1650,150), new Position(-600,1650,150), new Position(0,0,150), new Position(200, -200, 150)};
@@ -108,56 +108,8 @@ public class BlueAutoPlay5 extends OpMode{
                 robot.flywheel2.runFlywheelNoToggle(0.0);
                 robot.flywheel2.setParticleControlState(false);
                 //robot.flywheel2.setParticleGate(false);
-                state++;
                 vortexTimeout.init();
                 break;
-            case 6:
-                stateInfo = "Driving to center vortex";
-                robot.driveToTarget(capballPositions[0]);
-                if ((!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) /*|| vortexTimeout.isTimerElapsed()*/) {
-
-                    loop = false;
-                    state++;
-
-                }
-                break;
-            case 7:
-                stateInfo = "Rotating to knock capball";
-                robot.rotateToTarget(90);
-                if(!robot.rotateToTargetInProgress){
-                    state++;
-                }
-                break;
-            case 8:
-                stateInfo = "Driving to target pos";
-                robot.driveToTarget(bluePositions[3]);
-                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
-                    stateInfo = "Auto Op Done!! :p :)";
-                }
-                break;
-
-            /*case 7:
-                currentStateName="poop";
-                robot.drivetrain.setRightPower(0.6);
-                robot.drivetrain.setLeftPower(-0.6);*/
-
-            /*case 7:
-                currentStateName = "Rotating to knock capball";
-                robot.estimateHeading();
-                robot.rotateToTarget(-135);
-                if(!robot.rotateToTargetInProgress){
-                    currentState++;
-                }
-                break;
-            */
-
-            /*case 7:
-                currentStateName = "Driving to center vortex";
-                robot.driveToTarget(bluePositions[2]);
-                if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
-                    currentStateName = "Auto Op Done!! :p :)";
-                }
-            */
 
             default: break;
         }
