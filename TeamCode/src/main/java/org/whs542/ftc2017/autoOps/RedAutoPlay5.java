@@ -34,7 +34,7 @@ public class RedAutoPlay5 extends OpMode
     static final int PARK_ON_CENTER = 6;
     static final int EXIT = 7;
     //currentState enabled array
-    static boolean[] stateEnabled = new boolean[7];
+    static boolean[] stateEnabled = new boolean[8];
 
     public void defineStateEnabledStatus()
     {
@@ -48,13 +48,13 @@ public class RedAutoPlay5 extends OpMode
         stateEnabled[EXIT] = true;
     }
 
-    static boolean initDownTimer = false;
+    boolean initDownTimer = false;
 
-    static boolean pullOffWallComplete = false;
-    static boolean driveToCapBallComplete = false;
-    static boolean knockOffCapballComplete = false;
+    boolean pullOffWallComplete = false;
+    boolean driveToCapballComplete = false;
+    boolean knockOffCapballComplete = false;
 
-    double[] powers = {0.60, 0.8};
+    double[] powers = {0.67, 0.8};
     final int startingPosition = 1; //1 or 2
     static final double FLYWHEEL_WARMUP_DELAY = 6.0; //in seconds
     static final double PARTICLE_UP_PUSHER_DELAY = 1.5;
@@ -75,14 +75,14 @@ public class RedAutoPlay5 extends OpMode
     SoftwareTimer particleDownTimer;
 
     boolean loop;
-    static boolean performStateEntry;
-    static boolean performStateExit;
+    boolean performStateEntry;
+    boolean performStateExit;
 
     @Override
     public void init() {
         robot = new WHSRobot(hardwareMap, Alliance.RED);
         robot.setInitialCoordinate(startingPositions[0]);
-        currentState = 2;
+        currentState = 0;
         vuforiaInitTimer = new Timer(5, true);
         flywheelWarmUpTimer = new SoftwareTimer();
         particleUpTimer = new SoftwareTimer();
@@ -216,6 +216,7 @@ public class RedAutoPlay5 extends OpMode
                     advanceState();
                     performStateEntry = true;
                     performStateExit = false;
+                    robot.flywheel2.runFlywheelNoToggle(0.0);
                 }
                 break;
             case KNOCK_CAP_BALL:
@@ -234,10 +235,10 @@ public class RedAutoPlay5 extends OpMode
                         pullOffWallComplete = true;
                     }
                 }
-                else if(!driveToCapBallComplete){
+                else if(!driveToCapballComplete){
                     robot.driveToTarget(capballPositions[1]);
                     if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) {
-                        driveToCapBallComplete = true;
+                        driveToCapballComplete = true;
                     }
                 }
                 else if(!knockOffCapballComplete)
@@ -258,7 +259,7 @@ public class RedAutoPlay5 extends OpMode
                 {
                     advanceState();
                     performStateEntry = true;
-                    performStateExit = true;
+                    performStateExit = false;
                 }
                 break;
             case PARK_ON_CENTER:
@@ -287,6 +288,7 @@ public class RedAutoPlay5 extends OpMode
                 }
                 break;
             case EXIT:
+                robot.drivetrain.setLRPower(0.0, 0.0);
                 currentStateName = "Auto Op Done!!";
                 break;
 
@@ -296,10 +298,17 @@ public class RedAutoPlay5 extends OpMode
         telemetry.addData("State Info: ", currentStateName);
         telemetry.addData("Rx", robot.currentCoord.getX());
         telemetry.addData("Ry", robot.currentCoord.getY());
-        telemetry.addData("Rh", robot.estimateHeading());
+        telemetry.addData("Rh", robot.currentCoord.getHeading());
         telemetry.addData("DriveToTargetInProgress:", robot.driveToTargetInProgress);
         telemetry.addData("RotateToTargetInProgress", robot.rotateToTargetInProgress);
         telemetry.addData("time", time);
+        telemetry.addData("Current State: ", currentState);
+        telemetry.addData("Vuforia valid?", robot.vuforia.vuforiaIsValid());
+        telemetry.addData("Pull off Wall Complete: ", pullOffWallComplete);
+        telemetry.addData("Drive to Capball Complete: ", driveToCapballComplete);
+        telemetry.addData("Knock off Capball Complete: ", knockOffCapballComplete);
+
+
 
     }
 
