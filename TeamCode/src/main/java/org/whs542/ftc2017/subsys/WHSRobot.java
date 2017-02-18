@@ -381,7 +381,7 @@ public class WHSRobot
             estimatedPos = currentCoord.getPos();
         }
         else {
-            if (vuforia.vuforiaIsValid()) {
+            if (vuforia.vuforiaIsValid() & false) { //TODO: change Vuforia back to true when the ILT is over
                 vuforiaTargetDetected = true;
                 //vuforiaCoord = coordinate of camera in field frame
                 Coordinate vuforiaCoord = vuforia.getHeadingAndLocation();
@@ -458,7 +458,7 @@ public class WHSRobot
     public double estimateHeading()
     {
         double currentHeading;
-        if(vuforia.vuforiaIsValid() && !rotateToTargetInProgress){
+        if(vuforia.vuforiaIsValid() && !rotateToTargetInProgress && false){ //TODO: change Vuforia back to true when the ILT is over
             vuforiaTargetDetected = true;
             currentHeading = vuforia.getHeadingAndLocation().getHeading();
             imu.setImuBias(currentHeading);
