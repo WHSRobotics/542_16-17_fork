@@ -138,6 +138,16 @@ public class BeaconPusher {
         return isPressed;
     }
 
+    public boolean isBeaconDetected(){
+        if (color.state.equals("blue") || color.state.equals("red")){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     public String getBeaconPusherStatus()
     {
         String state = "";

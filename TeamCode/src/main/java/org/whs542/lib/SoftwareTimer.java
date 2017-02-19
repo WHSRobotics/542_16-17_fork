@@ -1,7 +1,9 @@
 package org.whs542.lib;
 
 /**
- * Created by WHS on 2/11/2017.
+ * Simplified Timer Class
+ *
+ * @see Timer
  */
 
 public class SoftwareTimer

@@ -1,9 +1,11 @@
-package org.whs542.ftc2017;
+package org.whs542.ftc2017.autoops;
 
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.whs542.ftc2017.AutoOpSwitchCaseTemplate;
+import org.whs542.ftc2017.autoops.WHSParentAutoOp;
 import org.whs542.ftc2017.subsys.WHSRobot;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;

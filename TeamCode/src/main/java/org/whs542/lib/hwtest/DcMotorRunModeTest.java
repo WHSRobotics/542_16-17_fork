@@ -25,7 +25,7 @@ public class DcMotorRunModeTest extends OpMode{
 
     @Override
     public void init() {
-        a = hardwareMap.dcMotor.get("beacon");
+        a = hardwareMap.dcMotor.get("a");
         //b = hardwareMap.dcMotor.get("b");
         a.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //b.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

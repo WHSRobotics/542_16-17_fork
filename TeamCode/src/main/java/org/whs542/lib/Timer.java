@@ -1,7 +1,9 @@
 package org.whs542.lib;
 
 /**
- * Timer object
+ * Complex Timer class
+ *
+ * @see SoftwareTimer
  */
 public class Timer {
 
