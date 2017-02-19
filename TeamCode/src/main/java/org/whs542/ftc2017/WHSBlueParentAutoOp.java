@@ -53,12 +53,12 @@ public class WHSBlueParentAutoOp extends OpMode {
 
 
     //Position[] targetPositionsBlue = {new Position(600, 1500, 150), new Position(-1300, 1500, 150)};
-    Coordinate[] startingPositions = {new Coordinate(1500, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)};
+    Coordinate[] startingPositions = {new Coordinate(1560, 300, 150, 180), new Coordinate(1500, 0, 150, 180), new Coordinate(1500, -300, 150, 180)};
     Position[] vortexPositions = {new Position(300, 300, 150), new Position(-300, -300, 150)};
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
     //Position[] redPositions = {new Position(-1650,600,100), new Position(-1650,600,150), new Position(0,0,150)}; //TODO: separate do the same thing as before
     //firstLoop: align to parallel beacons, second: end of beacons, third: center vortex
-    Position[] bluePositions = {new Position(600,1500,150), new Position(-1500,1300,150), new Position(0,0,150)};
+    Position[] bluePositions = {new Position(600,1200,150), new Position(-1500,1300,150), new Position(0,0,150)};
     //TODO: move into init with red and blue
 
     Coordinate startingCoord;
@@ -79,10 +79,10 @@ public class WHSBlueParentAutoOp extends OpMode {
 
         timer1 = new Timer(5, true);
 
-        beacon1a = new Position(580, 1400, 150);
-        beacon1b = new Position(510, 1400, 150);
-        beacon2a = new Position(-670, 1400, 150);
-        beacon2b = new Position(-710, 1400, 150);
+        beacon1a = new Position(450, 1510, 150);
+        beacon1b = new Position(320, 1510, 150);
+        beacon2a = new Position(-670, 1510, 150);
+        beacon2b = new Position(-710, 1510, 150);
 
         telemetry.log().add("RBT INIT");
 
@@ -164,6 +164,11 @@ public class WHSBlueParentAutoOp extends OpMode {
                     state++;
                 break;
             case 7:
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 stateInfo = "Driving to beacon 1a";
                 robot.driveToTarget(beacon1a);
                 if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress)
