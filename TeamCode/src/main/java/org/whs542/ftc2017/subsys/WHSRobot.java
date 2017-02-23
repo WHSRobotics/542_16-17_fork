@@ -35,7 +35,7 @@ public class WHSRobot
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
-    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.33, 0.6, 0.7, 0.9};
+    private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.33, 0.6, 0.74, 0.94};
     public static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.6, 0.75};
@@ -45,7 +45,7 @@ public class WHSRobot
 
     int[] encP = {0, 0, 0, 0};
 
-    private static final int ENC_TOLERATION = 30;
+    private static final int ENC_TOLERATION = 70;
 
     //17.85 /2 is center of robot, at 15 for y
     //16.5 / 2 is center of robot, at 15.75 for x
@@ -302,8 +302,9 @@ public class WHSRobot
             }
         }
         else{
-
-            int[] encP2;
+            drivetrain.setLRPower(0.0, 0.0);
+            rotateToTargetInProgress = false;
+            /*int[] encP2;
             if(count2 == 0) {
                 encP = drivetrain.markEncoders();
                 drivetrain.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -317,7 +318,7 @@ public class WHSRobot
             {
                 rotateToTargetInProgress = false;
                 count2 = 0;
-            }
+            }*/
             /*if(consecutive < 3){
                 consecutive++;
             }

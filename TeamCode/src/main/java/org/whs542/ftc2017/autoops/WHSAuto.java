@@ -300,7 +300,7 @@ public class WHSAuto extends OpMode {
                     }
                 }
                 else if(!rotateToParallelWallComplete){
-                    currentStateName = "rotating to parallele wall";
+                    currentStateName = "rotating to parallel wall";
                     robot.rotateToTarget(beaconCaptureHeading[ALLIANCE]);
                     if(!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress){
                         rotateToParallelWallComplete = true;
@@ -321,36 +321,43 @@ public class WHSAuto extends OpMode {
                 break;
 
             case CAPTURE_BEACON_1:
-
+                currentStateName = "capturing beacon one";
                 //State entry
                 if(performStateEntry){
+                    currentStateName = "capturing beacon one - state entry";
                     performStateEntry = false;
                     beaconRetracted = false;
                     beaconPushed = false;
                 }
 
                 if(!beaconPushed){
+                    currentStateName = "capturing beacon one - finding beacon";
                     robot.drivetrain.setLRPower(BEACON_DRIVE_POWER, BEACON_DRIVE_POWER);
                     if (robot.pusher.isBeaconPushed()){
+                        currentStateName = "capturing beacon one - pushing beacon - 1st stage";
                         beaconPushed = true;
                         beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
                         robot.drivetrain.setLRPower(0.0, 0.0);
                     }
                 }
                 else if(!beaconRetracted){
+                    currentStateName = "capturing beacon one - pushing beacon - 2st stage";
                     if(beaconRetractionTimer.isExpired()){
+                        currentStateName = "capturing beacon one - retracting pusher";
                         robot.pusher.extendPusherNoToggle(false);
                         robot.pusher.extendPusherHand(false);
                     }
                 }
                 //State exit criteria
                 else {
+                    currentStateName = "capturing beacon one - exit";
                     performStateExit = true;
                 }
 
                 //Perform state exit
                 if(performStateExit)
                 {
+                    currentStateName = "capturing beacon one - performing exit";
                     advanceState();
                     performStateEntry = true;
                     performStateExit = false;
@@ -358,9 +365,10 @@ public class WHSAuto extends OpMode {
                 break;
 
             case CAPTURE_BEACON_2:
-
+                currentStateName = "capturing beacon two";
                 //State entry
                 if(performStateEntry){
+                    currentStateName = "capturing beacon two - perform state entry";
                     performStateEntry = false;
                     beaconRetracted = false;
                     beaconPushed = false;
@@ -368,12 +376,14 @@ public class WHSAuto extends OpMode {
                 }
 
                 if (!driveToBeaconComplete){
+                    currentStateName = "capturing beacon two - driving to beacon";
                     robot.driveToTarget(beaconPostionArray[ALLIANCE][BEACON_2]);
                     if(robot.driveToTargetInProgress & robot.rotateToTargetInProgress){
                         driveToBeaconComplete = true;
                     }
                 }
                 if(!beaconPushed){
+                    currentStateName = "capturing beacon two - finding beacon";
                     robot.drivetrain.setLRPower(BEACON_DRIVE_POWER, BEACON_DRIVE_POWER);
                     if (robot.pusher.isBeaconPushed()){
                         beaconPushed = true;
@@ -382,19 +392,23 @@ public class WHSAuto extends OpMode {
                     }
                 }
                 else if(!beaconRetracted){
+                    currentStateName = "capturing beacon two - pushing beacon";
                     if(beaconRetractionTimer.isExpired()){
+                        currentStateName = "capturing beacon two - retracting beacon arm";
                         robot.pusher.extendPusherNoToggle(false);
                         robot.pusher.extendPusherHand(false);
                     }
                 }
                 //State exit criteria
                 else {
+                    currentStateName = "capturing beacon two - exit";
                     performStateExit = true;
                 }
 
                 //Perform state exit
                 if(performStateExit)
                 {
+                    currentStateName = "capturing beacon two - performing exit";
                     advanceState();
                     performStateEntry = true;
                     performStateExit = false;

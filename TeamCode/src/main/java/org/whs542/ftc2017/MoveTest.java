@@ -33,14 +33,13 @@ public class MoveTest extends OpMode {
 
     public void loop()
     {
+        robot.estimateHeading();
+        robot.estimatePosition();
         switch (state) {
 
             case 0:
-                if (loop || robot.driveToTargetInProgress) {
-                    robot.driveToTarget(new Position(0, 0, 0));
-                    loop = false;
-                } else {
-                    loop = true;
+                robot.driveToTarget(new Position(0, 0, 0));
+                if (!robot.driveToTargetInProgress && !robot.rotateToTargetInProgress) {
                     state++;
                 }
                 break;
@@ -57,7 +56,7 @@ public class MoveTest extends OpMode {
         telemetry.addData("Vheading", robot.vuforia.getHeadingAndLocation().getHeading());
         telemetry.addData("Rx", robot.currentCoord.getX());
         telemetry.addData("Ry", robot.currentCoord.getY());
-        telemetry.addData("Rh", robot.estimateHeading());
+        telemetry.addData("Rh", robot.currentCoord.getHeading());
 
 
 
