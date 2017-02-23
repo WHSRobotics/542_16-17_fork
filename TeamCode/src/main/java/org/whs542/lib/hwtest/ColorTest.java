@@ -13,15 +13,19 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 /**
  * Simple test of the color sensor
  */
-@Autonomous(name = "ColorTest.java", group = "hwtest")
-@Disabled
+@Autonomous(name = "ColorTest", group = "hwtest")
+//@Disabled
 
 public class ColorTest extends OpMode {
     ColorSensor color1;    // Hardware Device Object
+    boolean bLedOn;
 
     @Override
     public void init() {
-        color1 = hardwareMap.colorSensor.get("1");
+        color1 = hardwareMap.colorSensor.get("colorSensor");
+        bLedOn = true;
+        color1.enableLed(bLedOn);
+
     }
 
     @Override
@@ -37,10 +41,9 @@ public class ColorTest extends OpMode {
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
 
-        boolean bLedOn = false;
+        //boolean bLedOn = true;
 
         // Set the LED in the beginning
-        color1.enableLed(bLedOn);
 
         // convert the RGB values to HSV values.
         android.graphics.Color.RGBToHSV(color1.red() * 8, color1.green() * 8, color1.blue() * 8, hsvValues);
@@ -52,6 +55,8 @@ public class ColorTest extends OpMode {
         telemetry.addData("Green", color1.green());
         telemetry.addData("Blue ", color1.blue());
         telemetry.addData("Hue", hsvValues[0]);
+        telemetry.addData("Saturation", hsvValues[1]);
+        telemetry.addData("Value", hsvValues[2]);
 
         // change the background color to match the color detected by the RGB sensor.
         // pass a reference to the hue, saturation, and value array as an argument

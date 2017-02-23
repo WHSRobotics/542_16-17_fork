@@ -1,6 +1,7 @@
 package org.whs542.lib.swtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ThreadPool;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ThreadPool;
  */
 
 @Autonomous(name = "LinearOpModeTest", group = "tests")
+@Disabled
 public class LinearOpModeTest extends LinearOpMode {
     int count = 0;
 
