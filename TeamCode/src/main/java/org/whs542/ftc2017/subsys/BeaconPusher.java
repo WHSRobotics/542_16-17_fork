@@ -147,6 +147,23 @@ public class BeaconPusher {
         }
     }
 
+    public boolean isBeaconCorrectColor()
+    {
+        boolean correctColor;
+        if(side.equals(Alliance.BLUE) && color.state.equals("blue"))
+        {
+            correctColor = true;
+        }
+        else if(side.equals(Alliance.RED) && color.state.equals("red"))
+        {
+            correctColor = true;
+        }
+        else
+        {
+            correctColor = false;
+        }
+        return correctColor;
+    }
 
     public String getBeaconPusherStatus()
     {
