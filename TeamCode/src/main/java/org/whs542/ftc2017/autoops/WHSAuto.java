@@ -58,9 +58,9 @@ public class WHSAuto extends OpMode {
 
     public void defineStateEnabledStatus()
     {
-        stateEnabled[WARMUP_FLYWHEEL] = true;
-        stateEnabled[SHOOT_PARTICLE_1] = true;
-        stateEnabled[SHOOT_PARTICLE_2] = true;
+        stateEnabled[WARMUP_FLYWHEEL] = false;
+        stateEnabled[SHOOT_PARTICLE_1] = false;
+        stateEnabled[SHOOT_PARTICLE_2] = false;
         stateEnabled[CAPTURE_BEACON_1] = true;
         stateEnabled[CAPTURE_BEACON_2] = true;
         stateEnabled[DRIVE_TO_BEACON_WALL] = stateEnabled[CAPTURE_BEACON_1] | stateEnabled[CAPTURE_BEACON_2]; //Should technically be above CAPTURE_BEACON_1
@@ -127,7 +127,7 @@ public class WHSAuto extends OpMode {
     public void init() {
 
         robot = new WHSRobot(hardwareMap, ALLIANCE == RED ? Alliance.RED : Alliance.BLUE);
-        currentState = 0;
+        currentState = 4;
         vuforiaInitTimer = new Timer(5, true);
         flywheelWarmUpTimer = new SoftwareTimer();
         particleUpTimer = new SoftwareTimer();
@@ -336,22 +336,20 @@ public class WHSAuto extends OpMode {
                     currentStateName = "capturing beacon one - finding beacon";
                     robot.drivetrain.setLeftPower(BEACON_DRIVE_POWER);
                     robot.drivetrain.setRightPower(BEACON_DRIVE_POWER);
-                    if (robot.pusher.isBeaconDetected() || beaconDetected) {
+                    if (robot.pusher.isBeaconCorrectColor()) {
                         currentStateName = "capturing beacon one - beacon found";
                         beaconDetected = true;
-                        if (robot.pusher.isBeaconCorrectColor()) {
-                            robot.drivetrain.setLRPower(0.0, 0.0);
-                        }
+                        robot.drivetrain.setLeftPower(0.0);
+                        robot.drivetrain.setRightPower(0.0);
                     }
                 }
                 else if(!beaconPushed)
                 {
                     currentStateName = "capturing beacon one - pushing beacon - 1st stage";
-                    if (robot.pusher.isBeaconCorrectColor()) {
-                        robot.pusher.extendPusherNoToggle(true);
-                        beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
-                        beaconPushed = true;
-                    }
+                    robot.pusher.extendPusherNoToggle(true);
+                    beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
+                    beaconPushed = true;
+
 
                     /*
                     if (robot.pusher.isBeaconPushed()){
@@ -527,6 +525,9 @@ public class WHSAuto extends OpMode {
         telemetry.addData("Drive to Capball Complete: ", driveToCapballComplete);
         telemetry.addData("Knock off Capball Complete: ", knockOffCapballComplete);
         telemetry.addData("Rotate to Parallel Wall Complete: ", rotateToParallelWallComplete);
+        telemetry.addData("ColorR", robot.pusher.color.getR());
+        telemetry.addData("ColorB", robot.pusher.color.getB());
+
 
 
 
