@@ -21,9 +21,6 @@ public class WHSAuto extends OpMode {
 
     WHSRobot robot;
 
-    static int currentState;
-    String currentStateName;
-
     //Starting Coordinates
     static Coordinate[][] startingCoordinateArray = new Coordinate[2][2];
     static final int RED = 0;
@@ -31,9 +28,9 @@ public class WHSAuto extends OpMode {
     static final int ON_VORTEX = 0;
     static final int OFF_VORTEX = 1;
 
-    /****** Change these before match, dummy!! ******/
-    static final int ALLIANCE = BLUE;
-    static final int VORTEX_ALIGNMENT = ON_VORTEX;
+    //TODO: Change these before match, dummy!!
+    static final int ALLIANCE = RED;
+    static final int VORTEX_ALIGNMENT = OFF_VORTEX;
 
     //Beacon Positions
     static Position[][] beaconPositionArray = new Position[2][2];
@@ -44,20 +41,23 @@ public class WHSAuto extends OpMode {
     static Position[] pullOffWallPositions = new Position[2];
 
     //currentState Definitions
-    static final int WARMUP_FLYWHEEL = 0;
-    static final int SHOOT_PARTICLE_1 = 1;
-    static final int SHOOT_PARTICLE_2 = 2;
-    static final int DRIVE_TO_BEACON_WALL = 3;
-    static final int CAPTURE_BEACON_1 = 4;
-    static final int CAPTURE_BEACON_2 = 5;
-    static final int KNOCK_CAP_BALL = 6;
-    static final int PARK_ON_CENTER = 7;
-    static final int EXIT = 8;
+    static final int INIT = 0;
+    static final int WARMUP_FLYWHEEL = 1;
+    static final int SHOOT_PARTICLE_1 = 2;
+    static final int SHOOT_PARTICLE_2 = 3;
+    static final int DRIVE_TO_BEACON_WALL = 4;
+    static final int CAPTURE_BEACON_1 = 5;
+    static final int CAPTURE_BEACON_2 = 6;
+    static final int KNOCK_CAP_BALL = 7;
+    static final int PARK_ON_CENTER = 8;
+    static final int EXIT = 9;
+
     //currentState enabled array
-    static boolean[] stateEnabled = new boolean[9];
+    static boolean[] stateEnabled = new boolean[EXIT + 1];
 
     public void defineStateEnabledStatus()
     {
+        stateEnabled[INIT] = true;
         stateEnabled[WARMUP_FLYWHEEL] = false;
         stateEnabled[SHOOT_PARTICLE_1] = false;
         stateEnabled[SHOOT_PARTICLE_2] = false;
@@ -70,6 +70,9 @@ public class WHSAuto extends OpMode {
 
     }
 
+    static int currentState;
+    String currentStateName;
+
     //Sub-State Variables
     //Flywheel
     boolean initDownTimer = false;
@@ -78,9 +81,10 @@ public class WHSAuto extends OpMode {
     boolean rotateToParallelWallComplete = false;
     //Beacons
     boolean driveToBeaconComplete = false;
-    boolean beaconRetracted = true;
-    boolean beaconPushed = false;
+    boolean beaconRetractStarted = true;
+    boolean beaconPushStarted = false;
     boolean beaconDetected = false;
+    boolean beaconRetracted = false;
     //Beacons & Capball
     boolean pullOffWallComplete = false;
     //Capball
@@ -88,8 +92,9 @@ public class WHSAuto extends OpMode {
     boolean knockOffCapballComplete = false;
 
     //Beacon Control
-    static final double BEACON_RETRACTION_DELAY = 1.2; //In seconds
-    static final double BEACON_DRIVE_POWER = 0.12; //Semi-Tested value
+    static final double BEACON_PUSHING_DELAY = 1.2; //In seconds
+    static final double BEACON_RETRACTION_DELAY = 1.0;
+    static final double BEACON_DRIVE_POWER = 0.25; //Semi-Tested value
 
     //Flywheel Control
     double[] powers = {0.69, 0.8};
@@ -116,6 +121,7 @@ public class WHSAuto extends OpMode {
     SoftwareTimer flywheelWarmUpTimer;
     SoftwareTimer particleUpTimer;
     SoftwareTimer particleDownTimer;
+    SoftwareTimer beaconPushingTimer;
     SoftwareTimer beaconRetractionTimer;
 
     //Main State Variables
@@ -127,11 +133,13 @@ public class WHSAuto extends OpMode {
     public void init() {
 
         robot = new WHSRobot(hardwareMap, ALLIANCE == RED ? Alliance.RED : Alliance.BLUE);
-        currentState = 4;
+        currentState = 0;
         vuforiaInitTimer = new Timer(5, true);
         flywheelWarmUpTimer = new SoftwareTimer();
         particleUpTimer = new SoftwareTimer();
         particleDownTimer = new SoftwareTimer();
+        beaconPushingTimer = new SoftwareTimer();
+        beaconRetractionTimer = new SoftwareTimer();
         loop = true;
 
         defineStateEnabledStatus();
@@ -140,25 +148,29 @@ public class WHSAuto extends OpMode {
         performStateExit = false;
 
         startingCoordinateArray[RED][ON_VORTEX] = new Coordinate(-300, -1570, 150, 90);
-        startingCoordinateArray[RED][OFF_VORTEX] = new Coordinate(300, -1570, 150, 90);
+        //startingCoordinateArray[RED][OFF_VORTEX] = new Coordinate(300, -1570, 150, 90);
+        startingCoordinateArray[RED][OFF_VORTEX] = new Coordinate(900, -1570, 150, 135);
         startingCoordinateArray[BLUE][ON_VORTEX] = new Coordinate(1570, 300, 150, 180);
         startingCoordinateArray[BLUE][OFF_VORTEX] = new Coordinate(1570, -300, 150, 180);
         robot.setInitialCoordinate(startingCoordinateArray[ALLIANCE][VORTEX_ALIGNMENT]);
 
         //Robot positions such that color sensor is always off the beacon button, in the +x direction (blue) or +y (red)
-        beaconPositionArray[RED][BEACON_1] =  new Position(-1490, 1060 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Far beacon
-        beaconPositionArray[RED][BEACON_2] =  new Position(-1490, 140  + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Near beacon
+        beaconPositionArray[RED][BEACON_1] =  new Position(-1550, 1060 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Far beacon
+        beaconPositionArray[RED][BEACON_2] =  new Position(-1550, 140  + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Near beacon
         //beaconPositionArray[BLUE][BEACON_1] = new Position( 460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1490,  150);    //Near beacon
         beaconPositionArray[BLUE][BEACON_1] = new Position(460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1550, 150);
-        beaconPositionArray[BLUE][BEACON_2] = new Position(-740 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1490,  150);    //Far beacon
+        beaconPositionArray[BLUE][BEACON_2] = new Position(-700 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1530,  150);    //Far beacon
         //Directions robot is facing to parallel with beacons wall (in degrees)
         beaconCaptureHeading[RED] = 0;
         beaconCaptureHeading[BLUE] = Functions.normalizeAngle(180);
-        pullOffWallPositions[RED] = new Position(-300,-900,150);
-        pullOffWallPositions[BLUE] = new Position(900,900,150);
+        pullOffWallPositions[RED] = new Position(robot.currentCoord.getX(),robot.currentCoord.getY() + 301,150);
+        pullOffWallPositions[BLUE] = new Position(robot.currentCoord.getX() - 301,robot.currentCoord.getY(),150);
 
         capBallPositions[BLUE] = new Position(680,1490,150);
         capBallPositions[RED] = new Position(520,1490,150);
+
+        telemetry.setMsTransmissionInterval(50);
+        telemetry.log().add("Did you restart the robot?");
     }
 
     @Override
@@ -173,6 +185,10 @@ public class WHSAuto extends OpMode {
         robot.estimatePosition();
 
         switch(currentState){
+            case INIT:
+                currentStateName = "init";
+                advanceState();
+                break;
 
             case WARMUP_FLYWHEEL:
                 currentStateName = "warm up flywheel";
@@ -327,8 +343,8 @@ public class WHSAuto extends OpMode {
                 if(performStateEntry){
                     currentStateName = "capturing beacon one - state entry";
                     performStateEntry = false;
-                    beaconRetracted = false;
-                    beaconPushed = false;
+                    beaconRetractStarted = false;
+                    beaconPushStarted = false;
                     beaconDetected = false;
                 }
 
@@ -343,28 +359,34 @@ public class WHSAuto extends OpMode {
                         robot.drivetrain.setRightPower(0.0);
                     }
                 }
-                else if(!beaconPushed)
+                else if(!beaconPushStarted)
                 {
                     currentStateName = "capturing beacon one - pushing beacon - 1st stage";
                     robot.pusher.extendPusherNoToggle(true);
-                    beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
-                    beaconPushed = true;
+                    beaconPushingTimer.set(BEACON_PUSHING_DELAY);
+                    beaconPushStarted = true;
 
 
                     /*
                     if (robot.pusher.isBeaconPushed()){
                         currentStateName = "capturing beacon one - pushing beacon - 1st stage";
-                        beaconPushed = true;
-                        beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
+                        beaconPushStarted = true;
+                        beaconPushingTimer.set(BEACON_PUSHING_DELAY);
                         robot.drivetrain.setLRPower(0.0, 0.0);
                     }*/
                 }
-                else if(!beaconRetracted){
-                    currentStateName = "capturing beacon one - pushing beacon - 2st stage";
-                    if(beaconRetractionTimer.isExpired()){
+                else if(!beaconRetractStarted){
+                    currentStateName = "capturing beacon one - pushing beacon - 2nd stage";
+                    if(beaconPushingTimer.isExpired()){
                         currentStateName = "capturing beacon one - retracting pusher";
                         robot.pusher.extendPusherNoToggle(false);
                         robot.pusher.extendPusherHand(false);
+                        beaconRetractStarted = true;
+                    }
+                }
+                else if(!beaconRetracted) {
+                    if(beaconRetractionTimer.isExpired()) {
+                        beaconRetracted = true;
                     }
                 }
                 //State exit criteria
@@ -389,33 +411,52 @@ public class WHSAuto extends OpMode {
                 if(performStateEntry){
                     currentStateName = "capturing beacon two - perform state entry";
                     performStateEntry = false;
-                    beaconRetracted = false;
-                    beaconPushed = false;
                     driveToBeaconComplete = false;
+                    beaconDetected = false;
+                    beaconPushStarted = false;
+                    beaconRetractStarted = false;
                 }
 
-                if (!driveToBeaconComplete){
+                if (!driveToBeaconComplete) {
                     currentStateName = "capturing beacon two - driving to beacon";
                     robot.driveToTarget(beaconPositionArray[ALLIANCE][BEACON_2]);
-                    if(robot.driveToTargetInProgress & robot.rotateToTargetInProgress){
+                    if (!robot.driveToTargetInProgress & !robot.rotateToTargetInProgress) {
                         driveToBeaconComplete = true;
                     }
-                }
-                if(!beaconPushed){
+                } else if (!beaconDetected) {
                     currentStateName = "capturing beacon two - finding beacon";
-                    robot.drivetrain.setLRPower(BEACON_DRIVE_POWER, BEACON_DRIVE_POWER);
-                    if (robot.pusher.isBeaconPushed()){
-                        beaconPushed = true;
-                        beaconRetractionTimer.set(BEACON_RETRACTION_DELAY);
-                        robot.drivetrain.setLRPower(0.0, 0.0);
+                    robot.drivetrain.setLeftPower(BEACON_DRIVE_POWER);
+                    robot.drivetrain.setRightPower(BEACON_DRIVE_POWER * robot.rightMultiplier);
+                    if (robot.pusher.isBeaconCorrectColor()) {
+                        currentStateName = "capturing beacon two - beacon found";
+                        beaconDetected = true;
+                        robot.drivetrain.setLeftPower(0.0);
+                        robot.drivetrain.setRightPower(0.0);
                     }
-                }
-                else if(!beaconRetracted){
-                    currentStateName = "capturing beacon two - pushing beacon";
-                    if(beaconRetractionTimer.isExpired()){
-                        currentStateName = "capturing beacon two - retracting beacon arm";
+                } else if (!beaconPushStarted) {
+                    currentStateName = "capturing beacon two - pushing beacon - 1st stage";
+                    robot.pusher.extendPusherNoToggle(true);
+                    beaconPushingTimer.set(BEACON_PUSHING_DELAY);
+                    beaconPushStarted = true;
+
+
+                        /*
+                        if (robot.pusher.isBeaconPushed()){
+                            currentStateName = "capturing beacon one - pushing beacon - 1st stage";
+                            beaconPushStarted = true;
+                            beaconPushingTimer.set(BEACON_PUSHING_DELAY);
+                            robot.drivetrain.setLRPower(0.0, 0.0);
+                        }*/
+                } else if (!beaconRetractStarted) {
+                    currentStateName = "capturing beacon two - pushing beacon - 2nd stage";
+                    if (beaconPushingTimer.isExpired()) {
+                        currentStateName = "capturing beacon one - retracting pusher";
+                        telemetry.addData("Before extendPusherNoToggle(false)", "");
                         robot.pusher.extendPusherNoToggle(false);
+                        telemetry.addData("You have gotten past extendPusherNoToggle", "");
                         robot.pusher.extendPusherHand(false);
+                        telemetry.addData("You have gotten past extendPusherHand", "");
+                        beaconRetractStarted = true;
                     }
                 }
                 //State exit criteria
@@ -513,6 +554,10 @@ public class WHSAuto extends OpMode {
                 break;
         }
         telemetry.addData("State Info: ", currentStateName);
+        telemetry.addData("Side equals Alliance.Blue?", robot.pusher.side.equals(Alliance.BLUE));
+        telemetry.addData("Color state equals blue?", robot.pusher.color.state().equals("blue"));
+        telemetry.addData("isBeaconCorrectColor() reading", robot.pusher.isBeaconCorrectColor());
+        telemetry.addData("Color State", robot.pusher.color.state());
         telemetry.addData("Rx", robot.currentCoord.getX());
         telemetry.addData("Ry", robot.currentCoord.getY());
         telemetry.addData("Rh", robot.currentCoord.getHeading());
@@ -521,13 +566,10 @@ public class WHSAuto extends OpMode {
         telemetry.addData("time", time);
         telemetry.addData("Current State: ", currentState);
         telemetry.addData("Vuforia valid?", robot.vuforia.vuforiaIsValid());
-        telemetry.addData("Pull off Wall Complete: ", pullOffWallComplete);
-        telemetry.addData("Drive to Capball Complete: ", driveToCapballComplete);
-        telemetry.addData("Knock off Capball Complete: ", knockOffCapballComplete);
-        telemetry.addData("Rotate to Parallel Wall Complete: ", rotateToParallelWallComplete);
         telemetry.addData("ColorR", robot.pusher.color.getR());
         telemetry.addData("ColorB", robot.pusher.color.getB());
 
+        telemetry.update();
 
 
 
