@@ -29,8 +29,8 @@ public class WHSAuto extends OpMode {
     static final int OFF_VORTEX = 1;
 
     //TODO: Change these before match, dummy!!
-    static final int ALLIANCE = BLUE;
-    static final int VORTEX_ALIGNMENT = ON_VORTEX;
+    static final int ALLIANCE = RED;
+    static final int VORTEX_ALIGNMENT = OFF_VORTEX;
 
     //Beacon Positions
     static Position[][] beaconPositionArray = new Position[2][2];
@@ -58,14 +58,14 @@ public class WHSAuto extends OpMode {
     public void defineStateEnabledStatus()
     {
         stateEnabled[INIT] = true;
-        stateEnabled[WARMUP_FLYWHEEL] = false;
-        stateEnabled[SHOOT_PARTICLE_1] = false;
-        stateEnabled[SHOOT_PARTICLE_2] = false;
-        stateEnabled[CAPTURE_BEACON_1] = true;
-        stateEnabled[CAPTURE_BEACON_2] = true;
+        stateEnabled[WARMUP_FLYWHEEL] = true;
+        stateEnabled[SHOOT_PARTICLE_1] = true;
+        stateEnabled[SHOOT_PARTICLE_2] = true;
+        stateEnabled[CAPTURE_BEACON_1] = false;
+        stateEnabled[CAPTURE_BEACON_2] = false;
         stateEnabled[DRIVE_TO_BEACON_WALL] = stateEnabled[CAPTURE_BEACON_1] | stateEnabled[CAPTURE_BEACON_2]; //Should technically be above CAPTURE_BEACON_1
         stateEnabled[KNOCK_CAP_BALL] = false;
-        stateEnabled[PARK_ON_CENTER] = true;
+        stateEnabled[PARK_ON_CENTER] = false;
         stateEnabled[EXIT] = true;
 
     }
@@ -95,9 +95,10 @@ public class WHSAuto extends OpMode {
     static final double BEACON_PUSHING_DELAY = 1.2; //In seconds
     static final double BEACON_RETRACTION_DELAY = 1.0;
     static final double BEACON_DRIVE_POWER = 0.25; //Semi-Tested value
+    static final double DEAD_MAN_TIMER_DURATION = 5.0; //sec
 
     //Flywheel Control
-    double[] powers = {0.70, 0.8};
+    double[] powers = {0.70, 0.9}; //TODO: Change flywheel maxspeed instead and change second fly power back to 0.8
     final int startingPosition = 1; //1 or 2
     static final double FLYWHEEL_WARMUP_DELAY = 6.0; //in seconds
     static final double PARTICLE_UP_PUSHER_DELAY = 4.0;
@@ -123,6 +124,7 @@ public class WHSAuto extends OpMode {
     SoftwareTimer particleDownTimer;
     SoftwareTimer beaconPushingTimer;
     SoftwareTimer beaconRetractionTimer;
+    SoftwareTimer deadManTimer;
 
     //Main State Variables
     boolean loop;
@@ -140,6 +142,8 @@ public class WHSAuto extends OpMode {
         particleDownTimer = new SoftwareTimer();
         beaconPushingTimer = new SoftwareTimer();
         beaconRetractionTimer = new SoftwareTimer();
+        deadManTimer = new SoftwareTimer();
+
         loop = true;
 
         defineStateEnabledStatus();
@@ -348,6 +352,12 @@ public class WHSAuto extends OpMode {
                     beaconRetractStarted = false;
                     beaconPushStarted = false;
                     beaconDetected = false;
+                    deadManTimer.set(DEAD_MAN_TIMER_DURATION);
+                }
+
+                if(deadManTimer.isExpired()){
+                    currentStateName = "beacon one capture aborted";
+                    performStateExit = true;
                 }
 
                 if(!beaconDetected) {
@@ -391,6 +401,7 @@ public class WHSAuto extends OpMode {
                         beaconRetracted = true;
                     }
                 }
+
                 //State exit criteria
                 else {
                     currentStateName = "capturing beacon one - exit";
@@ -418,6 +429,7 @@ public class WHSAuto extends OpMode {
                     beaconPushStarted = false;
                     beaconRetractStarted = false;
                 }
+
 
                 if (!driveToBeaconComplete) {
                     currentStateName = "capturing beacon two - driving to beacon";
