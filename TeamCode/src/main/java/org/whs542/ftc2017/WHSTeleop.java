@@ -16,7 +16,7 @@ import org.whs542.lib.Toggler;
 public class WHSTeleop extends OpMode
 {
     //Test Code
-    Toggler speedToggle = new Toggler(60);
+    //Toggler speedToggle = new Toggler(60);
     //End test code
     WHSRobotSimple robot;
     int i;
@@ -25,16 +25,16 @@ public class WHSTeleop extends OpMode
     {
 
         robot = new WHSRobotSimple(hardwareMap);
-        speedToggle.setState(28);
+        //speedToggle.setState(28);
     }
 
     public void loop()
     {
         try {
             //Test code
-            speedToggle.changeState(gamepad1.a, gamepad1.b);
-            robot.flywheel2.rightFlywheel.setMaxSpeed(speedToggle.currentState()*25);
-            robot.flywheel2.leftFlywheel.setMaxSpeed(speedToggle.currentState()*25);
+            //speedToggle.changeState(gamepad1.a, gamepad1.b);
+            //robot.flywheel2.rightFlywheel.setMaxSpeed(speedToggle.currentState()*25);
+            //robot.flywheel2.leftFlywheel.setMaxSpeed(speedToggle.currentState()*25);
             //End test code
             //Gamepad 1 Controls
             robot.drivetrain.setLRScaledPower(gamepad1.left_stick_y, gamepad1.right_stick_y);
@@ -54,7 +54,7 @@ public class WHSTeleop extends OpMode
         }
 
         //Test code
-        telemetry.addData("Max flywheel speed", speedToggle.currentState()*25);
+        //telemetry.addData("Max flywheel speed", speedToggle.currentState()*25);
         //Test code
 
         //Telemetry

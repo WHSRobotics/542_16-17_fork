@@ -29,7 +29,7 @@ public class WHSAuto extends OpMode {
     static final int OFF_VORTEX = 1;
 
     //TODO: Change these before match, dummy!!
-    static final int ALLIANCE = RED;
+    static final int ALLIANCE = BLUE;
     static final int VORTEX_ALIGNMENT = ON_VORTEX;
 
     //Beacon Positions
@@ -58,13 +58,13 @@ public class WHSAuto extends OpMode {
     public void defineStateEnabledStatus()
     {
         stateEnabled[INIT] = true;
-        stateEnabled[WARMUP_FLYWHEEL] = true;
-        stateEnabled[SHOOT_PARTICLE_1] = true;
-        stateEnabled[SHOOT_PARTICLE_2] = true;
-        stateEnabled[CAPTURE_BEACON_1] = false;
-        stateEnabled[CAPTURE_BEACON_2] = false;
+        stateEnabled[WARMUP_FLYWHEEL] = false;
+        stateEnabled[SHOOT_PARTICLE_1] = false;
+        stateEnabled[SHOOT_PARTICLE_2] = false;
+        stateEnabled[CAPTURE_BEACON_1] = true;
+        stateEnabled[CAPTURE_BEACON_2] = true;
         stateEnabled[DRIVE_TO_BEACON_WALL] = stateEnabled[CAPTURE_BEACON_1] | stateEnabled[CAPTURE_BEACON_2]; //Should technically be above CAPTURE_BEACON_1
-        stateEnabled[KNOCK_CAP_BALL] = true;
+        stateEnabled[KNOCK_CAP_BALL] = false;
         stateEnabled[PARK_ON_CENTER] = true;
         stateEnabled[EXIT] = true;
 
@@ -277,7 +277,7 @@ public class WHSAuto extends OpMode {
                 }
 
                 //State exit criteria
-                if(particleDownTimer.isExpired())
+                if(!initDownTimer & particleDownTimer.isExpired())
                 {
                     performStateExit = true;
                 }
