@@ -17,7 +17,7 @@ import org.whs542.lib.Toggler;
 public class BeaconPusher {
     public DcMotor beaconPusher;
     private Servo beaconHand;
-    private TouchSensor touchSensor;
+    public TouchSensor touchSensor;
     public Color color;
     public Alliance side;
 

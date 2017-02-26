@@ -23,8 +23,9 @@ public class BeaconTest extends OpMode
 
     public void loop()
     {
-        beaconPusher.extendPusherNoToggle(gamepad1.left_bumper);
-        beaconPusher.extendPusherHand(gamepad1.right_bumper);
+        beaconPusher.extendPusherNoToggle(true);
+        beaconPusher.extendPusherHand(false);
         telemetry.addData("Beacon status:", beaconPusher.getBeaconPusherStatus());
+        telemetry.addData("Touch sensor pressed?", beaconPusher.touchSensor.isPressed());
     }
 }

@@ -35,13 +35,15 @@ public class WHSRobot
 
     private static final double RADIUS_TO_DRIVETRAIN = 365/2; //in mm
     private static final double DEADBAND_MAX_DRIVE_HEADING_DEVIATION = 10; //in degrees
+    private static final double DEADBAND_MAX_DRIVE_POSITION_DEVIATION = 300; //in mm
     private static final double[] DRIVE_TO_TARGET_POWER_LEVEL = {0.33, 0.6, 0.7, 0.9};
     public static final double DEADBAND_DRIVE_TO_TARGET = 110; //in mm
     private static final double[] DRIVE_TO_TARGET_THRESHOLD = {DEADBAND_DRIVE_TO_TARGET, 300, 600, 1200};
     private static final double[] ROTATE_TO_TARGET_POWER_LEVEL = {0.35, 0.6, 0.75};
     private static final double DEADBAND_ROTATE_TO_TARGET = 3.5; //in degrees
     private static final double[] ROTATE_TO_TARGET_THRESHOLD = {DEADBAND_ROTATE_TO_TARGET, 45, 90};
-    private static final double DRIVE_CORRECTION_GAIN = 0.05;
+    private static final double DRIVE_CORRECTION_GAIN = 0.0007;
+    public double rightMultiplier = 1.0;
 
     int[] encP = {0, 0, 0, 0};
 
@@ -171,7 +173,6 @@ public class WHSRobot
     {
         Position vectorToTarget = Functions.subtractPositions(targetPos, currentCoord.getPos()); //field frame
         vectorToTarget = field2body(vectorToTarget); //body frame
-        double rightMultiplier = 1.0;
 
         double distanceToTarget = Functions.calculateMagnitude(vectorToTarget);
 
@@ -189,16 +190,18 @@ public class WHSRobot
         }
         else if(driveToTargetInProgress)
         {
-            if(targetHeading - currentCoord.getHeading() > 0)
+            if(targetHeading - currentCoord.getHeading() > DEADBAND_ROTATE_TO_TARGET/3)
             {
-                rightMultiplier = 1.0 + DRIVE_CORRECTION_GAIN;
+                rightMultiplier = rightMultiplier + DRIVE_CORRECTION_GAIN;
             }
-            else
+            else if(targetHeading - currentCoord.getHeading() < -DEADBAND_ROTATE_TO_TARGET/3)
             {
-                rightMultiplier = 1.0 - DRIVE_CORRECTION_GAIN;
+                rightMultiplier = rightMultiplier - DRIVE_CORRECTION_GAIN;
             }
 
-            if(Math.abs(targetHeading - currentCoord.getHeading()) > DEADBAND_MAX_DRIVE_HEADING_DEVIATION) {
+            if((Math.abs(targetHeading - currentCoord.getHeading()) > DEADBAND_MAX_DRIVE_HEADING_DEVIATION)
+                    && (distanceToTarget > DEADBAND_MAX_DRIVE_POSITION_DEVIATION))
+            {
                 rotateToTarget(targetHeading);
             }
 
