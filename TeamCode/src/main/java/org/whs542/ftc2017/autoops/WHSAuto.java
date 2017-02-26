@@ -30,7 +30,14 @@ public class WHSAuto extends OpMode {
 
     //TODO: Change these before match, dummy!!
     static final int ALLIANCE = BLUE;
-    static final int VORTEX_ALIGNMENT = ON_VORTEX;
+    static final int VORTEX_ALIGNMENT = ON_
+
+
+
+
+
+
+    VORTEX;
 
     //Beacon Positions
     static Position[][] beaconPositionArray = new Position[2][2];
@@ -241,7 +248,7 @@ public class WHSAuto extends OpMode {
                 }
 
                 //State exit criteria
-                if(particleDownTimer.isExpired())
+                if(!initDownTimer & particleDownTimer.isExpired())
                 {
                     performStateExit = true;
                 }
