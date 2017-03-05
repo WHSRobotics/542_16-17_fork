@@ -1,4 +1,4 @@
-package org.whs542.ftc2017.autoops;
+package org.whs542.lib.swtest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,12 +12,12 @@ import org.whs542.lib.SoftwareTimer;
 import org.whs542.lib.Timer;
 
 /**
- * State Machine Based Auto
+ * State Machine Based Auto - Red with orientation switched
  */
 
-@Autonomous(name = "WHSAuto", group = "auto")
+@Autonomous(name = "WHSAuto Red", group = "auto")
 //@Disabled
-public class WHSAuto extends OpMode {
+public class WHSAutoRed extends OpMode {
 
     WHSRobot robot;
 
@@ -30,7 +30,7 @@ public class WHSAuto extends OpMode {
 
     //TODO: Change these before match, dummy!!
 
-    static final int ALLIANCE = BLUE;
+    static final int ALLIANCE = RED;
     static final int VORTEX_ALIGNMENT = ON_VORTEX;
 
     //Beacon Positions
@@ -100,10 +100,10 @@ public class WHSAuto extends OpMode {
     //Flywheel Control
     double[] powers = {0.70, 0.9}; //TODO: Change flywheel maxspeed instead and change second fly power back to 0.8
     final int startingPosition = 1; //1 or 2
-    static final double FLYWHEEL_STARTUP_DELAY = 2.0;
-    static final double FLYWHEEL_WARMUP_DELAY = 3.5; //in seconds
-    static final double PARTICLE_UP_PUSHER_DELAY = 1.0;
-    static final double PARTICLE_DOWN_PUSHER_DELAY = 1.0;
+    static final double FLYWHEEL_STARTUP_DELAY = 0.5;
+    static final double FLYWHEEL_WARMUP_DELAY = 6.0; //in seconds
+    static final double PARTICLE_UP_PUSHER_DELAY = 4.0;
+    static final double PARTICLE_DOWN_PUSHER_DELAY = 2.0;
 
     //Cap Ball Positions0
     static Position[] capBallPositions = new Position[2];
@@ -137,6 +137,12 @@ public class WHSAuto extends OpMode {
     public void init() {
 
         robot = new WHSRobot(hardwareMap, ALLIANCE == RED ? Alliance.RED : Alliance.BLUE);
+        if(ALLIANCE == RED)
+        {
+            //reverses orientation of the drivetrain
+            robot.drivetrain.setOrientation(true);
+        }
+
         currentState = 0;
         vuforiaInitTimer = new Timer(5, true);
         flywheelWarmUpTimer = new SoftwareTimer();
@@ -162,8 +168,8 @@ public class WHSAuto extends OpMode {
         robot.setInitialCoordinate(startingCoordinateArray[ALLIANCE][VORTEX_ALIGNMENT]);
 
         //Robot positions such that color sensor is always off the beacon button, in the +x direction (blue) or +y (red)
-        beaconPositionArray[RED][BEACON_1] =  new Position(-1550, 1060 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Far beacon
-        beaconPositionArray[RED][BEACON_2] =  new Position(-1550, 140  + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Near beacon
+        beaconPositionArray[RED][BEACON_1] =  new Position(-1550, 140 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Near beacon
+        beaconPositionArray[RED][BEACON_2] =  new Position(-1550, 1060  + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Far beacon
         //beaconPositionArray[BLUE][BEACON_1] = new Position( 460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1490,  150);    //Near beacon
         beaconPositionArray[BLUE][BEACON_1] = new Position(460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1550, 150);
         beaconPositionArray[BLUE][BEACON_2] = new Position(robot.currentCoord.getX() - 900, robot.currentCoord.getY(), 150);

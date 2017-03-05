@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.whs542.lib.SoftwareTimer;
 import org.whs542.lib.Toggler;
 
 /**
@@ -27,11 +28,16 @@ public class Flywheel2
     private static final double DOWN_POSITION = 1.0;
 
     private String flywheelMode;
+    private String flywheelState;
 
     private Toggler flywheelPowerToggle = new Toggler(6);
     private Toggler flywheelExperimental = new Toggler(101);
     private Toggler flywheelToggle = new Toggler(2);
 
+    private SoftwareTimer flywheelStartUpTimer;
+    private static final double FLYWEEL_STARTUP_DELAY = 2.0;
+
+    public boolean loopInit;
     private boolean isFlywheelAtSpeed;
     private boolean isParticleControlUp;
 
@@ -44,6 +50,7 @@ public class Flywheel2
         particleControl = map.servo.get("particleControl");
         this.setParticleControlState(false);
         //particleGate = map.servo.get("particleGate");
+        flywheelStartUpTimer = new SoftwareTimer();
 
         flywheelPower = 0.0; //Default flywheelPower
 
@@ -59,6 +66,7 @@ public class Flywheel2
         rightFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftFlywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        loopInit = true;
         isParticleControlUp = false;
         isFlywheelAtSpeed = false;
 
@@ -77,12 +85,30 @@ public class Flywheel2
         switch(flywheelToggle.currentState())
         {
             case 0:
+                flywheelState = "Flywheel Stopped";
                 rightFlywheel.setPower(0.0);
                 leftFlywheel.setPower(0.0);
+                loopInit = true;
                 break;
             case 1:
-                rightFlywheel.setPower(flywheelPower);
-                leftFlywheel.setPower(flywheelPower);
+                if(loopInit) {
+                    flywheelStartUpTimer.set(FLYWEEL_STARTUP_DELAY);
+                    loopInit = false;
+                }
+                else
+                {
+                    if(!flywheelStartUpTimer.isExpired())
+                    {
+                        flywheelState = "Flywheel Warmup";
+                        rightFlywheel.setPower(1.0);
+                        leftFlywheel.setPower(1.0);
+                    }
+                    else if(flywheelStartUpTimer.isExpired()) {
+                        flywheelState = "Flywheel Started - Regular";
+                        rightFlywheel.setPower(flywheelPower);
+                        leftFlywheel.setPower(flywheelPower);
+                    }
+                }
                 break;
         }
         if(count%50 == 0) {
@@ -188,17 +214,8 @@ public class Flywheel2
         return pcState;
     }
 
-
-    public void setParticleGate(boolean trigger) {
-        /*if (trigger) {
-
-            particleGate.setPosition(0.58);
-            isParticleGateOpen = true;
-        }
-        else{
-            particleGate.setPosition(0);
-            isParticleGateOpen = false;
-
-        }*/
+    public String getFlywheelState()
+    {
+        return flywheelState;
     }
 }

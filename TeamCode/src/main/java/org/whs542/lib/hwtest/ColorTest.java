@@ -7,13 +7,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
  * Simple test of the color sensor
  */
-@Autonomous(name = "ColorTest", group = "hwtest")
+@TeleOp(name = "ColorTest", group = "hwtest")
 //@Disabled
 
 public class ColorTest extends OpMode {
@@ -23,9 +24,7 @@ public class ColorTest extends OpMode {
     @Override
     public void init() {
         color1 = hardwareMap.colorSensor.get("colorSensor");
-        bLedOn = true;
-        color1.enableLed(bLedOn);
-
+        bLedOn = false;
     }
 
     @Override
@@ -47,6 +46,12 @@ public class ColorTest extends OpMode {
 
         // convert the RGB values to HSV values.
         android.graphics.Color.RGBToHSV(color1.red() * 8, color1.green() * 8, color1.blue() * 8, hsvValues);
+
+        if(gamepad1.a)
+        {
+            color1.enableLed(true);
+            bLedOn = true;
+        }
 
         // send the info back to driver station using telemetry function.
         telemetry.addData("LED", bLedOn ? "On" : "Off");

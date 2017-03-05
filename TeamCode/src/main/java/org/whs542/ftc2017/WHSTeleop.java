@@ -60,6 +60,7 @@ public class WHSTeleop extends OpMode
         //Telemetry
         telemetry.addData("Robot Approx. Location", robot.flywheel2.getFlywheelMode());
         telemetry.addData("Flywheel Speed", robot.flywheel2.getFlywheelMode());
+        telemetry.addData("Flywheel State", robot.flywheel2.getFlywheelState());
         telemetry.addData("Particle Control Status", robot.flywheel2.getParticleControlState());
         telemetry.addData("Gamepad2 L Trig", gamepad2.left_trigger);
         telemetry.addData("Beaconpusher Enc", robot.pusher.beaconPusher.getCurrentPosition());
