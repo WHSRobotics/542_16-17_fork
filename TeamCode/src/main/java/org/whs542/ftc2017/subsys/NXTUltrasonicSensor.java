@@ -12,8 +12,6 @@ import com.qualcomm.robotcore.hardware.UltrasonicSensor;
  */
 public class NXTUltrasonicSensor{
     public UltrasonicSensor uSensor;
-    public ModernRoboticsUsbLegacyModule mLegacyModule;
-
 
     public NXTUltrasonicSensor(HardwareMap aMap){
         try {

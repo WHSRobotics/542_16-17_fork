@@ -4,6 +4,7 @@ import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.whs542.ftc2017.autoops.WHSAuto;
 import org.whs542.lib.Alliance;
 import org.whs542.lib.Coordinate;
 import org.whs542.lib.Functions;
@@ -24,6 +25,8 @@ public class WHSRobot
     public BeaconPusher pusher;
     public Vuforia vuforia;
     public IMU imu;
+    public NXTUltrasonicSensor uSensor;
+    public ODSensor odSensor;
 
     public boolean rotateToTargetInProgress;
     public boolean driveToTargetInProgress;
@@ -57,6 +60,10 @@ public class WHSRobot
     static final double CAMERA_TO_BODY_Z = 0; //body frame
     static final double CAMERA_TO_BODY_ANGLE = Math.atan(CAMERA_TO_BODY_X/CAMERA_TO_BODY_Y) + 90; //Measured CCW from x-body axis
 
+    static final double US_TO_BODY_X = 100; //In mm
+    static final double US_TO_BODY_Y = 100;
+    static final double US_IDEAL_SPACE = 270;
+
     private int count = 0;
     private int count2 = 0;
 
@@ -80,7 +87,8 @@ public class WHSRobot
             e.printStackTrace();
         }*/
 
-
+        uSensor = new NXTUltrasonicSensor(robotMap);
+        odSensor = new ODSensor(robotMap);
         vuforia = new Vuforia();
         try{
             vuforia.start();
@@ -105,6 +113,8 @@ public class WHSRobot
 
         imu = new IMU(robotMap);
 
+        uSensor = new NXTUltrasonicSensor(robotMap);
+        odSensor = new ODSensor(robotMap);
         vuforia = new Vuforia();
         try {
             vuforia.start();
@@ -477,11 +487,48 @@ public class WHSRobot
         return currentHeading;
     }
 
+    public double usPosError()
+    {
+        double error;
+        double range = uSensor.getRange();
+        double headingError = usNormalize(imu.getHeading());
+        if (headingError >= 0)
+        {
+            headingError = Math.abs(headingError);
+            error = range * Functions.cosd(headingError) + US_TO_BODY_Y * Functions.cosd(headingError) - US_TO_BODY_X * Math.sin(headingError) - US_IDEAL_SPACE;
+        }
+        else
+        {
+            headingError = Math.abs(headingError);
+            error = range * Functions.cosd(headingError) + US_TO_BODY_Y * Math.cos(headingError) + US_TO_BODY_X * Functions.sind(headingError) - US_IDEAL_SPACE;
+        }
+        return error;
+    }
+
+    public double usNormalize(double IMUHeading)
+    {
+        if(WHSAuto.ALLIANCE == 0)//Red Alliance
+        {
+            return Functions.normalizeAngle(IMUHeading + 90);
+        }
+        else//Blue Alliance
+        {
+            return Functions.normalizeAngle(IMUHeading - 180);
+        }
+    }
+
+
     public void setInitialCoordinate(Coordinate initCoord)
     {
         currentCoord = initCoord;
         imu.setImuBias(currentCoord.getHeading());
         DbgLog.msg("Initial coordinate set", currentCoord.toString());
+    }
+
+    public void setCoordinate(Coordinate coordinate)
+    {
+        currentCoord = coordinate;
+        imu.setImuBias(currentCoord.getHeading());
     }
 
     public String getTeleOpBeaconChoice(boolean dpadUp, boolean dpadDown)
