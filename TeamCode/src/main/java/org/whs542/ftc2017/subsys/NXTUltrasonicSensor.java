@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 /**
  * Created by Jiangda on 3/4/2017.
  */
+
 public class NXTUltrasonicSensor{
     public UltrasonicSensor uSensor;
 
@@ -23,6 +24,6 @@ public class NXTUltrasonicSensor{
 
     }
     public double getRange(){
-        return uSensor.getUltrasonicLevel();
+        return uSensor.getUltrasonicLevel()*10;
     }
 }

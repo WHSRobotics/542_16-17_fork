@@ -33,9 +33,6 @@ public class WHSAuto_With_US extends OpMode {
     public static final int ALLIANCE = BLUE;
     public static final int VORTEX_ALIGNMENT = ON_VORTEX;
 
-
-
-
     //Beacon Positions
     static Position[][] beaconPositionArray = new Position[2][2];
     static final int BEACON_1 = 0;
@@ -128,7 +125,7 @@ public class WHSAuto_With_US extends OpMode {
     Position[] capballPositions = {new Position(300, 450, 150), new Position(-450, -450, 150)};
 
     //Values for ultrasonic sensor navigation
-    static final double US_TOLERANCE = 100;
+    static final double US_TOLERANCE = 100; //in mm?
     static final double TURN_CORRECTION = 5; //in degrees
 
     //Timers
