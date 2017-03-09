@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
 /**
- * Created by Jiangda on 3/4/2017.
+ * NXT Ultrasonic Sensor Class
  */
 
 public class NXTUltrasonicSensor{

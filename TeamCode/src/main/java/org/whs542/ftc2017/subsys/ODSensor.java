@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
 /**
- * Created by Jiangda on 3/4/2017.
+ * Optical Distance Sensor Class
  */
 public class ODSensor {
     public OpticalDistanceSensor opticalDistanceSensor;

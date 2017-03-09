@@ -126,7 +126,7 @@ public class WHSAuto_With_US_Simple extends OpMode {
     Position[] capballPositions = {new Position(300, 450, 150), new Position(-450, -450, 150)};
 
     //Values for ultrasonic sensor navigation
-    static final double US_TOLERANCE = 100; //in mm
+    static final double US_TOLERANCE = 20; //in mm
     static final double DESIRED_DISTANCE = 200; //in mm
     static final double TURN_CORRECTION = 5; //in degrees
 
