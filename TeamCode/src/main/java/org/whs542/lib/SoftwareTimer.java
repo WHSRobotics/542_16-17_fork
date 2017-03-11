@@ -1,5 +1,7 @@
 package org.whs542.lib;
 
+import com.qualcomm.ftccommon.DbgLog;
+
 /**
  * Simplified Timer Class
  *
@@ -8,7 +10,7 @@ package org.whs542.lib;
 
 public class SoftwareTimer
 {
-    public static double expirationTime; //in seconds
+    public double expirationTime; //in seconds
 
     public SoftwareTimer()
     {
@@ -23,7 +25,19 @@ public class SoftwareTimer
 
     public boolean isExpired()
     {
+        DbgLog.msg("whs isExpired entered");
         double currentTime = (double) System.currentTimeMillis() / 1000; //time in seconds
+        DbgLog.msg("whs currentTime found");
+        if(expirationTime < currentTime)
+        {
+            DbgLog.msg("already expired");
+        }
         return (currentTime > expirationTime);
     }
+
+    /*public double getCurrentTime()
+    {
+        double currentTime = (double) System.currentTimeMillis() / 1000; //time in seconds
+        return currentTime;
+    }*/
 }

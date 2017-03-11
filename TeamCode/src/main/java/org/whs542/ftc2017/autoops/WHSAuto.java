@@ -165,7 +165,7 @@ public class WHSAuto extends OpMode {
         beaconPositionArray[RED][BEACON_1] =  new Position(-1550, 1060 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Far beacon
         beaconPositionArray[RED][BEACON_2] =  new Position(-1550, 140  + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 150);    //Near beacon
         //beaconPositionArray[BLUE][BEACON_1] = new Position( 460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1490,  150);    //Near beacon
-        beaconPositionArray[BLUE][BEACON_1] = new Position(460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1550, 150);
+        beaconPositionArray[BLUE][BEACON_1] = new Position(460 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1500, 150);
         beaconPositionArray[BLUE][BEACON_2] = new Position(robot.currentCoord.getX() - 900, robot.currentCoord.getY(), 150);
         //beaconPositionArray[BLUE][BEACON_2] = new Position(-700 + 2*WHSRobot.DEADBAND_DRIVE_TO_TARGET, 1530,  150);    //Far beacon
         //Directions robot is facing to parallel with beacons wall (in degrees)
@@ -213,11 +213,20 @@ public class WHSAuto extends OpMode {
                 if(!flywheelStartPowerTimer.isExpired())
                 {
                     robot.flywheel2.runFlywheelNoToggle(1.0);
+                }
+                else if(flywheelStartPowerTimer.isExpired())
+                {
+                    robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]);
+                    flywheelWarmUpTimer.set(FLYWHEEL_WARMUP_DELAY);
+                }
+                /*if(!flywheelStartPowerTimer.isExpired())
+                {
+                    robot.flywheel2.runFlywheelNoToggle(1.0);
                     flywheelWarmUpTimer.set(FLYWHEEL_WARMUP_DELAY);
                 }
                 else if(!flywheelWarmUpTimer.isExpired()) {
                     robot.flywheel2.runFlywheelNoToggle(powers[startingPosition - 1]);
-                }
+                }*/
 
                 //State exit criteria
                 if(flywheelWarmUpTimer.isExpired())

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.whs542.ftc2017.subsys.Drivetrain;
 import org.whs542.ftc2017.subsys.IMU;
 
 /**
@@ -18,11 +19,13 @@ public class IMUTest extends OpMode
 {
 
     IMU imu;
+    Drivetrain drivetrain;
 
     @Override
     public void init(){
 
         imu = new IMU(hardwareMap);
+        drivetrain = new Drivetrain(hardwareMap);
 
         /*try {
             imu.start();
@@ -35,6 +38,9 @@ public class IMUTest extends OpMode
 
     @Override
     public void loop(){
+
+        drivetrain.setLeftPower(0.0);
+        drivetrain.setRightPower(0.0);
 
         double heading = imu.getHeading();
 
