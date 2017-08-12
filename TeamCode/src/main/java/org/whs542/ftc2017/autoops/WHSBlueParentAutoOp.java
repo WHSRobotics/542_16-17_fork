@@ -17,7 +17,10 @@ import org.whs542.lib.Timer;
  *
  * @see WHSParentAutoOp
  * @see AutoOpSwitchCaseTemplate
+ *
+ * @deprecated See {@link org.whs542.ftc2017.autoops.WHSAuto} for newer design
  */
+@Deprecated
 @Autonomous(name = "WHSBlueParentAuto", group = "Auto")
 //@Disabled
 public class WHSBlueParentAutoOp extends OpMode {

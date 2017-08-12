@@ -43,7 +43,7 @@ public class Flywheel2
 
     private int count;
 
-    public  Flywheel2(HardwareMap map)
+    public Flywheel2(HardwareMap map)
     {
         rightFlywheel = map.dcMotor.get("rightFly");
         leftFlywheel = map.dcMotor.get("leftFly");
